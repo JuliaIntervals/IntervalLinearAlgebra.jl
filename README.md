@@ -54,10 +54,10 @@ See the file `perf/benchmarking.jl` for some benchmarking. Note that everything 
 
 ## References
 
-The following phD thesis is an excellent overview of the topic with a comprehensive list of further references
-
-J. Horácek, Interval Linear and Nonlinear Systems, 2019, available [here](https://kam.mff.cuni.cz/~horacek/source/horacek_phdthesis.pdf)
+Most algorithms implemented in this package are described in:
+[1] J. Horácek, Interval Linear and Nonlinear Systems, 2019, available [here](https://kam.mff.cuni.cz/~horacek/source/horacek_phdthesis.pdf)
 
 ## Related packages
 
 - [IntervalMatrices.jl](https://github.com/JuliaReach/IntervalMatrices.jl) -- Matrices with interval coefficients in Julia.
+

@@ -3,6 +3,12 @@ abstract type LinearSolver end
 struct GaussElimination <: LinearSolver end
 
 
+"""
+Solves the linear system using Hansen-Bliek-Rohn method. This might give a tighter solution
+than Gauss elimination in general, but this method only works for some matrices
+(at least with H-matrices without preconditioning, I think it should work in general
+for strongly regular matrices using preconditioning). See section 5.6.2 of [1] (page 49)
+"""
 struct HansenBliekRohn <: LinearSolver end
 
 function (hbr::HansenBliekRohn)(A, b)
@@ -21,9 +27,14 @@ function (ge::GaussElimination)(A, b)
     n = length(b)
     A = MMatrix{n, n}(A)
     b = MVector{n}(b)
-
+    # TODO: IMPLEMENT IT :D
 end
+
+
 ## JACOBI
+"""
+Solves the linear system using Jacobi method. See section 5.7.4 of [1] (page 52)
+"""
 struct Jacobi <: LinearSolver
     max_iterations::Int
     atol::Float64
@@ -34,11 +45,11 @@ Jacobi() = Jacobi(20, 0.0)
 function (jac::Jacobi)(x, A, b)
 
     n = length(b)
-    @inbounds for _ in 1:jac.max_iterations
+    for _ in 1:jac.max_iterations
         xold = copy(x)
-        @inbounds for i in 1:n
+        @inbounds @simd for i in 1:n
             x[i] = b[i]
-            @inbounds for j in 1:n
+            for j in 1:n
                 (i == j) || (x[i] -= A[i, j] * xold[j])
             end
             x[i] = (x[i]/A[i, i]) ∩ xold[i]
@@ -50,6 +61,9 @@ function (jac::Jacobi)(x, A, b)
 end
 
 ## GAUSS SEIDEL
+"""
+Solves the linear system using Gauss-Seidel method. See section 5.7.4 of [1] (page 52)
+"""
 struct GaussSeidel <: LinearSolver
     max_iterations::Int
     atol::Float64
@@ -76,6 +90,10 @@ function (gs::GaussSeidel)(x, A, b)
 end
 
 ## KRAWCZYK
+"""
+Solves the linear system using Krawczyk method. Note that Krawczyk does not work for
+matrices whose middle matrix is diagonal. See section 5.7.3 of [1] (page 51)
+"""
 struct Krawczyk <: LinearSolver
     max_iterations::Int
     atol::Float64
