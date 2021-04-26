@@ -3,9 +3,9 @@
 
 computes the infinity norm of interval matrix A.
 """
-interval_norm(A::AbstractMatrix) = maximum(sum(mag.(A); dims=2)) # TODO: proper expand norm function and add 1-norm
+interval_norm(A::AbstractMatrix) = opnorm(mag.(A), Inf) # TODO: proper expand norm function and add 1-norm
 interval_norm(v::AbstractVector) = maximum(mag.(v))
-# TODO: use manual loops instead
+# ? use manual loops instead
 
 """
 Preconditions the interval system Ax = b by multipling by the (approximate) inverse of Ac,
@@ -25,23 +25,24 @@ system Ax = b. It assumes the system has already been preconditioned or does not
 preconditioning. See proposition 5.14 of [1] (page 51)
 """
 function enclose(A::SMatrix{N, N, T, M}, b::SVector{N, T}) where {N, T, M}
-    A1 = I - A
+    A1 = Diagonal(ones(N)) - A
     e = interval_norm(b)/(1 - interval_norm(A1))
     x0 = MVector{N, T}(fill(-e..e, N))
     return x0
 end
 
 function enclose(A::MMatrix{N, N, T, M}, b::MVector{N, T}) where {N, T, M}
-    A1 = I - A
+    A1 = Diagonal(ones(N)) - A
     e = interval_norm(b)/(1 - interval_norm(A1))
     x0 = MVector{N, T}(fill(-e..e, N))
     return x0
 end
 
 function enclose(A, b)
-    A1 = I - A
+    n = length(b)
+    A1 = Diagonal(ones(n)) - A
     e = interval_norm(b)/(1 - interval_norm(A1))
-    x0 = fill(-e..e, length(b)  )
+    x0 = fill(-e..e, n)
     return x0
 end
 

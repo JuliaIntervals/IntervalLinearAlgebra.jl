@@ -8,7 +8,7 @@ A few experiments of solvers for interval linear systems. So far the following s
 - Jacobi
 - Gauss-Seidel
 - Krawczyk
-- Hansen-Briek-Rohn
+- Hansen-Bliek-Rohn
 
 HBR gives generally tighter intervals and is faster, but it can be used only with H-matrices (or strongly regular matrices using preconditioning in general, but I need to check this)
 
@@ -55,6 +55,7 @@ See the file `perf/benchmarking.jl` for some benchmarking. Note that everything 
 ## References
 
 Most algorithms implemented in this package are described in:
+
 [1] J. Horácek, Interval Linear and Nonlinear Systems, 2019, available [here](https://kam.mff.cuni.cz/~horacek/source/horacek_phdthesis.pdf)
 
 ## Related packages

@@ -7,7 +7,7 @@ using LinearAlgebra, IntervalArithmetic, StaticArrays
 export
     Krawczyk, Jacobi, GaussSeidel, GaussElimination, HansenBliekRohn,
     solve, enclose, precondition,
-    comparison_matrix
+    comparison_matrix, interval_norm
 
 
 include("solvers/solvers.jl")
