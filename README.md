@@ -8,13 +8,15 @@ A few experiments of solvers for interval linear systems. So far the following s
 - Jacobi
 - Gauss-Seidel
 - Krawczyk
-- Hansen-Bliek-Rohn
+- Hansen-Bliek-Rohn (HBR)
 
-HBR gives generally tighter intervals and is faster, but it can be used only with H-matrices (or strongly regular matrices using preconditioning in general, but I need to check this)
+HBR gives generally tighter intervals and is faster, but it can be used only with H-matrices (or strongly regular matrices using preconditioning in general, but I need to check this).
 
-example use
+Example use:
 
-```julia-repl
+```julia
+julia> using IntervalLinearAlgebra, IntervalArithmetic, StaticArrays
+
 julia> A = @SMatrix [4..6 -1..1 -1..1 -1..1;-1..1 -6.. -4 -1..1 -1..1;-1..1 -1..1 9..11 -1..1;-1..1 -1..1 -1..1 -11.. -9]
 4×4 SMatrix{4, 4, Interval{Float64}, 16} with indices SOneTo(4)×SOneTo(4):
   [4, 6]   [-1, 1]  [-1, 1]    [-1, 1]
@@ -50,7 +52,7 @@ julia> solve(A, b, hbr)
  [-2.35001, 0.600001]
 ```
 
-See the file `perf/benchmarking.jl` for some benchmarking. Note that everything is experimental, everything might be good or bad, working or not.
+See the file [`perf/benchmarking.jl`](https://github.com/lucaferranti/IntervalLinearAlgebra.jl/blob/main/perf/benchmark.jl) for some benchmarking. Note that everything is experimental, everything might be good or bad, working or not.
 
 ## References
 
@@ -62,3 +64,6 @@ Most algorithms implemented in this package are described in:
 
 - [IntervalMatrices.jl](https://github.com/JuliaReach/IntervalMatrices.jl) -- Matrices with interval coefficients in Julia.
 
+## Acknowledgment
+
+The development of this package started during the Google Summer of Code (GSoC) 2021 program for the Julia organisation. The author wishes to thank his mentors [David Sanders](https://github.com/dpsanders) and [Marcelo Forets](https://github.com/mforets) for the constant guidance and feedback. During the GSoC program, this project was financially supported by Google.
