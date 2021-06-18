@@ -12,8 +12,8 @@ Preconditions the interval system Ax = b by multipling by the (approximate) inve
 that is the midpoint of A.
 """
 function precondition(A, b)
-    Ac = mid.(A)
-    return inv(Ac)*A, inv(Ac)*b
+    Ac_inv = inv(mid.(A))
+    return Ac_inv*A, Ac_inv*b
 end
 
 
@@ -24,14 +24,7 @@ Computes an initial enclosure Σ so that x ⊆ Σ, where x is the solution of th
 system Ax = b. It assumes the system has already been preconditioned or does not require
 preconditioning. See proposition 5.14 of [1] (page 51)
 """
-function enclose(A::SMatrix{N, N, T, M}, b::SVector{N, T}) where {N, T, M}
-    A1 = Diagonal(ones(N)) - A
-    e = interval_norm(b)/(1 - interval_norm(A1))
-    x0 = MVector{N, T}(fill(-e..e, N))
-    return x0
-end
-
-function enclose(A::MMatrix{N, N, T, M}, b::MVector{N, T}) where {N, T, M}
+function enclose(A::StaticMatrix{N, N, T}, b::StaticVector{N, T}) where {N, T}
     A1 = Diagonal(ones(N)) - A
     e = interval_norm(b)/(1 - interval_norm(A1))
     x0 = MVector{N, T}(fill(-e..e, N))
