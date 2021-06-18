@@ -13,7 +13,7 @@ that is the midpoint of A.
 """
 function precondition(A, b)
     Ac = mid.(A)
-    return Ac\A, Ac\b
+    return inv(Ac)*A, inv(Ac)*b
 end
 
 
