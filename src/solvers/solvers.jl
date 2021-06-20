@@ -1,7 +1,5 @@
 abstract type LinearSolver end
 
-struct GaussElimination <: LinearSolver end
-
 
 """
 Solves the linear system using Hansen-Bliek-Rohn method. This might give a tighter solution
@@ -14,8 +12,9 @@ struct HansenBliekRohn <: LinearSolver end
 function (hbr::HansenBliekRohn)(A, b)
     n = length(b)
     compA = comparison_matrix(A)
-    u = compA\mag.(b)
-    d = diag(inv(compA))
+    compA_inv = inv(compA)
+    u = compA_inv*mag.(b)
+    d = diag(compA_inv)
     α = diag(compA) .- 1 ./d
     α = Interval.(-α, α) #TODO: probably directed rounded is needed here, need to check
     β = @. u/d - mag(b)
@@ -23,6 +22,9 @@ function (hbr::HansenBliekRohn)(A, b)
     x = (b .+ β)./(diag(A) .+ α)
 
 end
+
+struct GaussElimination <: LinearSolver end
+
 function (ge::GaussElimination)(A, b)
     n = length(b)
     A = MMatrix{n, n}(A)
