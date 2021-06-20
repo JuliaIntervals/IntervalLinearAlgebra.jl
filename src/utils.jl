@@ -21,20 +21,21 @@ end
     enclose(A::Matrix{Interval}, b::Vector{Interval})
 
 Computes an initial enclosure Σ so that x ⊆ Σ, where x is the solution of the interval
-system Ax = b. It assumes the system has already been preconditioned or does not require
-preconditioning. See proposition 5.14 of [1] (page 51)
+system Ax = b. See proposition 5.14 of [1] (page 51)
 """
 function enclose(A::StaticMatrix{N, N, T}, b::StaticVector{N, T}) where {N, T}
-    A1 = Diagonal(ones(N)) - A
-    e = interval_norm(b)/(1 - interval_norm(A1))
+    C = inv(mid.(A))
+    A1 = Diagonal(ones(N)) - C*A
+    e = interval_norm(C*b)/(1 - interval_norm(A1))
     x0 = MVector{N, T}(fill(-e..e, N))
     return x0
 end
 
 function enclose(A, b)
     n = length(b)
-    A1 = Diagonal(ones(n)) - A
-    e = interval_norm(b)/(1 - interval_norm(A1))
+    C = inv(mid.(A))
+    A1 = Diagonal(ones(n)) - C*A
+    e = interval_norm(C*b)/(1 - interval_norm(A1))
     x0 = fill(-e..e, n)
     return x0
 end
