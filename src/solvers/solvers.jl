@@ -139,6 +139,21 @@ function (kra::Krawczyk)(x, A, b)
     return x
 end
 
+# custom printing for solvers
+function Base.string(s::LinearSolver)
+
+    str="""$(typeof(s)) linear solver
+    """
+
+    fields = fieldnames(typeof(s))
+    for field in fields
+        str *= """$field = $(getfield(s, field))
+        """
+    end
+    return str
+end
+
+Base.show(io::IO, s::LinearSolver) = print(io, string(s))
 ## wrapper
 
 function solve(A, b, method)
