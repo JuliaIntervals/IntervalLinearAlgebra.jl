@@ -47,7 +47,7 @@ Jacobi() = Jacobi(20, 0.0)
 function (jac::Jacobi)(x, A, b)
 
     n = length(b)
-    for _ in 1:jac.max_iterations
+    for idx in 1:jac.max_iterations
         xold = copy(x)
         @inbounds @simd for i in 1:n
             x[i] = b[i]
@@ -56,8 +56,7 @@ function (jac::Jacobi)(x, A, b)
             end
             x[i] = (x[i]/A[i, i]) ∩ xold[i]
         end
-        all(x .== xold) && break
-        #all(isapprox.(x, xold; atol=atol)) && break
+        all(isapprox.(x, xold; atol=jac.atol)) && break
     end
     nothing
 end
@@ -85,8 +84,7 @@ function (gs::GaussSeidel)(x, A, b)
             end
             x[i] = (x[i]/A[i, i]) .∩ xold[i]
         end
-        all(x .== xold) && break
-        #all(isapprox.(x, xold; atol=atol)) && break
+        all(isapprox.(x, xold; atol=gs.atol)) && break
     end
     nothing
 end
@@ -104,10 +102,10 @@ end
 Krawczyk() = Krawczyk(20, 0.0)
 
 function (kra::Krawczyk)(x, A, b)
-    Ac = mid.(A)
+    C = inv(mid.(A))
     for i = 1:kra.max_iterations
-        xnew  = (Ac\b  - Ac\(A*x) + x) .∩ x
-        all( x .== xnew ) && return x
+        xnew  = (C*b  - C*(A*x) + x) .∩ x
+        all(isapprox.(x, xnew; atol=kra.atol)) && return xnew
         x = xnew
     end
     return x

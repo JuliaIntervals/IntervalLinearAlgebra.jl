@@ -1,8 +1,6 @@
 using IntervalLinearAlgebra, StaticArrays, IntervalArithmetic
 using Test
 
-int_approx(a, b, tol) =  abs(a.lo - b.lo) < tol  && abs(a.hi - b.hi) < tol
-
 @testset "IntervalLinearAlgebra.jl" begin
     
     @testset "Test linear solvers" begin
@@ -20,10 +18,10 @@ int_approx(a, b, tol) =  abs(a.lo - b.lo) < tol  && abs(a.hi - b.hi) < tol
             xjac = solve(A, b, jac)
             xhbr = solve(A, b, hbr)
 
-            @test all(int_approx.(xgs, [-2.6..3.1, -3.9..1.65, -1.48..2.15, -2.35..0.79], 0.01))
-            @test all(int_approx.(xjac, [-2.6..3.1, -3.9..1.65, -1.48..2.15, -2.35..0.79], 0.01))
+            @test all(isapprox.(xgs, [-2.6..3.1, -3.9..1.65, -1.48..2.15, -2.35..0.79]; atol=0.01))
+            @test all(isapprox.(xjac, [-2.6..3.1, -3.9..1.65, -1.48..2.15, -2.35..0.79]; atol=0.01))
 
-            @test all(int_approx.(xhbr, [-2.5..3.1, -3.9..1.2, -1.4..2.15, -2.35..0.6], 0.01))
+            @test all(isapprox.(xhbr, [-2.5..3.1, -3.9..1.2, -1.4..2.15, -2.35..0.6]; atol=0.01))
         end
     end
 end
