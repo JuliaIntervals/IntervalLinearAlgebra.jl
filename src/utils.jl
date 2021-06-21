@@ -23,7 +23,7 @@ end
     enclose(A::Matrix{Interval}, b::Vector{Interval})
 
 Computes an initial enclosure Σ so that x ⊆ Σ, where x is the solution of the interval
-system Ax = b. See proposition 5.14 of [1] (page 51)
+system Ax = b.
 """
 function enclose(A::StaticMatrix{N, N, T}, b::StaticVector{N, T}) where {N, T}
     C = inv(mid.(A))
@@ -48,7 +48,6 @@ end
 Computes the comparison matrix ⟨A⟩ of the given matrix A according to the definition
 ⟨A⟩_ii = mig(A_ii)
 ⟨A⟩_ij = -mag(A_ij)
-See definition 4.16 of [1] (page 33)
 """
 function comparison_matrix(A::SMatrix)
     n = size(A, 1)
