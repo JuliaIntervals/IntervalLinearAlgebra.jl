@@ -29,7 +29,7 @@ function enclose(A::StaticMatrix{N, N, T}, b::StaticVector{N, T}) where {N, T}
     C = inv(mid.(A))
     A1 = Diagonal(ones(N)) - C*A
     e = interval_norm(C*b)/(1 - interval_norm(A1))
-    x0 = MVector{N, T}(fill(-e..e, N))
+    x0 = MVector{N, T}(ntuple(_ -> -e..e, Val(N)))
     return x0
 end
 

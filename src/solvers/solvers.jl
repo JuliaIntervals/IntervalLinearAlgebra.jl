@@ -54,7 +54,9 @@ Jacobi() = Jacobi(20, 0.0)
 function (jac::Jacobi)(x, A, b)
 
     n = length(b)
-    for idx in 1:jac.max_iterations
+    atol = iszero(jac.atol) ? minimum(diam.(A))*1e-5 : jac.atol
+
+    for _ in 1:jac.max_iterations
         xold = copy(x)
         @inbounds @simd for i in 1:n
             x[i] = b[i]
@@ -63,7 +65,7 @@ function (jac::Jacobi)(x, A, b)
             end
             x[i] = (x[i]/A[i, i]) ∩ xold[i]
         end
-        all(isapprox.(x, xold; atol=jac.atol)) && break
+        all(isapprox.(x, xold; atol=atol)) && break
     end
     nothing
 end

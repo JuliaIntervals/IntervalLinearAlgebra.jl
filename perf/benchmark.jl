@@ -1,5 +1,5 @@
 using IntervalArithmetic, StaticArrays, IntervalLinearAlgebra
-import IntervalRootFinding:  gauss_seidel_interval, gauss_elimination_interval, gauss_seidel_contractor# not to overload \ in base
+using IntervalRootFinding:  gauss_seidel_interval, gauss_elimination_interval, gauss_seidel_contractor # not to overload \ in base
 
 A = @SMatrix [4..6 -1..1 -1..1 -1..1;-1..1 -6.. -4 -1..1 -1..1;-1..1 -1..1 9..11 -1..1;-1..1 -1..1 -1..1 -11.. -9]
 
