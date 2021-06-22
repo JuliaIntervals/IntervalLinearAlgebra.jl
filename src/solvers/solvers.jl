@@ -65,7 +65,7 @@ function (jac::Jacobi)(x, A, b)
             end
             x[i] = (x[i]/A[i, i]) ∩ xold[i]
         end
-        all(isapprox.(x, xold; atol=atol)) && break
+        all(_isapprox.(x, xold; atol=atol)) && break
     end
     nothing
 end
@@ -103,7 +103,7 @@ function (gs::GaussSeidel)(x, A, b)
             end
             x[i] = (x[i]/A[i, i]) .∩ xold[i]
         end
-        all(isapprox.(x, xold; atol=atol)) && break
+        all(_isapprox.(x, xold; atol=atol)) && break
     end
     nothing
 end
@@ -135,7 +135,7 @@ function (kra::Krawczyk)(x, A, b)
     C = inv(mid.(A))
     for i = 1:kra.max_iterations
         xnew  = (C*b  - C*(A*x) + x) .∩ x
-        all(isapprox.(x, xnew; atol=atol)) && return xnew
+        all(_isapprox.(x, xnew; atol=atol)) && return xnew
         x = xnew
     end
     return x

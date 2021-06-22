@@ -3,8 +3,6 @@ module IntervalLinearAlgebra
 # Write your package code here.
 using LinearAlgebra, IntervalArithmetic, StaticArrays
 
-import Base: isapprox
-
 export
     Krawczyk, Jacobi, GaussSeidel, GaussElimination, HansenBliekRohn,
     solve, enclose, precondition,
