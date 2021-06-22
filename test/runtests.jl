@@ -20,12 +20,12 @@ using Test
             xhbr = solve(A, b, hbr)
             xkra = solve(A, b, kra)
 
-            @test all(isapprox.(xgs, [-2.6..3.1, -3.9..1.65, -1.48..2.15, -2.35..0.79]; atol=0.01))
-            @test all(isapprox.(xjac, [-2.6..3.1, -3.9..1.65, -1.48..2.15, -2.35..0.79]; atol=0.01))
+            @test all(interval_isapprox.(xgs, [-2.6..3.1, -3.9..1.65, -1.48..2.15, -2.35..0.79]; atol=0.01))
+            @test all(interval_isapprox.(xjac, [-2.6..3.1, -3.9..1.65, -1.48..2.15, -2.35..0.79]; atol=0.01))
 
-            @test all(isapprox.(xhbr, [-2.5..3.1, -3.9..1.2, -1.4..2.15, -2.35..0.6]; atol=0.01))
+            @test all(interval_isapprox.(xhbr, [-2.5..3.1, -3.9..1.2, -1.4..2.15, -2.35..0.6]; atol=0.01))
 
-            @test all(isapprox.(xkra, [-8..8, -8..8, -8..8, -8..8]; atol=0.01))
+            @test all(interval_isapprox.(xkra, [-8..8, -8..8, -8..8, -8..8]; atol=0.01))
         end
     end
 end
