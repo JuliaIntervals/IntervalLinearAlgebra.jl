@@ -1,3 +1,5 @@
+interval_isapprox(a::Interval, b::Interval; kwargs...) = isapprox(a.lo, b.lo; kwargs...) && isapprox(a.hi, b.hi; kwargs...)
+
 """
     interval_norm(A::Matrix{Interval})
 
@@ -12,8 +14,8 @@ Preconditions the interval system Ax = b by multipling by the (approximate) inve
 that is the midpoint of A.
 """
 function precondition(A, b)
-    Ac = mid.(A)
-    return Ac\A, Ac\b
+    Ac_inv = inv(mid.(A))
+    return Ac_inv*A, Ac_inv*b
 end
 
 
@@ -21,27 +23,21 @@ end
     enclose(A::Matrix{Interval}, b::Vector{Interval})
 
 Computes an initial enclosure Σ so that x ⊆ Σ, where x is the solution of the interval
-system Ax = b. It assumes the system has already been preconditioned or does not require
-preconditioning. See proposition 5.14 of [1] (page 51)
+system Ax = b.
 """
-function enclose(A::SMatrix{N, N, T, M}, b::SVector{N, T}) where {N, T, M}
-    A1 = Diagonal(ones(N)) - A
-    e = interval_norm(b)/(1 - interval_norm(A1))
-    x0 = MVector{N, T}(fill(-e..e, N))
-    return x0
-end
-
-function enclose(A::MMatrix{N, N, T, M}, b::MVector{N, T}) where {N, T, M}
-    A1 = Diagonal(ones(N)) - A
-    e = interval_norm(b)/(1 - interval_norm(A1))
-    x0 = MVector{N, T}(fill(-e..e, N))
+function enclose(A::StaticMatrix{N, N, T}, b::StaticVector{N, T}) where {N, T}
+    C = inv(mid.(A))
+    A1 = Diagonal(ones(N)) - C*A
+    e = interval_norm(C*b)/(1 - interval_norm(A1))
+    x0 = MVector{N, T}(ntuple(_ -> -e..e, Val(N)))
     return x0
 end
 
 function enclose(A, b)
     n = length(b)
-    A1 = Diagonal(ones(n)) - A
-    e = interval_norm(b)/(1 - interval_norm(A1))
+    C = inv(mid.(A))
+    A1 = Diagonal(ones(n)) - C*A
+    e = interval_norm(C*b)/(1 - interval_norm(A1))
     x0 = fill(-e..e, n)
     return x0
 end
@@ -52,7 +48,6 @@ end
 Computes the comparison matrix ⟨A⟩ of the given matrix A according to the definition
 ⟨A⟩_ii = mig(A_ii)
 ⟨A⟩_ij = -mag(A_ij)
-See definition 4.16 of [1] (page 33)
 """
 function comparison_matrix(A::SMatrix)
     n = size(A, 1)

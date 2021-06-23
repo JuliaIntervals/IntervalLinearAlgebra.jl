@@ -1,7 +1,7 @@
 # IntervalLinearAlgebra
 
 [![Build Status](https://github.com/lucaferranti/IntervalLinearAlgebra.jl/workflows/CI/badge.svg)](https://github.com/lucaferranti/IntervalLinearAlgebra.jl/actions)
-[![Coverage](https://codecov.io/gh/lucaferranti/IntervalLinearAlgebra.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/lucaferranti/IntervalLinearAlgebra.jl)
+[![Coverage](https://codecov.io/gh/lucaferranti/IntervalLinearAlgebra.jl/branch/main/graph/badge.svg?token=RYREIXL051)](https://codecov.io/gh/lucaferranti/IntervalLinearAlgebra.jl)
 
 A few experiments of solvers for interval linear systems. So far the following solvers are implemented
 
