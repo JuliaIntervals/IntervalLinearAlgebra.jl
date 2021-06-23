@@ -1,3 +1,5 @@
+using .IntervalConstraintProgramming
+
 """
 returns the unrolled expression for \$|a ⋅x - b|\$
 \$a\$ and \$x\$ must be vectors of the same length and \$b\$ is scalar.

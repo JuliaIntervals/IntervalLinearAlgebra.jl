@@ -1,7 +1,11 @@
 module IntervalLinearAlgebra
 
 # Write your package code here.
-using LinearAlgebra, IntervalArithmetic, StaticArrays, IntervalConstraintProgramming
+using LinearAlgebra, IntervalArithmetic, StaticArrays, Requires
+
+function  __init__()
+    @require IntervalConstraintProgramming = "138f1668-1576-5ad7-91b9-7425abbf3153" include("solvers/oettli.jl")
+end
 
 export
     Krawczyk, Jacobi, GaussSeidel, GaussElimination, HansenBliekRohn,
@@ -12,5 +16,4 @@ export
 
 include("solvers/solvers.jl")
 include("utils.jl")
-include("solvers/oettli.jl")
 end
