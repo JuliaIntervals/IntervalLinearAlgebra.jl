@@ -10,8 +10,7 @@ end
 export
     Krawczyk, Jacobi, GaussSeidel, GaussElimination, HansenBliekRohn,
     solve, enclose, precondition, oettli,
-    comparison_matrix, interval_norm, interval_isapprox,
-    comparison_matrix, interval_norm
+    comparison_matrix, interval_norm, interval_isapprox
 
 
 include("solvers/solvers.jl")
