@@ -1,4 +1,4 @@
-using IntervalLinearAlgebra, StaticArrays, IntervalArithmetic
+using IntervalLinearAlgebra, StaticArrays, IntervalArithmetic, IntervalConstraintProgramming
 using Test
 
 @testset "IntervalLinearAlgebra.jl" begin
@@ -28,4 +28,20 @@ using Test
             @test all(interval_isapprox.(xkra, [-8..8, -8..8, -8..8, -8..8]; atol=0.01))
         end
     end
+    
+    @testset "oettli-präger method" begin
+        
+        A = [2..4 -2..1; -1..2 2..4]
+        b = [-2..2, -2..2]
+        vars = (:x, :y)
+
+        X = IntervalBox(-14..14, 2)
+        p = oettli(A, b, X, vars)
+
+        for pnt in [[-4, -3], [3, -4], [4, 3], [-3, 4]]
+            @test any(pnt ∈ x for x in p.boundary)
+        end
+    end
+
 end
+
