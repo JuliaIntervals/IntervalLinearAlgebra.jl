@@ -44,10 +44,8 @@ function is_strictly_diagonally_dominant(A)
     m == n || return false
 
     @inbounds for i=1:m
-        acc = 0
-        for k=1:n
-          k != i && (acc += mag(A[i, k]))
-          mig(A[i, i]) <= acc && return false
+        if mig(A[i, i]) ≤ sum(mag(A[i, k]) for k=1:n if k ≠ i)
+            return false
         end
     end
       return true
