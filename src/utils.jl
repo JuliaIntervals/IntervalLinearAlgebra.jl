@@ -1,3 +1,5 @@
+mid(x::Real) = x
+
 """
     interval_isapprox(a::Interval, b::Interval; kwargs)
 
