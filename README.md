@@ -10,7 +10,7 @@
  <p align="center">
  <i>Linear algebra done rigorously</i></p>
 
-This package contains routines to perform numerical linear algebra using interval arithmetic. At the moment, the packages functionalities are limited to interval linear systems, but it is constantly evolving.
+This package contains routines to perform numerical linear algebra using interval arithmetic. At the moment, the package functionalities are limited to interval linear systems, but it is constantly evolving.
 
 ## Installation
 
@@ -20,11 +20,11 @@ The package is not registered yet, you can install it from the Julia REPL in pac
 (@v1.6) pkg> add https://github.com/lucaferranti/intervallinearalgebra.jl
 ```
 
-## Dcoumentation
+## Documentation
 
-work in progress, for the time being, have a look at the examples in [examples](./examples/) and [benchmarking](./perf/)
+**work in progress**, for the time being, have a look at the examples in [examples](./examples/) and [benchmarking](./perf/)
 
-Here is a quick demo of how to find bound the interval linear system solution using a couple of different algorithms.
+Here is a quick demo about bounding the solution of an interval linear system using a couple of different algorithms.
 
 ```julia
 julia> using IntervalLinearAlgebra, IntervalArithmetic
@@ -73,7 +73,7 @@ julia> solve(A, b, hbr)
 An excellent introduction to interval linear algebra is
 J. Horácek, _Interval Linear and Nonlinear Systems_, 2019, available [here](https://kam.mff.cuni.cz/~horacek/source/horacek_phdthesis.pdf)
 
-See complete the list of [references](./references.md)] for the concepts and algorithms used in this package (work in progress).
+See complete the list of [references](./references.md) for the concepts and algorithms used in this package (work in progress).
 
 ## Related packages
 
