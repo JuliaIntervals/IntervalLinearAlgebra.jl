@@ -6,7 +6,7 @@
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/dev)
 
 <p align="center">
-    <img src="docs/src/assets/logo.svg" alt="IntervalMatrices.jl" width="450"/>
+    <img src="docs/src/assets/logo.png" alt="IntervalMatrices.jl" width="450"/>
 </p>
 
  <p align="center">
