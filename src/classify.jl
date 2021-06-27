@@ -63,7 +63,7 @@ function is_Z_matrix(A)
 
     @inbounds for j in 1:n
         for i in 1:m
-            if i != j && A[i, j] > 0
+            if i != j && sup(A[i, j]) > 0
                 return false
             end
         end

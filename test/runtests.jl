@@ -61,6 +61,12 @@ using Test
         @test is_strictly_diagonally_dominant(D)
         @test is_Z_matrix(D)
         @test is_M_matrix(D)
+
+        E = [2..4 -2..1;-1..2 2..4]
+        @test !is_Z_matrix(E)
+        @test !is_M_matrix(E)
+        @test !is_H_matrix(E)
+        @test is_strongly_regular(E)
     end
 end
 
