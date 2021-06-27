@@ -48,6 +48,10 @@ using Test
 
             @test all(interval_isapprox.(xkra, [-8..8, -8..8, -8..8, -8..8]; atol=0.01))
         end
+
+        ge = GaussElimination()
+        xge = solve(Am, bm, ge)
+        @test all(interval_isapprox.(xge, [-2.6..3.1, -3.9..1.5, -1.43..2.15, -2.35..0.6]; atol=0.01))
     end
     
     @testset "oettli-präger method" begin
