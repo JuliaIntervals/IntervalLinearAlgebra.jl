@@ -34,8 +34,6 @@ struct GaussElimination <: DirectSolver end
 
 function (ge::GaussElimination)(A, b)
     n = length(b)
-    A = MMatrix{n, n}(A)
-    b = MVector{n}(b)
     @inbounds for i in 1:n
 
         # pivoting using maximum mignitude
