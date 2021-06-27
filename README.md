@@ -2,9 +2,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](.LICENSE)
 [![Build Status](https://github.com/lucaferranti/IntervalLinearAlgebra.jl/workflows/CI/badge.svg)](https://github.com/lucaferranti/IntervalLinearAlgebra.jl/actions)
 [![Coverage](https://codecov.io/gh/lucaferranti/IntervalLinearAlgebra.jl/branch/main/graph/badge.svg?token=RYREIXL051)](https://codecov.io/gh/lucaferranti/IntervalLinearAlgebra.jl)
+[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/stable)
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/dev)
 
 <p align="center">
-    <img src="logo.png" alt="IntervalMatrices.jl" width="450"/>
+    <img src="docs/src/assets/logo.svg" alt="IntervalMatrices.jl" width="450"/>
 </p>
 
  <p align="center">
@@ -22,7 +24,9 @@ The package is not registered yet, you can install it from the Julia REPL in pac
 
 ## Documentation
 
-**work in progress**, for the time being, have a look at the examples in [examples](./examples/) and [benchmarking](./perf/)
+Documentation is available [here](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/stable), note that it is still work in progress.
+
+For the time being, have a look at the examples in [examples](./examples/) and [benchmarking](./perf/)
 
 Here is a quick demo about bounding the solution of an interval linear system using a couple of different algorithms.
 
