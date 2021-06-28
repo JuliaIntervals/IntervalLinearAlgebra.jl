@@ -10,16 +10,6 @@ interval_norm(v::AbstractVector) = maximum(mag.(v))
 # ? use manual loops instead
 
 """
-Preconditions the interval system Ax = b by multipling by the (approximate) inverse of Ac,
-that is the midpoint of A.
-"""
-function precondition(A, b)
-    Ac_inv = inv(mid.(A))
-    return Ac_inv*A, Ac_inv*b
-end
-
-
-"""
     enclose(A::Matrix{Interval}, b::Vector{Interval})
 
 Computes an initial enclosure Σ so that x ⊆ Σ, where x is the solution of the interval
