@@ -1,13 +1,13 @@
 module IntervalLinearAlgebra
 
 # Write your package code here.
-using LinearAlgebra, StaticArrays, Requires, Reexport
+using StaticArrays, Requires, Reexport
 
 function  __init__()
     @require IntervalConstraintProgramming = "138f1668-1576-5ad7-91b9-7425abbf3153" include("solvers/oettli.jl")
 end
 
-@reexport using IntervalArithmetic
+@reexport using LinearAlgebra, IntervalArithmetic
 
 export
     Krawczyk, Jacobi, GaussSeidel, GaussElimination, HansenBliekRohn,
