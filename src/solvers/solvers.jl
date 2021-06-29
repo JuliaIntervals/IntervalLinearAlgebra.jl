@@ -34,31 +34,13 @@ struct GaussElimination <: DirectSolver end
 
 function (ge::GaussElimination)(A, b)
     n = length(b)
-    @inbounds for i in 1:n
-
-        # pivoting using maximum mignitude
-        migmax, idx = findmax(mig.(A[i:end, i]))
-        iszero(migmax) && throw(ArgumentError("Matrix A possibly singular"))
-        idx += i-1
-
-        # swap rows if needed
-        if i ≠ idx
-            A[[i, idx], :] = A[[idx, i], :]
-            b[[i, idx]] = b[[idx, i]]
-        end
-        
-        # elimination
-        A[i+1:end, i+1:end] .-= A[i+1:end, i]/A[i, i]*A[i, i+1:end]'
-        b[i+1:end] .-= A[i+1:end, i]/A[i, i]*b[i]
-        A[i+1:end, i] .= zero(eltype(A))
-
-    end
-
+    Abrref = rref([A b])
+    
     # backsubstitution
     x = similar(b)
-    x[end] = b[end]/A[end, end]
+    x[end] = Abrref[n, n+1]/Abrref[n, n]
     @inbounds for i = n-1:-1:1
-        x[i] = (b[i] - sum(A[i, j]*x[j] for j in i+1:n))/A[i, i]
+        x[i] = (Abrref[i, n+1] - sum(Abrref[i, j]*x[j] for j in i+1:n))/Abrref[i, i]
     end
     return x
 end
@@ -201,11 +183,7 @@ function solve(A, b, method::IterativeSolver, precondition=InverseMidpoint())
     return x
 end
 
-<<<<<<< HEAD
-function solve(A, b, method::HansenBliekRohn, precondition=InverseMidpoint())
-=======
-function solve(A, b, method::DirectSolver)
->>>>>>> 142ade1 (added gaussian elimination)
+function solve(A, b, method::DirectSolver, precondition=InverseMidpoint())
     A, b = precondition(A, b)
     return method(A, b)
 end

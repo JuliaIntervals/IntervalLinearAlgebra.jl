@@ -93,5 +93,13 @@ using Test
         @test !is_H_matrix(E)
         @test is_strongly_regular(E)
     end
+
+    @testset "Gaussian elimination" begin
+        A1 = [1..2 1..2;2..2 3..3]
+        @test rref(A1) == [2..2 3..3; 0..0 -2..0.5]
+
+        A2 = zeros(Interval, 2, 2)
+        @test_throws ArgumentError rref(A2)
+    end
 end
 
