@@ -23,5 +23,5 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/lucaferranti/IntervalLinearAlgebra.jl",
+    repo="github.com/lucaferranti/IntervalLinearAlgebra.jl", devbranch = "main"
 )
