@@ -158,7 +158,7 @@ end
 Base.show(io::IO, s::LinearSolver) = print(io, string(s))
 ## wrapper
 
-function solve(A, b, method, precondition=InverseMidpointPrecondition())
+function solve(A, b, method, precondition=InverseMidpoint())
 
     A, b = precondition(A, b)
     x = enclose(A, b)
@@ -168,7 +168,7 @@ function solve(A, b, method, precondition=InverseMidpointPrecondition())
     return x
 end
 
-function solve(A, b, method::HansenBliekRohn, precondition=InverseMidpointPrecondition())
+function solve(A, b, method::HansenBliekRohn, precondition=InverseMidpoint())
     A, b = precondition(A, b)
     return method(A, b)
 end

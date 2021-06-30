@@ -7,8 +7,8 @@ using Test
         b = [-2..2, -2..2]
 
         np = NoPrecondition()
-        idp = InverseDiagonalMidpointPrecondition()
-        imp = InverseMidpointPrecondition()
+        idp = InverseDiagonalMidpoint()
+        imp = InverseMidpoint()
 
         A1, b1 = np(A, b)
         @test A1 == A && b1 == b
