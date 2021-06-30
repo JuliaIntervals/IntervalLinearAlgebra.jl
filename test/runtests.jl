@@ -1,4 +1,4 @@
-using IntervalLinearAlgebra, StaticArrays, IntervalArithmetic, IntervalConstraintProgramming
+using IntervalLinearAlgebra, StaticArrays, IntervalConstraintProgramming
 using Test
 
 @testset "IntervalLinearAlgebra.jl" begin
