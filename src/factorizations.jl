@@ -27,25 +27,23 @@ function rref!(A)
                         migmax = migi
                     end
                 end
+                iszero(migmax) && throw(ArgumentError("Could not find a pivot with non-zero mignitude in column $k."))
             end
 
-            if !iszero(A[kp,k])
-                if k != kp
-                    # Interchange
-                    for i = 1:n
-                        tmp = A[k,i]
-                        A[k,i] = A[kp,i]
-                        A[kp,i] = tmp
-                    end
+            if k != kp
+                # Interchange
+                for i = 1:n
+                    tmp = A[k,i]
+                    A[k,i] = A[kp,i]
+                    A[kp,i] = tmp
                 end
-                # Scale first column
-                Akkinv = inv(A[k,k])
-                for i = k+1:m
-                    A[i,k] *= Akkinv
-                end
-            else
-                throw(ArgumentError("Could not find a pivot with non-zero mignitude in column $k, matrix is possibly non regular."))
             end
+            # Scale first column
+            Akkinv = inv(A[k,k])
+            for i = k+1:m
+                A[i,k] *= Akkinv
+            end
+
             # Update the rest
             for j = k+1:n
                 for i = k+1:m
