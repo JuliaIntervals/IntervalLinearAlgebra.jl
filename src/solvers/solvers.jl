@@ -1,11 +1,15 @@
 abstract type LinearSolver end
 
+abstract type DirectSolver <: LinearSolver end
+
+abstract type IterativeSolver <: LinearSolver end
+
 """
     HansenBliekRohn()
 
 Returns a Hansen-Bliek-Rohn solver for the interval linear system Ax=b.
 """ 
-struct HansenBliekRohn <: LinearSolver end
+struct HansenBliekRohn <: DirectSolver end
 
 function (hbr::HansenBliekRohn)(A, b)
     n = length(b)
@@ -21,13 +25,24 @@ function (hbr::HansenBliekRohn)(A, b)
 
 end
 
-struct GaussElimination <: LinearSolver end
+"""
+    GaussElimination <: LinearSolver
+
+Returns a Gaussian elimination solver for the interval linear system Ax=b.
+"""
+struct GaussElimination <: DirectSolver end
 
 function (ge::GaussElimination)(A, b)
     n = length(b)
-    A = MMatrix{n, n}(A)
-    b = MVector{n}(b)
-    # TODO: IMPLEMENT IT :D
+    Abrref = rref([A b])
+    
+    # backsubstitution
+    x = similar(b)
+    x[end] = Abrref[n, n+1]/Abrref[n, n]
+    @inbounds for i = n-1:-1:1
+        x[i] = (Abrref[i, n+1] - sum(Abrref[i, j]*x[j] for j in i+1:n))/Abrref[i, i]
+    end
+    return x
 end
 
 
@@ -44,7 +59,7 @@ max_iterations: maximum number of iterations (default 20)
 atol: absolute tolerance (default 0), if at some point `|xₖ - xₖ₊₁| < atol` (elementwise), then stop and return xₖ₊₁.
     If atol=0, then `min(diam(A))*1e-5` is used.
 """ 
-struct Jacobi <: LinearSolver
+struct Jacobi <: IterativeSolver
     max_iterations::Int
     atol::Float64
 end
@@ -83,7 +98,7 @@ max_iterations: maximum number of iterations (default 20)
 atol: absolute tolerance (default 0), if at some point `|xₖ - xₖ₊₁| < atol` (elementwise), then stop and return xₖ₊₁.
     If atol=0, then `min(diam(A))*1e-5` is used.
 """ 
-struct GaussSeidel <: LinearSolver
+struct GaussSeidel <: IterativeSolver
     max_iterations::Int
     atol::Float64
 end
@@ -121,7 +136,7 @@ max_iterations: maximum number of iterations (default 20)
 atol: absolute tolerance (default 0), if at some point `|xₖ - xₖ₊₁| < atol` (elementwise), then stop and return xₖ₊₁.
     If atol=0, then `min(diam(A))*1e-5` is used.
 """ 
-struct Krawczyk <: LinearSolver
+struct Krawczyk <: IterativeSolver
     max_iterations::Int
     atol::Float64
 end
@@ -158,7 +173,7 @@ end
 Base.show(io::IO, s::LinearSolver) = print(io, string(s))
 ## wrapper
 
-function solve(A, b, method, precondition=InverseMidpoint())
+function solve(A, b, method::IterativeSolver, precondition=InverseMidpoint())
 
     A, b = precondition(A, b)
     x = enclose(A, b)
@@ -168,7 +183,7 @@ function solve(A, b, method, precondition=InverseMidpoint())
     return x
 end
 
-function solve(A, b, method::HansenBliekRohn, precondition=InverseMidpoint())
+function solve(A, b, method::DirectSolver, precondition=InverseMidpoint())
     A, b = precondition(A, b)
     return method(A, b)
 end
