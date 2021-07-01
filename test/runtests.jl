@@ -69,10 +69,8 @@ using Test
 
         A = [2..4 -2..1; -1..2 2..4]
         b = [-2..2, -2..2]
-        vars = (:x, :y)
 
-        X = IntervalBox(-14..14, 2)
-        p = oettli(A, b, X, vars)
+        p = oettli(A, b)
 
         for pnt in [[-4, -3], [3, -4], [4, 3], [-3, 4]]
             @test any(pnt ∈ x for x in p.boundary)

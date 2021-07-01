@@ -28,7 +28,7 @@ end
 
 """
 Returns the separator for the constraint `|a_c ⋅x - b_c| - a_r ⋅|x| - b_r <= 0`.
-    
+
 `a` and `x` must be vectors of the same length and `b` is scalar.
 
 The absolue values in the equation are taken elementwise.
@@ -49,22 +49,27 @@ end
 
 
 """
-Converts the interval linear system Ax = b to a system of inequalities using
-Oettli-Präger theorem (see section 5.2 of *Jaroslav Horácek, Interval linear and nonlinear systems, 2019*)
-and solves the linear system using IntervalConstraintProgramming.jl.
+    oettli(A, b, [X]=enclose(A, b); tol=0.01)
+Converts the interval linear system ``Ax = b`` to a system of real inequalities which is
+solved using `IntervalConstraintProgramming.jl`.
 
-PARAMETERS:
-A    : N×N interval matrix
+### Input
+- `A`   -- N×N interval matrix
+- `b`   -- interval vector of length N
+- `X`   -- (optional) initial enclosure for the solution of ``Ax = b``. If not given,
+            it is automatically computed using [`enclose`](@ref enclose)
+- `tol` -- tolerance for paving, default 0.01 (see documentation of `pave` for more details)
 
-b    : interval vector of length N
+### Algorithms
 
-X    : Initial bounding box for the solution of Ax = b
-
-vars : list of variables (can be list of symbols, modeling toolkit variables, dynamic polynomaials variables)\n
-
-tol : tolerance of the paving (see documentation of the pave function for further details)
+The conversion from interval equalities to real inequalities is based on the Oettli-Präger
+theorem [[OET64]](@ref). The resulting system of inequalities is solved using the
+Forward-Backward contractor [[JAU14]](@ref).
 """
-function oettli(A, b, X, vars; tol=0.01)
+oettli(A, b, X=enclose(A, b); tol=0.01) = oettli(A, b, IntervalBox(X); tol=tol)
+
+function oettli(A, b, X::IntervalBox; tol=0.01)
+    vars = ntuple(i -> Symbol(:x, i), length(b))
     separators = [oettli_eq(A[i,:], b[i], vars) for i in 1:length(b)]
     S = reduce(∩, separators)
     return Base.invokelatest(pave, S, X, tol)
