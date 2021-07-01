@@ -26,7 +26,7 @@ The package is not registered yet, you can install it from the Julia REPL in pac
 <!-- - [**STABLE**](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/stable) -- Documentation of the latest release -->
 - [**DEV**](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/dev) -- Documentation of the current version on main (work in progress)
 
-You can also lookat the examples in [examples](./examples/) and [benchmarking](./perf/)
+You can also look at the examples in [examples](./examples/) and [benchmarking](./perf/)
 
 Here is a quick demo about bounding the solution of an interval linear system using a couple of different algorithms.
 
@@ -77,7 +77,7 @@ julia> solve(A, b, hbr)
 An excellent introduction to interval linear algebra is
 J. Horácek, _Interval Linear and Nonlinear Systems_, 2019, available [here](https://kam.mff.cuni.cz/~horacek/source/horacek_phdthesis.pdf)
 
-See complete the list of [references](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/dev/references) for the concepts and algorithms used in this package (work in progress).
+See also the complete list of [references](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/dev/references) for the concepts and algorithms used in this package (work in progress).
 
 ## Related packages
 
