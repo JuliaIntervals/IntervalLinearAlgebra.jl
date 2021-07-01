@@ -1,12 +1,13 @@
 # [References](@id all_ref)
 
----
 #### [HOR19] 
 
-J. Horácek, [*Interval Linear and Nonlinear Systems*](https://kam.mff.cuni.cz/~horacek/source/horacek_phdthesis.pdf), PhD dissertation, 2019
-
 ```@raw html
-<details>
+<ul><li>
+```
+J. Horácek, [*Interval Linear and Nonlinear Systems*](https://kam.mff.cuni.cz/~horacek/source/horacek_phdthesis.pdf), PhD dissertation, 2019
+```@raw html
+<li style="list-style: none"><details>
 <summary>bibtex</summary>
 ```
 ```
@@ -18,16 +19,18 @@ J. Horácek, [*Interval Linear and Nonlinear Systems*](https://kam.mff.cuni.cz/~
 }
 ```
 ```@raw html
-</details>
+</details></li></ul>
 ```
 ---
 
 #### [JAU14] 
 
-L. Jaulin and B. Desrochers, [*Introduction to the algebra of separators with application to path planning*](https://www.ensta-bretagne.fr/jaulin/paper_seppath.pdf), Engineering Applications of Artificial Intelligence 33 (2014): 141-147
-
 ```@raw html
-<details>
+<ul><li>
+```
+L. Jaulin and B. Desrochers, [*Introduction to the algebra of separators with application to path planning*](https://www.ensta-bretagne.fr/jaulin/paper_seppath.pdf), Engineering Applications of Artificial Intelligence 33 (2014): 141-147
+```@raw html
+<li style="list-style: none"><details>
 <summary>bibtex</summary>
 ```
 ```
@@ -42,16 +45,18 @@ L. Jaulin and B. Desrochers, [*Introduction to the algebra of separators with ap
 }
 ```
 ```@raw html
-</details>
+</details></li></ul>
 ```
 ---
 
 #### [NEU99]
 
-A. Neumaier, *Interval methods for systems of equations*, Cambridge university press, 1990 
-
 ```@raw html
-<details>
+<ul><li>
+```
+A. Neumaier, *Interval methods for systems of equations*, Cambridge university press, 1990 
+```@raw html
+<li style="list-style: none"><details>
 <summary>bibtex</summary>
 ```
 ```
@@ -64,18 +69,20 @@ A. Neumaier, *Interval methods for systems of equations*, Cambridge university p
 }
 ```
 ```@raw html
-</details>
+</details></li></ul>
 ```
 ---
 
 #### [OET64]
 
+```@raw html
+<ul><li>
+```
 W. Oettli and W. Prager, *Compatibility of approximate solution of linear equa-
 tions with given error bounds for coefficients and right-hand sides*, Numerische
 Mathematik, 6(1):405–409, 1964.
-
 ```@raw html
-<details>
+<li style="list-style: none"><details>
 <summary>bibtex</summary>
 ```
 ```
@@ -91,16 +98,18 @@ Mathematik, 6(1):405–409, 1964.
 }
 ```
 ```@raw html
-</details>
+</details></li></ul>
 ```
 ---
 
 #### [ROH06]
 
-- J. Rohn. *Solvability of systems of interval linear equations and inequalities*, Linear optimization problems with inexact data, pages 35–77. Springer, 2006
-
 ```@raw html
-<details>
+<ul><li>
+```
+J. Rohn. *Solvability of systems of interval linear equations and inequalities*, Linear optimization problems with inexact data, pages 35–77. Springer, 2006
+```@raw html
+<li style="list-style: none"><details>
 <summary>bibtex</summary>
 ```
 ```
@@ -114,16 +123,18 @@ Mathematik, 6(1):405–409, 1964.
 }
 ```
 ```@raw html
-</details>
+</details></li></ul>
 ```
 ---
 
 #### [RUM10]
 
-S.M. Rump, [*Verification methods: Rigorous results using floating-point arithmetic*](https://www.tuhh.de/ti3/paper/rump/Ru10.pdf), Acta Numerica, 19:287–449, 2010
-
 ```@raw html
-<details>
+<ul><li>
+```
+S.M. Rump, [*Verification methods: Rigorous results using floating-point arithmetic*](https://www.tuhh.de/ti3/paper/rump/Ru10.pdf), Acta Numerica, 19:287–449, 2010
+```@raw html
+<li style="list-style: none"><details>
 <summary>bibtex</summary>
 ```
 ```
@@ -138,5 +149,5 @@ S.M. Rump, [*Verification methods: Rigorous results using floating-point arithme
 }
 ```
 ```@raw html
-</details>
+</details></li></ul>
 ```
