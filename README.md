@@ -2,7 +2,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](.LICENSE)
 [![Build Status](https://github.com/lucaferranti/IntervalLinearAlgebra.jl/workflows/CI/badge.svg)](https://github.com/lucaferranti/IntervalLinearAlgebra.jl/actions)
 [![Coverage](https://codecov.io/gh/lucaferranti/IntervalLinearAlgebra.jl/branch/main/graph/badge.svg?token=RYREIXL051)](https://codecov.io/gh/lucaferranti/IntervalLinearAlgebra.jl)
-[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/stable)
+<!--[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/stable)-->
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/dev)
 
 <p align="center">
@@ -23,10 +23,10 @@ The package is not registered yet, you can install it from the Julia REPL in pac
 ```
 
 ## Documentation
+<!-- - [**STABLE**](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/stable) -- Documentation of the latest release -->
+- [**DEV**](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/dev) -- Documentation of the current version on main (work in progress)
 
-Documentation is available [here](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/stable), note that it is still work in progress.
-
-For the time being, have a look at the examples in [examples](./examples/) and [benchmarking](./perf/)
+You can also look at the examples in [examples](./examples/) and [benchmarking](./perf/)
 
 Here is a quick demo about bounding the solution of an interval linear system using a couple of different algorithms.
 
@@ -77,7 +77,7 @@ julia> solve(A, b, hbr)
 An excellent introduction to interval linear algebra is
 J. Horácek, _Interval Linear and Nonlinear Systems_, 2019, available [here](https://kam.mff.cuni.cz/~horacek/source/horacek_phdthesis.pdf)
 
-See complete the list of [references](./references.md) for the concepts and algorithms used in this package (work in progress).
+See also the complete list of [references](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/dev/references) for the concepts and algorithms used in this package (work in progress).
 
 ## Related packages
 

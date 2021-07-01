@@ -19,6 +19,7 @@ makedocs(;
         "Applications" => "wip.md",
         "Explanations" => "wip.md",
         "API" => "api.md",
+        "References" => "references.md"
     ],
 )
 
