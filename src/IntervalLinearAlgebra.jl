@@ -22,5 +22,5 @@ include("solvers/solvers.jl")
 include("solvers/precondition.jl")
 include("utils.jl")
 include("classify.jl")
-include("factorizations.jl")
+include("rref.jl")
 end
