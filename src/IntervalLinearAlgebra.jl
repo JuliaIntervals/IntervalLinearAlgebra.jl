@@ -19,8 +19,10 @@ export
     rref
 
 
-include("solvers/solvers.jl")
+include("solvers/hull.jl")
 include("solvers/precondition.jl")
+include("solvers/solve.jl")
+
 include("utils.jl")
 include("classify.jl")
 include("rref.jl")

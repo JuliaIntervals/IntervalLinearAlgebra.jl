@@ -35,7 +35,7 @@ using Test
         hbr = HansenBliekRohn()
         kra = Krawczyk()
 
-        for (A, b) in zip([As, Am], [bs, bm])        
+        for (A, b) in zip([As, Am], [bs, bm])
             xgs = solve(A, b, gs)
             xjac = solve(A, b, jac)
             xhbr = solve(A, b, hbr)
@@ -52,10 +52,13 @@ using Test
         ge = GaussElimination()
         xge = solve(Am, bm, ge)
         @test all(interval_isapprox.(xge, [-2.6..3.1, -3.9..1.5, -1.43..2.15, -2.35..0.6]; atol=0.01))
+
+        xdef = solve(Am, bm)
+        @test all(interval_isapprox.(xdef, [-2.6..3.1, -3.9..1.5, -1.43..2.15, -2.35..0.6]; atol=0.01))
     end
-    
+
     @testset "oettli-präger method" begin
-        
+
         A = [2..4 -2..1; -1..2 2..4]
         b = [-2..2, -2..2]
         vars = (:x, :y)
@@ -102,4 +105,3 @@ using Test
         @test_throws ArgumentError rref(A2)
     end
 end
-
