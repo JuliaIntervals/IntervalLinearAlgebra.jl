@@ -1,7 +1,8 @@
 module IntervalLinearAlgebra
 
-# Write your package code here.
 using StaticArrays, Requires, Reexport
+
+import CommonSolve: solve
 
 function  __init__()
     @require IntervalConstraintProgramming = "138f1668-1576-5ad7-91b9-7425abbf3153" include("solvers/oettli.jl")
