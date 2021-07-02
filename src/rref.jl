@@ -1,27 +1,44 @@
 """
-    rref(A)
+    rref(A::AbstractMatrix{T}) where {T<:Interval}
 
-computes the reduced row echelon form of the interval matrix A using maximum mignitude as pivoting strategy.
+Computes the reduced row echelon form of the interval matrix `A` using maximum
+mignitude as pivoting strategy.
 
-### Parameters:
-A : interval matrix
+### Examples
+
+```jldoctest
+julia> A = [2..4 -1..1; -1..1 2..4]
+2×2 Matrix{Interval{Float64}}:
+  [2, 4]  [-1, 1]
+ [-1, 1]   [2, 4]
+
+julia> rref(A)
+2×2 Matrix{Interval{Float64}}:
+ [2, 4]  [-1, 1]
+ [0, 0]       [1.5, 4.5]
+```
 """
 function rref(A)
     A1 = copy(A)
     return rref!(A1)
 end
 
+"""
+    rref!(A::AbstractMatrix{T}) where {T<:Interval}
+
+In-place version of [`rref`](@ref).
+"""
 function rref!(A)
     m, n = size(A)
     minmn = min(m,n)
     @inbounds for k = 1:minmn
-        
+
         if k < m
             # find maximum index
             migmax, kp = _findmax_mig(view(A, k:m, k))
             iszero(migmax) && throw(ArgumentError("Could not find a pivot with non-zero mignitude in column $k."))
             kp += k - 1
-            
+
             # Swap rows k and kp if needed
             k != kp && _swap!(A, k, kp)
         end
@@ -41,7 +58,7 @@ end
     @inbounds begin
         migmax = mig(first(v))
         kp = firstindex(v)
-    
+
         for (i, vi) in enumerate(v)
             migi = mig(vi)
             if migi > migmax
@@ -79,9 +96,9 @@ end
                 A[i,j] -= A[i,k]*A[k,j]
             end
         end
-    
+
         for i = k+1:m
             A[i, k] = zero(eltype(A))
-        end 
+        end
     end
 end
