@@ -55,6 +55,14 @@ using Test
 
         xdef = solve(Am, bm)
         @test all(interval_isapprox.(xdef, [-2.6..3.1, -3.9..1.5, -1.43..2.15, -2.35..0.6]; atol=0.01))
+
+        A = [2..4 -2..1; -1..2 2..4]
+        b = [-2..2, -2..2]
+
+        x1 = solve(A, b)
+        @test all(interval_isapprox.(x1, [-14..14, -14..14]))
+        x2 = solve(A, b, HansenBliekRohn())
+        @test all(interval_isapprox.(x2, [-14..14, -14..14]))
     end
 
     @testset "oettli-präger method" begin
