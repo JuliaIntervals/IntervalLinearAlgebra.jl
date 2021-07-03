@@ -8,7 +8,7 @@ abstract type IterativeSolver <: LinearSolver end
     HansenBliekRohn()
 
 Returns a Hansen-Bliek-Rohn solver for the interval linear system Ax=b.
-""" 
+"""
 struct HansenBliekRohn <: DirectSolver end
 
 function (hbr::HansenBliekRohn)(A, b)
@@ -35,7 +35,7 @@ struct GaussElimination <: DirectSolver end
 function (ge::GaussElimination)(A, b)
     n = length(b)
     Abrref = rref([A b])
-    
+
     # backsubstitution
     x = similar(b)
     x[end] = Abrref[n, n+1]/Abrref[n, n]
@@ -58,7 +58,7 @@ max_iterations: maximum number of iterations (default 20)
 
 atol: absolute tolerance (default 0), if at some point `|xₖ - xₖ₊₁| < atol` (elementwise), then stop and return xₖ₊₁.
     If atol=0, then `min(diam(A))*1e-5` is used.
-""" 
+"""
 struct Jacobi <: IterativeSolver
     max_iterations::Int
     atol::Float64
@@ -97,7 +97,7 @@ max_iterations: maximum number of iterations (default 20)
 
 atol: absolute tolerance (default 0), if at some point `|xₖ - xₖ₊₁| < atol` (elementwise), then stop and return xₖ₊₁.
     If atol=0, then `min(diam(A))*1e-5` is used.
-""" 
+"""
 struct GaussSeidel <: IterativeSolver
     max_iterations::Int
     atol::Float64
@@ -135,7 +135,7 @@ max_iterations: maximum number of iterations (default 20)
 
 atol: absolute tolerance (default 0), if at some point `|xₖ - xₖ₊₁| < atol` (elementwise), then stop and return xₖ₊₁.
     If atol=0, then `min(diam(A))*1e-5` is used.
-""" 
+"""
 struct Krawczyk <: IterativeSolver
     max_iterations::Int
     atol::Float64
@@ -171,19 +171,3 @@ function Base.string(s::LinearSolver)
 end
 
 Base.show(io::IO, s::LinearSolver) = print(io, string(s))
-## wrapper
-
-function solve(A, b, method::IterativeSolver, precondition=InverseMidpoint())
-
-    A, b = precondition(A, b)
-    x = enclose(A, b)
-
-    method(x, A, b)
-
-    return x
-end
-
-function solve(A, b, method::DirectSolver, precondition=InverseMidpoint())
-    A, b = precondition(A, b)
-    return method(A, b)
-end
