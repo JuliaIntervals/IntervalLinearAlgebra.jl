@@ -110,7 +110,7 @@ function is_strictly_diagonally_dominant(A)
 end
 
 """
-    is_Z_matrix(A)
+    is_Z_matrix(A::AbstractMatrix{T}) where {T<:Interval}
 
 Checks whether the interval matrix ``A`` is a Z-matrix, that is whether ``Aᵢⱼ≤0`` for all
 ``i≠j``. For more details see section 4.2 of [[HOR19]](@ref).
