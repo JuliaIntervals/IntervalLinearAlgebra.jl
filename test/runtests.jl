@@ -72,14 +72,16 @@ using Test
 
         p = solve(A, b, NonLinearOettliPrager())
 
-        opl = OettliPragerLinear()
-        polyhedra = opl(A, b)
+        polyhedra = solve(A, b, OettliPragerLinear())
 
         for pnt in [[-4, -3], [3, -4], [4, 3], [-3, 4]]
             @test any(pnt ∈ x for x in p.boundary)
             @test sum(pnt ∈ pol for pol in polyhedra) == 1
         end
 
+        for pnt in [[-5, 5], [5, 5], [5, -5], [-5, -5]]
+            @test all(pnt ∉ pol for pol in polyhedra)
+        end
     end
 
     @testset "classify matrices" begin

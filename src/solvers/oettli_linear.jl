@@ -22,3 +22,5 @@ function (opl::OettliPragerLinear)(A, b)
     end
     return polyhedra
 end
+
+_default_precondition(_, ::OettliPragerLinear) = NoPrecondition()
