@@ -37,9 +37,9 @@ The absolue values in the equation are taken elementwise.
 """
 function oettli_eq(a, b, x)
     ac = mid.(a)
-    ar = radius.(a)
+    ar = IntervalArithmetic.radius.(a)
     bc = mid(b)
-    br = radius(b)
+    br = IntervalArithmetic.radius(b)
     lhs = oettli_lhs(ac, bc, x)
     rhs = oettli_rhs(ar, br, x)
     ex = :(@constraint $lhs - $rhs <= 0)

@@ -1,4 +1,4 @@
-using IntervalLinearAlgebra, StaticArrays, IntervalConstraintProgramming
+using IntervalLinearAlgebra, StaticArrays, IntervalConstraintProgramming, LazySets
 using Test
 
 @testset "IntervalLinearAlgebra.jl" begin
@@ -72,9 +72,14 @@ using Test
 
         p = solve(A, b, NonLinearOettliPrager())
 
+        opl = OettliPragerLinear()
+        polyhedra = opl(A, b)
+
         for pnt in [[-4, -3], [3, -4], [4, 3], [-3, 4]]
             @test any(pnt ∈ x for x in p.boundary)
+            @test sum(pnt ∈ pol for pol in polyhedra) == 1
         end
+
     end
 
     @testset "classify matrices" begin
@@ -107,7 +112,7 @@ using Test
         A1 = [1..2 1..2;2..2 3..3]
         @test rref(A1) == [2..2 3..3; 0..0 -2..0.5]
 
-        A2 = zeros(Interval, 2, 2)
+        A2 = fill(0..0, 2, 2)
         @test_throws ArgumentError rref(A2)
     end
 end

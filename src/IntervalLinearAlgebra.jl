@@ -6,12 +6,13 @@ import CommonSolve: solve
 
 function  __init__()
     @require IntervalConstraintProgramming = "138f1668-1576-5ad7-91b9-7425abbf3153" include("solvers/oettli.jl")
+    @require LazySets = "b4f0291d-fe17-52bc-9479-3d1a343d9043" include("solvers/oettli_linear.jl")
 end
 
 @reexport using LinearAlgebra, IntervalArithmetic
 
 export
-    LinearKrawczyk, Jacobi, GaussSeidel, GaussianElimination, HansenBliekRohn, NonLinearOettliPrager,
+    LinearKrawczyk, Jacobi, GaussSeidel, GaussianElimination, HansenBliekRohn, NonLinearOettliPrager, OettliPragerLinear
     NoPrecondition, InverseMidpoint, InverseDiagonalMidpoint,
     solve, enclose,
     comparison_matrix, interval_norm, interval_isapprox,

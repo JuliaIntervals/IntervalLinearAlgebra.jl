@@ -125,3 +125,36 @@ function comparison_matrix(A::AbstractMatrix{T}) where {T<:Interval}
     end
     return compA
 end
+
+
+"""
+    list_orthants(n::Integer)
+
+Returns a list of all the ``2ⁿ`` vectors of length ``n`` with elements ``±1``.
+
+### Examples
+```jldoctest
+julia> list_orthants(2)
+4-element Vector{Vector{Float64}}:
+ [1.0, 1.0]
+ [-1.0, 1.0]
+ [-1.0, -1.0]
+ [1.0, -1.0]
+```
+"""
+function list_orthants(n)
+    @inbounds begin
+        z = zeros(n)
+        e = ones(n)
+        Y = [e]
+        while any(iszero.(z))
+            k = findfirst(iszero, z)
+            z[1:k-1] .= 0
+            z[k] = 1
+            y = copy(Y[end])
+            y[k]  *= -1
+            push!(Y, y)
+        end
+    end
+    return Y
+end
