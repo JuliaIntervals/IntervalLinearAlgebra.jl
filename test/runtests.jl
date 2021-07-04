@@ -70,7 +70,7 @@ using Test
         A = [2..4 -2..1; -1..2 2..4]
         b = [-2..2, -2..2]
 
-        p = oettli(A, b)
+        p = solve(A, b, OettliPrager())
 
         for pnt in [[-4, -3], [3, -4], [4, 3], [-3, 4]]
             @test any(pnt ∈ x for x in p.boundary)

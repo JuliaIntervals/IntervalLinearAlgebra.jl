@@ -49,28 +49,71 @@ end
 
 
 """
-    oettli(A, b, [X]=enclose(A, b); tol=0.01)
-Converts the interval linear system ``Ax = b`` to a system of real inequalities which is
-solved using `IntervalConstraintProgramming.jl`.
+    OettliPrager <: LinearSolver
 
-### Input
-- `A`   -- N×N interval matrix
-- `b`   -- interval vector of length N
-- `X`   -- (optional) initial enclosure for the solution of ``Ax = b``. If not given,
-            it is automatically computed using [`enclose`](@ref enclose)
-- `tol` -- tolerance for paving, default 0.01 (see documentation of `pave` for more details)
+Type for the OettliPrager solver of the interval linear system ``Ax=b``. The solver first
+converts the system of interval equalities into a system of real inequalities using
+Oettli-Präger theorem [[OET64]](@ref) and then finds the feasible set using
+the forward-backward contractor method [[JAU14]](@ref) implemented in
+`IntervalConstraintProgramming.jl`.
 
-### Algorithms
+### Fields
+- `tol` -- tolerance for the paving, default 0.01.
 
-The conversion from interval equalities to real inequalities is based on the Oettli-Präger
-theorem [[OET64]](@ref). The resulting system of inequalities is solved using the
-Forward-Backward contractor [[JAU14]](@ref).
+### Notes
+- You need to import `IntervalConstraintProgramming.jl` to use this functionality.
+- An object of type `OettliPrager` is a function with methods
+
+        (op::OettliPrager)(A::AbstractMatrix{T},
+                        b::AbstractVector{T},
+                        [X]::AbstractVector{T}=enclose(A, b)) where {T<:Interval}
+
+        (op::OettliPrager)(A::AbstractMatrix{T},
+                        b::AbstractVector{T},
+                        X::IntervalBox) where {T<:Interval}
+
+    #### Input
+    - `A`   -- N×N interval matrix
+    - `b`   -- interval vector of length N
+    - `X`   -- (optional) initial enclosure for the solution of ``Ax = b``. If not given,
+                it is automatically computed using [`enclose`](@ref enclose)
+
+### Examples
+
+```jldoctest
+julia> A = [2..4 -2..1; -1..2 2..4]
+2×2 Matrix{Interval{Float64}}:
+  [2, 4]  [-2, 1]
+ [-1, 2]   [2, 4]
+
+julia> b = [-2..2, -2..2]
+2-element Vector{Interval{Float64}}:
+ [-2, 2]
+ [-2, 2]
+
+julia> op = OettliPrager(0.1)
+OettliPrager linear solver
+tol = 0.1
+
+julia> op(A, b)
+Paving:
+- tolerance ϵ = 0.1
+- inner approx. of length 1188
+- boundary approx. of length 821
+```
 """
-oettli(A, b, X=enclose(A, b); tol=0.01) = oettli(A, b, IntervalBox(X); tol=tol)
+struct OettliPrager <: LinearSolver
+    tol::Float64
+end
+OettliPrager() = OettliPrager(0.01)
 
-function oettli(A, b, X::IntervalBox; tol=0.01)
+function (op::OettliPrager)(A, b, X::IntervalBox)
     vars = ntuple(i -> Symbol(:x, i), length(b))
     separators = [oettli_eq(A[i,:], b[i], vars) for i in 1:length(b)]
     S = reduce(∩, separators)
-    return Base.invokelatest(pave, S, X, tol)
+    return Base.invokelatest(pave, S, X, op.tol)
 end
+
+(op::OettliPrager)(A, b, X=enclose(A, b)) = op(A, b, IntervalBox(X))
+
+_default_precondition(_, ::OettliPrager) = NoPrecondition()
