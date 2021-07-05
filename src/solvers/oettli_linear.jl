@@ -10,7 +10,7 @@ function (opl::OettliPragerLinear)(A, b)
     br = IntervalArithmetic.radius.(b)
 
     orthants = list_orthants(length(b))
-    polyhedra = Vector{HPolyhedron{Float64, Vector{Float64}}}(undef, length(orthants))
+    polytopes = Vector{HPolytope}(undef, length(orthants))
     @inbounds for (i, d) in enumerate(orthants)
         D = Diagonal(d)
         Ard = -Ar*D
@@ -18,9 +18,9 @@ function (opl::OettliPragerLinear)(A, b)
         A1 = [Ac + Ard; -Ac + Ard; -D]
         b1 = [br + bc; br - bc; zeros(n)]
 
-        polyhedra[i] =  HPolyhedron(A1, b1)
+        polytopes[i] =  HPolytope(A1, b1)
     end
-    return polyhedra
+    return polytopes
 end
 
 _default_precondition(_, ::OettliPragerLinear) = NoPrecondition()
