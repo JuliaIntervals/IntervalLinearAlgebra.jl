@@ -3,7 +3,7 @@
 """
     is_strongly_regular(A::AbstractMatrix{T}) where {T<:Interval}
 
-Tests whether an interval matrix ``A`` is strongly regular, i.e. if if ``A_c^{-1}A`` is
+Tests whether an interval matrix ``A`` is strongly regular, i.e. if ``A_c^{-1}A`` is
 an H-matrix. For more details see section 4.6 of [[HOR19]](@ref).
 
 ### Examples
