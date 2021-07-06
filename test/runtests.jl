@@ -72,7 +72,7 @@ using Test
 
         p = solve(A, b, NonLinearOettliPrager())
 
-        polyhedra = solve(A, b, OettliPragerLinear())
+        polyhedra = solve(A, b, LinearOettliPrager())
 
         for pnt in [[-4, -3], [3, -4], [4, 3], [-3, 4]]
             @test any(pnt ∈ x for x in p.boundary)

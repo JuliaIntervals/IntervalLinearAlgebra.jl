@@ -1,8 +1,8 @@
 using .LazySets
 
-struct OettliPragerLinear <: DirectSolver end
+struct LinearOettliPrager <: DirectSolver end
 
-function (opl::OettliPragerLinear)(A, b)
+function (opl::LinearOettliPrager)(A, b)
     n = length(b)
     Ac = mid.(A)
     bc = mid.(b)
@@ -23,4 +23,4 @@ function (opl::OettliPragerLinear)(A, b)
     return polytopes
 end
 
-_default_precondition(_, ::OettliPragerLinear) = NoPrecondition()
+_default_precondition(_, ::LinearOettliPrager) = NoPrecondition()

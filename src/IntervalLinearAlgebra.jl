@@ -12,7 +12,7 @@ end
 @reexport using LinearAlgebra, IntervalArithmetic
 
 export
-    LinearKrawczyk, Jacobi, GaussSeidel, GaussianElimination, HansenBliekRohn, NonLinearOettliPrager, OettliPragerLinear
+    LinearKrawczyk, Jacobi, GaussSeidel, GaussianElimination, HansenBliekRohn, NonLinearOettliPrager, LinearOettliPrager,
     NoPrecondition, InverseMidpoint, InverseDiagonalMidpoint,
     solve, enclose,
     comparison_matrix, interval_norm, interval_isapprox,
