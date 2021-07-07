@@ -1,4 +1,5 @@
 using IntervalLinearAlgebra
+using IntervalConstraintProgramming
 using Documenter
 
 DocMeta.setdocmeta!(IntervalLinearAlgebra, :DocTestSetup, :(using IntervalLinearAlgebra); recursive=true)
