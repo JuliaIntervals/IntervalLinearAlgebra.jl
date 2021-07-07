@@ -18,7 +18,7 @@ julia> rref(A)
  [0, 0]       [1.5, 4.5]
 ```
 """
-function rref(A)
+function rref(A::AbstractMatrix{T}) where {T<:Interval}
     A1 = copy(A)
     return rref!(A1)
 end
@@ -28,7 +28,7 @@ end
 
 In-place version of [`rref`](@ref).
 """
-function rref!(A)
+function rref!(A::AbstractMatrix{T}) where {T<:Interval}
     m, n = size(A)
     minmn = min(m,n)
     @inbounds for k = 1:minmn

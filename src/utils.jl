@@ -43,7 +43,7 @@ julia> interval_norm(A)
 5.0
 ```
 """
-interval_norm(A::AbstractMatrix) = opnorm(mag.(A), Inf) # TODO: proper expand norm function and add 1-norm
+interval_norm(A::AbstractMatrix{T}) where {T<:Interval} = opnorm(mag.(A), Inf) # TODO: proper expand norm function and add 1-norm
 
 """
     interval_norm(A::AbstractVector{T}) where {T<:Interval}
@@ -62,7 +62,7 @@ julia> interval_norm(b)
 3.0
 ```
 """
-interval_norm(v::AbstractVector) = maximum(mag.(v))
+interval_norm(v::AbstractVector{T}) where {T<:Interval} = maximum(mag.(v))
 # ? use manual loops instead
 
 """
@@ -71,7 +71,7 @@ interval_norm(v::AbstractVector) = maximum(mag.(v))
 Computes an enclosure of the solution of the interval linear system ``Ax=b`` using the
 algorithm described in sec. 5.7.1 of [[HOR19]](@ref).
 """
-function enclose(A::StaticMatrix{N, N, T}, b::StaticVector{N, T}) where {N, T}
+function enclose(A::StaticMatrix{N, N, T}, b::StaticVector{N, T}) where {N, T<:Interval}
     C = inv(mid.(A))
     A1 = Diagonal(ones(N)) - C*A
     e = interval_norm(C*b)/(1 - interval_norm(A1))
@@ -79,7 +79,7 @@ function enclose(A::StaticMatrix{N, N, T}, b::StaticVector{N, T}) where {N, T}
     return x0
 end
 
-function enclose(A, b)
+function enclose(A::AbstractMatrix{T}, b::AbstractVector{T}) where {T<:Interval}
     n = length(b)
     C = inv(mid.(A))
     A1 = Diagonal(ones(n)) - C*A
@@ -95,6 +95,7 @@ Computes the comparison matrix ``⟨A⟩`` of the given interval matrix ``A`` ac
 definition ``⟨A⟩ᵢᵢ = mig(Aᵢᵢ)`` and ``⟨A⟩ᵢⱼ = -mag(Aᵢⱼ)`` if ``i≠j``.
 
 ### Examples
+
 ```jldoctest
 julia> A = [2..4 -1..1; -1..1 2..4]
 2×2 Matrix{Interval{Float64}}:
@@ -107,7 +108,7 @@ julia> comparison_matrix(A)
  -1.0   2.0
 ```
 """
-function comparison_matrix(A::SMatrix)
+function comparison_matrix(A::SMatrix{N, N, T, M}) where {N, M, T<:Interval}
     n = size(A, 1)
     compA = -mag.(A)
     @inbounds for (i, idx) in enumerate(diagind(A))
@@ -116,7 +117,7 @@ function comparison_matrix(A::SMatrix)
     return compA
 end
 
-function comparison_matrix(A)
+function comparison_matrix(A::AbstractMatrix{T}) where {T<:Interval}
     n = size(A, 1)
     compA = -mag.(A)
     @inbounds for i in 1:n
