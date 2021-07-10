@@ -11,8 +11,8 @@ end
 @reexport using LinearAlgebra, IntervalArithmetic
 
 export
-    Krawczyk, Jacobi, GaussSeidel, GaussElimination, HansenBliekRohn, OettliPrager,
-    Precondition, NoPrecondition, InverseMidpoint, InverseDiagonalMidpoint,
+    LinearKrawczyk, Jacobi, GaussSeidel, GaussianElimination, HansenBliekRohn, NonLinearOettliPrager,
+    NoPrecondition, InverseMidpoint, InverseDiagonalMidpoint,
     solve, enclose,
     comparison_matrix, interval_norm, interval_isapprox,
     is_H_matrix, is_strongly_regular, is_strictly_diagonally_dominant, is_Z_matrix, is_M_matrix,

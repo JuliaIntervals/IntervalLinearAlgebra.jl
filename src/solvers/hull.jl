@@ -1,17 +1,68 @@
-abstract type LinearSolver end
+"""
+    AbstractLinearSolver
 
-abstract type DirectSolver <: LinearSolver end
-
-abstract type IterativeSolver <: LinearSolver end
+Abstract type for solvers of interval linear systems.
+"""
+abstract type AbstractLinearSolver end
 
 """
-    HansenBliekRohn()
+    AbstractDirectSolver <: AbstractLinearSolver
 
-Returns a Hansen-Bliek-Rohn solver for the interval linear system Ax=b.
+Abstract type for direct solvers of interval linear systems, such as Gaussian elimination
+and Hansen-Bliek-Rohn.
 """
-struct HansenBliekRohn <: DirectSolver end
+abstract type AbstractDirectSolver <: AbstractLinearSolver end
 
-function (hbr::HansenBliekRohn)(A, b)
+"""
+    AbstractIterativeSolver <: AbstractLinearSolver
+
+Abstract type for iterative solvers of interval linear systems, such as Jacobi or
+Gauss-Seidel.
+"""
+abstract type AbstractIterativeSolver <: AbstractLinearSolver end
+
+"""
+    HansenBliekRohn <: AbstractDirectSolver
+
+Type for the `HansenBliekRohn` solver of the square interval linear system ``Ax=b``.
+For more details see section 5.6.2 of [[HOR19]](@ref)
+
+### Notes
+
+- Hansen-Bliek-Rohn works with H-matrices without precondition and with strongly regular
+  matrices using [`InverseMidpoint`](@ref) precondition
+- If the midpoint of ``A`` is a diagonal matrix, then the algorithm returns the exact hull.
+- An object of type Hansen-Bliek-Rohn is a callable function with method
+
+        (hbr::HansenBliekRohn)(A::AbstractMatrix{T},
+                               b::AbstractVector{T}) where {T<:Interval}
+
+### Examples
+
+```jldoctest
+julia> A = [2..4 -1..1;-1..1 2..4]
+2×2 Matrix{Interval{Float64}}:
+  [2, 4]  [-1, 1]
+ [-1, 1]   [2, 4]
+
+julia> b = [-2..2, -1..1]
+2-element Vector{Interval{Float64}}:
+ [-2, 2]
+ [-1, 1]
+
+julia> hbr = HansenBliekRohn()
+HansenBliekRohn linear solver
+
+julia> hbr(A, b)
+2-element Vector{Interval{Float64}}:
+ [-1.66667, 1.66667]
+ [-1.33334, 1.33334]
+```
+"""
+struct HansenBliekRohn <: AbstractDirectSolver end
+
+function (hbr::HansenBliekRohn)(A::AbstractMatrix{T},
+                                b::AbstractVector{T}) where {T<:Interval}
     n = length(b)
     compA = comparison_matrix(A)
     compA_inv = inv(compA)
@@ -26,13 +77,44 @@ function (hbr::HansenBliekRohn)(A, b)
 end
 
 """
-    GaussElimination <: LinearSolver
+    GaussianElimination <: AbstractDirectSolver
 
-Returns a Gaussian elimination solver for the interval linear system Ax=b.
+Type for the Gaussian elimination solver of the square interval linear system ``Ax=b``.
+For more details see section 5.6.1 of [[HOR19]](@ref)
+
+### Notes
+
+- An object of type `GaussianElimination` is a callable function with method
+
+        (ge::GaussianElimination)(A::AbstractMatrix{T},
+                                  b::AbstractVector{T}) where {T<:Interval}
+
+### Examples
+
+```jldoctest
+julia> A = [2..4 -1..1;-1..1 2..4]
+2×2 Matrix{Interval{Float64}}:
+  [2, 4]  [-1, 1]
+ [-1, 1]   [2, 4]
+
+julia> b = [-2..2, -1..1]
+2-element Vector{Interval{Float64}}:
+ [-2, 2]
+ [-1, 1]
+
+julia> ge = GaussianElimination()
+GaussianElimination linear solver
+
+julia> ge(A, b)
+2-element Vector{Interval{Float64}}:
+ [-1.66667, 1.66667]
+ [-1.33334, 1.33334]
+```
 """
-struct GaussElimination <: DirectSolver end
+struct GaussianElimination <: AbstractDirectSolver end
 
-function (ge::GaussElimination)(A, b)
+function (ge::GaussianElimination)(A::AbstractMatrix{T},
+                                   b::AbstractVector{T}) where {T<:Interval}
     n = length(b)
     Abrref = rref([A b])
 
@@ -48,25 +130,66 @@ end
 
 ## JACOBI
 """
-    Jacobi(max_iterations, atol)
+    Jacobi <: AbstractIterativeSolver
 
-Returns a Jacobi solver for the interval linear system Ax=b.
+Type for the Jacobi solver of the interval linear system ``Ax=b``.
+For details see Section 5.7.4 of [[HOR19]](@ref)
 
-PARAMETERS:
+### Fields
 
-max_iterations: maximum number of iterations (default 20)
+- `max_iterations` -- maximum number of iterations (default 20)
+- `atol`           -- absolute tolerance (default 0), if at some point ``|xₖ - xₖ₊₁| < atol``
+                      (elementwise), then stop and return ``xₖ₊₁``.
+                      If `atol=0`, then `min(diam(A))*1e-5` is used.
 
-atol: absolute tolerance (default 0), if at some point `|xₖ - xₖ₊₁| < atol` (elementwise), then stop and return xₖ₊₁.
-    If atol=0, then `min(diam(A))*1e-5` is used.
+### Notes
+
+- An object of type `Jacobi` is a function with method
+
+        (jac::Jacobi)(A::AbstractMatrix{T},
+                      b::AbstractVector{T},
+                      [x]::AbstractVector{T}=enclose(A, b)) where {T<:Interval}
+
+    #### Input
+    - `A`   -- N×N interval matrix
+    - `b`   -- interval vector of length N
+    - `x`   -- (optional) initial enclosure for the solution of ``Ax = b``. If not given,
+               it is automatically computed using [`enclose`](@ref enclose)
+
+### Examples
+
+```jldoctest
+julia> A = [2..4 -1..1;-1..1 2..4]
+2×2 Matrix{Interval{Float64}}:
+  [2, 4]  [-1, 1]
+ [-1, 1]   [2, 4]
+
+julia> b = [-2..2, -1..1]
+2-element Vector{Interval{Float64}}:
+ [-2, 2]
+ [-1, 1]
+
+julia> jac = Jacobi()
+Jacobi linear solver
+max_iterations = 20
+atol = 0.0
+
+julia> jac(A, b)
+2-element Vector{Interval{Float64}}:
+ [-1.66668, 1.66668]
+ [-1.33335, 1.33335]
+```
 """
-struct Jacobi <: IterativeSolver
+struct Jacobi <: AbstractIterativeSolver
     max_iterations::Int
     atol::Float64
 end
 
 Jacobi() = Jacobi(20, 0.0)
 
-function (jac::Jacobi)(x, A, b)
+function (jac::Jacobi)(A::AbstractMatrix{T},
+                       b::AbstractVector{T},
+                       x::AbstractVector{T}=enclose(A, b)) where {T<:Interval}
 
     n = length(b)
     atol = iszero(jac.atol) ? minimum(diam.(A))*1e-5 : jac.atol
@@ -82,30 +205,71 @@ function (jac::Jacobi)(x, A, b)
         end
         all(interval_isapprox.(x, xold; atol=atol)) && break
     end
-    nothing
+    return x
 end
 
 ## GAUSS SEIDEL
 """
-    GaussSeidel(max_iterations, atol)
+    GaussSeidel <: AbstractIterativeSolver
 
-Returns a Gauss-Seidel solver for the interval linear system Ax=b.
+Type for the Gauss-Seidel solver of the interval linear system ``Ax=b``.
+For details see Section 5.7.4 of [[HOR19]](@ref)
 
-PARAMETERS:
+### Fields
 
-max_iterations: maximum number of iterations (default 20)
+- `max_iterations` -- maximum number of iterations (default 20)
+- `atol`           -- absolute tolerance (default 0), if at some point ``|xₖ - xₖ₊₁| < atol``
+                      (elementwise), then stop and return ``xₖ₊₁``.
+                      If `atol=0`, then `min(diam(A))*1e-5` is used.
 
-atol: absolute tolerance (default 0), if at some point `|xₖ - xₖ₊₁| < atol` (elementwise), then stop and return xₖ₊₁.
-    If atol=0, then `min(diam(A))*1e-5` is used.
+### Notes
+
+- An object of type `GaussSeidel` is a function with method
+
+        (gs::GaussSeidel)(A::AbstractMatrix{T},
+                          b::AbstractVector{T},
+                          [x]::AbstractVector{T}=enclose(A, b)) where {T<:Interval}
+
+    #### Input
+    - `A`   -- N×N interval matrix
+    - `b`   -- interval vector of length N
+    - `x`   -- (optional) initial enclosure for the solution of ``Ax = b``. If not given,
+               it is automatically computed using [`enclose`](@ref enclose)
+
+### Examples
+
+```jldoctest
+julia> A = [2..4 -1..1;-1..1 2..4]
+2×2 Matrix{Interval{Float64}}:
+  [2, 4]  [-1, 1]
+ [-1, 1]   [2, 4]
+
+julia> b = [-2..2, -1..1]
+2-element Vector{Interval{Float64}}:
+ [-2, 2]
+ [-1, 1]
+
+julia> gs = GaussSeidel()
+GaussSeidel linear solver
+max_iterations = 20
+atol = 0.0
+
+julia> gs(A, b)
+2-element Vector{Interval{Float64}}:
+ [-1.66668, 1.66668]
+ [-1.33334, 1.33334]
+```
 """
-struct GaussSeidel <: IterativeSolver
+struct GaussSeidel <: AbstractIterativeSolver
     max_iterations::Int
     atol::Float64
 end
 
 GaussSeidel() = GaussSeidel(20, 0.0)
 
-function (gs::GaussSeidel)(x, A, b)
+function (gs::GaussSeidel)(A::AbstractMatrix{T},
+                           b::AbstractVector{T},
+                           x::AbstractVector{T}=enclose(A, b)) where {T<:Interval}
     n = length(b)
 
     atol = iszero(gs.atol) ? minimum(diam.(A))*1e-5 : gs.atol
@@ -120,30 +284,71 @@ function (gs::GaussSeidel)(x, A, b)
         end
         all(interval_isapprox.(x, xold; atol=atol)) && break
     end
-    nothing
+    return x
 end
 
 ## KRAWCZYK
 """
-    Krawczyk(max_iterations, atol)
+    LinearKrawczyk <: AbstractIterativeSolver
 
-Returns a Krawczyk solver for the interval linear system Ax=b.
+Type for the Krawczyk solver of the interval linear system ``Ax=b``.
+For details see Section 5.7.3 of [[HOR19]](@ref)
 
-PARAMETERS:
+### Fields
 
-max_iterations: maximum number of iterations (default 20)
+- `max_iterations` -- maximum number of iterations (default 20)
+- `atol`           -- absolute tolerance (default 0), if at some point ``|xₖ - xₖ₊₁| < atol``
+                      (elementwise), then stop and return ``xₖ₊₁``.
+                      If `atol=0`, then `min(diam(A))*1e-5` is used.
 
-atol: absolute tolerance (default 0), if at some point `|xₖ - xₖ₊₁| < atol` (elementwise), then stop and return xₖ₊₁.
-    If atol=0, then `min(diam(A))*1e-5` is used.
+### Notes
+
+- An object of type `LinearKrawczyk` is a function with method
+
+        (kra::LinearKrawczyk)(A::AbstractMatrix{T},
+                              b::AbstractVector{T},
+                              [x]::AbstractVector{T}=enclose(A, b)) where {T<:Interval}
+
+    #### Input
+    - `A`   -- N×N interval matrix
+    - `b`   -- interval vector of length N
+    - `x`   -- (optional) initial enclosure for the solution of ``Ax = b``. If not given,
+               it is automatically computed using [`enclose`](@ref enclose)
+
+### Examples
+
+```jldoctest
+julia> A = [2..4 -1..1;-1..1 2..4]
+2×2 Matrix{Interval{Float64}}:
+  [2, 4]  [-1, 1]
+ [-1, 1]   [2, 4]
+
+julia> b = [-2..2, -1..1]
+2-element Vector{Interval{Float64}}:
+ [-2, 2]
+ [-1, 1]
+
+julia> kra = LinearKrawczyk()
+LinearKrawczyk linear solver
+max_iterations = 20
+atol = 0.0
+
+julia> kra(A, b)
+2-element Vector{Interval{Float64}}:
+ [-2, 2]
+ [-2, 2]
+```
 """
-struct Krawczyk <: IterativeSolver
+struct LinearKrawczyk <: AbstractIterativeSolver
     max_iterations::Int
     atol::Float64
 end
 
-Krawczyk() = Krawczyk(20, 0.0)
+LinearKrawczyk() = LinearKrawczyk(20, 0.0)
 
-function (kra::Krawczyk)(x, A, b)
+function (kra::LinearKrawczyk)(A::AbstractMatrix{T},
+                               b::AbstractVector{T},
+                               x::AbstractVector{T}=enclose(A, b)) where {T<:Interval}
 
     atol = iszero(kra.atol) ? minimum(diam.(A))*1e-5 : kra.atol
 
@@ -157,7 +362,7 @@ function (kra::Krawczyk)(x, A, b)
 end
 
 # custom printing for solvers
-function Base.string(s::LinearSolver)
+function Base.string(s::AbstractLinearSolver)
 
     str="""$(typeof(s)) linear solver
     """
@@ -170,4 +375,4 @@ function Base.string(s::LinearSolver)
     return str
 end
 
-Base.show(io::IO, s::LinearSolver) = print(io, string(s))
+Base.show(io::IO, s::AbstractLinearSolver) = print(io, string(s))

@@ -49,7 +49,7 @@ end
 
 
 """
-    OettliPrager <: LinearSolver
+    NonLinearOettliPrager <: AbstractLinearSolver
 
 Type for the OettliPrager solver of the interval linear system ``Ax=b``. The solver first
 converts the system of interval equalities into a system of real inequalities using
@@ -65,23 +65,23 @@ the forward-backward contractor method [[JAU14]](@ref) implemented in
 - An object of type `OettliPrager` is a function with methods
 
         (op::OettliPrager)(A::AbstractMatrix{T},
-                        b::AbstractVector{T},
-                        [X]::AbstractVector{T}=enclose(A, b)) where {T<:Interval}
+                           b::AbstractVector{T},
+                           [X]::AbstractVector{T}=enclose(A, b)) where {T<:Interval}
 
         (op::OettliPrager)(A::AbstractMatrix{T},
-                        b::AbstractVector{T},
-                        X::IntervalBox) where {T<:Interval}
+                           b::AbstractVector{T},
+                           X::IntervalBox) where {T<:Interval}
 
     #### Input
     - `A`   -- N×N interval matrix
     - `b`   -- interval vector of length N
     - `X`   -- (optional) initial enclosure for the solution of ``Ax = b``. If not given,
-                it is automatically computed using [`enclose`](@ref enclose)
+               it is automatically computed using [`enclose`](@ref enclose)
 
 ### Examples
 
 ```jldoctest
-julia> A = [2..4 -2..1; -1..2 2..4]
+julia> A = [2..4 -2..1;-1..2 2..4]
 2×2 Matrix{Interval{Float64}}:
   [2, 4]  [-2, 1]
  [-1, 2]   [2, 4]
@@ -91,29 +91,29 @@ julia> b = [-2..2, -2..2]
  [-2, 2]
  [-2, 2]
 
-julia> op = OettliPrager(0.1)
-OettliPrager linear solver
+julia> op = NonLinearOettliPrager(0.1)
+NonLinearOettliPrager linear solver
 tol = 0.1
 
 julia> op(A, b)
 Paving:
 - tolerance ϵ = 0.1
-- inner approx. of length 1188
-- boundary approx. of length 821
+- inner approx. of length 1195
+- boundary approx. of length 823
 ```
 """
-struct OettliPrager <: LinearSolver
+struct NonLinearOettliPrager <: AbstractLinearSolver
     tol::Float64
 end
-OettliPrager() = OettliPrager(0.01)
+NonLinearOettliPrager() = NonLinearOettliPrager(0.01)
 
-function (op::OettliPrager)(A, b, X::IntervalBox)
+function (op::NonLinearOettliPrager)(A, b, X::IntervalBox)
     vars = ntuple(i -> Symbol(:x, i), length(b))
     separators = [oettli_eq(A[i,:], b[i], vars) for i in 1:length(b)]
     S = reduce(∩, separators)
     return Base.invokelatest(pave, S, X, op.tol)
 end
 
-(op::OettliPrager)(A, b, X=enclose(A, b)) = op(A, b, IntervalBox(X))
+(op::NonLinearOettliPrager)(A, b, X=enclose(A, b)) = op(A, b, IntervalBox(X))
 
-_default_precondition(_, ::OettliPrager) = NoPrecondition()
+_default_precondition(_, ::NonLinearOettliPrager) = NoPrecondition()
