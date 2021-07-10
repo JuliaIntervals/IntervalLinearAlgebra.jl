@@ -77,7 +77,7 @@ function (hbr::HansenBliekRohn)(A::AbstractMatrix{T},
 end
 
 """
-    GaussElimination <: AbstractDirectSolver
+    GaussianElimination <: AbstractDirectSolver
 
 Type for the Gaussian elimination solver of the square interval linear system ``Ax=b``.
 For more details see section 5.6.1 of [[HOR19]](@ref)
@@ -138,9 +138,9 @@ For details see Section 5.7.4 of [[HOR19]](@ref)
 ### Fields
 
 - `max_iterations` -- maximum number of iterations (default 20)
-- `atol` -- absolute tolerance (default 0), if at some point ``|xₖ - xₖ₊₁| < atol``
-            (elementwise), then stop and return ``xₖ₊₁``.
-            If `atol=0`, then `min(diam(A))*1e-5` is used.
+- `atol`           -- absolute tolerance (default 0), if at some point ``|xₖ - xₖ₊₁| < atol``
+                      (elementwise), then stop and return ``xₖ₊₁``.
+                      If `atol=0`, then `min(diam(A))*1e-5` is used.
 
 ### Notes
 
@@ -154,7 +154,7 @@ For details see Section 5.7.4 of [[HOR19]](@ref)
     - `A`   -- N×N interval matrix
     - `b`   -- interval vector of length N
     - `x`   -- (optional) initial enclosure for the solution of ``Ax = b``. If not given,
-                it is automatically computed using [`enclose`](@ref enclose)
+               it is automatically computed using [`enclose`](@ref enclose)
 
 ### Examples
 
@@ -218,10 +218,9 @@ For details see Section 5.7.4 of [[HOR19]](@ref)
 ### Fields
 
 - `max_iterations` -- maximum number of iterations (default 20)
-
-- `atol` -- absolute tolerance (default 0), if at some point ``|xₖ - xₖ₊₁| < atol``
-            (elementwise), then stop and return ``xₖ₊₁``.
-            If `atol=0`, then `min(diam(A))*1e-5` is used.
+- `atol`           -- absolute tolerance (default 0), if at some point ``|xₖ - xₖ₊₁| < atol``
+                      (elementwise), then stop and return ``xₖ₊₁``.
+                      If `atol=0`, then `min(diam(A))*1e-5` is used.
 
 ### Notes
 
@@ -235,7 +234,7 @@ For details see Section 5.7.4 of [[HOR19]](@ref)
     - `A`   -- N×N interval matrix
     - `b`   -- interval vector of length N
     - `x`   -- (optional) initial enclosure for the solution of ``Ax = b``. If not given,
-                it is automatically computed using [`enclose`](@ref enclose)
+               it is automatically computed using [`enclose`](@ref enclose)
 
 ### Examples
 
@@ -298,9 +297,9 @@ For details see Section 5.7.3 of [[HOR19]](@ref)
 ### Fields
 
 - `max_iterations` -- maximum number of iterations (default 20)
-- `atol` -- absolute tolerance (default 0), if at some point ``|xₖ - xₖ₊₁| < atol``
-            (elementwise), then stop and return ``xₖ₊₁``.
-            If `atol=0`, then `min(diam(A))*1e-5` is used.
+- `atol`           -- absolute tolerance (default 0), if at some point ``|xₖ - xₖ₊₁| < atol``
+                      (elementwise), then stop and return ``xₖ₊₁``.
+                      If `atol=0`, then `min(diam(A))*1e-5` is used.
 
 ### Notes
 
@@ -314,7 +313,7 @@ For details see Section 5.7.3 of [[HOR19]](@ref)
     - `A`   -- N×N interval matrix
     - `b`   -- interval vector of length N
     - `x`   -- (optional) initial enclosure for the solution of ``Ax = b``. If not given,
-                it is automatically computed using [`enclose`](@ref enclose)
+               it is automatically computed using [`enclose`](@ref enclose)
 
 ### Examples
 
@@ -333,7 +332,6 @@ julia> kra = LinearKrawczyk()
 LinearKrawczyk linear solver
 max_iterations = 20
 atol = 0.0
-
 
 julia> kra(A, b)
 2-element Vector{Interval{Float64}}:

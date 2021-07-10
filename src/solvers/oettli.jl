@@ -65,18 +65,18 @@ the forward-backward contractor method [[JAU14]](@ref) implemented in
 - An object of type `OettliPrager` is a function with methods
 
         (op::OettliPrager)(A::AbstractMatrix{T},
-                        b::AbstractVector{T},
-                        [X]::AbstractVector{T}=enclose(A, b)) where {T<:Interval}
+                           b::AbstractVector{T},
+                           [X]::AbstractVector{T}=enclose(A, b)) where {T<:Interval}
 
         (op::OettliPrager)(A::AbstractMatrix{T},
-                        b::AbstractVector{T},
-                        X::IntervalBox) where {T<:Interval}
+                           b::AbstractVector{T},
+                           X::IntervalBox) where {T<:Interval}
 
     #### Input
     - `A`   -- N×N interval matrix
     - `b`   -- interval vector of length N
     - `X`   -- (optional) initial enclosure for the solution of ``Ax = b``. If not given,
-                it is automatically computed using [`enclose`](@ref enclose)
+               it is automatically computed using [`enclose`](@ref enclose)
 
 ### Examples
 
