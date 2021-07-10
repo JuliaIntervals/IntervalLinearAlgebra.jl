@@ -1,34 +1,83 @@
-abstract type Precondition end
+"""
+    AbstractPrecondition
+
+Abstract type for preconditioners of interval linear systems.
+"""
+abstract type AbstractPrecondition end
 
 """
-    NoPrecondition <: Precondition
+    NoPrecondition <: AbstractPrecondition
 
-Trivial preconditioner which does nothing.
+Type of the trivial preconditioner which does nothing.
+
+### Notes
+
+- An object of type `NoPrecondition` is a function with method
+
+        (np::NoPrecondition)(A::AbstractMatrix{T},
+                             b::AbstractVector{T}) where {T<:Interval}
 
 ### Example
-```julia
-np = NoPrecondition() # instantiate preconditioner
-Aprec, bprec = np(A, b) # apply preconditioner
+
+```jldoctest
+julia> A = [2..4 -2..1; -1..2 2..4]
+2×2 Matrix{Interval{Float64}}:
+  [2, 4]  [-2, 1]
+ [-1, 2]   [2, 4]
+
+julia> b = [-2..2, -2..2]
+2-element Vector{Interval{Float64}}:
+ [-2, 2]
+ [-2, 2]
+
+julia> np = NoPrecondition()
+NoPrecondition()
+
+julia> np(A, b)
+(Interval{Float64}[[2, 4] [-2, 1]; [-1, 2] [2, 4]], Interval{Float64}[[-2, 2], [-2, 2]])
 ```
 """
-struct NoPrecondition <: Precondition end
+struct NoPrecondition <: AbstractPrecondition end
 
-(np::NoPrecondition)(A, b) = A, b
+(np::NoPrecondition)(A::AbstractMatrix{T}, b::AbstractVector{T}) where {T<:Interval} = A, b
 
 """
     InverseMidpoint <: Precondition
 
-Preconditioner that preconditions the linear system ``Ax=b`` with ``inv(Ac)``, where `Ac` is the midpoint matrix of ``A``.
+Preconditioner that preconditions the linear system ``Ax=b`` with ``A_c^{-1}``,
+where ``A_c`` is the midpoint matrix of ``A``.
 
-### Example
-```julia
-imp = InverseMidpoint() # instantiate preconditioner
-Aprec, bprec = imp(A, b) # apply preconditioner
+### Notes
+
+- An object of type `NoPrecondition` is a function with method
+
+        (imp::InverseMidpoint)(A::AbstractMatrix{T},
+                               b::AbstractVector{T}) where {T<:Interval}
+
+### Examples
+
+```jldoctest
+julia> A = [2..4 -2..1; -1..2 2..4]
+2×2 Matrix{Interval{Float64}}:
+  [2, 4]  [-2, 1]
+ [-1, 2]   [2, 4]
+
+julia> b = [-2..2, -2..2]
+2-element Vector{Interval{Float64}}:
+ [-2, 2]
+ [-2, 2]
+
+julia> imp = InverseMidpoint()
+InverseMidpoint()
+
+julia> imp(A, b)
+(Interval{Float64}[[0.594594, 1.40541] [-0.540541, 0.540541]; [-0.540541, 0.540541] [0.594594, 1.40541]], Interval{Float64}[[-0.756757, 0.756757], [-0.756757, 0.756757]])
 ```
 """
-struct InverseMidpoint <: Precondition end
+struct InverseMidpoint <: AbstractPrecondition end
 
-function (icp::InverseMidpoint)(A, b)
+function (imp::InverseMidpoint)(A::AbstractMatrix{T},
+                                b::AbstractVector{T}) where {T<:Interval}
     R = inv(mid.(A))
     return R*A, R*b
 end
@@ -36,17 +85,40 @@ end
 """
     InverseDiagonalMidpoint <: Precondition
 
-Preconditioner that preconditions the linear system ``Ax=b`` with ``inv(Diagonal(Ac))``, where `Ac` is the midpoint matrix of ``A``.
+Preconditioner that preconditions the linear system ``Ax=b`` with the diagonal matrix of
+``A_c^{-1}``, where ``A_c`` is the midpoint matrix of ``A``.
+
+### Notes
+
+- An object of type `InverseDiagonalMidpoint` is a function with method
+
+        (idmp::InverseDiagonalMidpoint)(A::AbstractMatrix{T},
+                                        b::AbstractVector{T}) where {T<:Interval}
 
 ### Example
-```julia
-idmp = InverseDiagonalMidpoint() # instantiate preconditioner
-Aprec, bprec = idmp(A, b) # apply preconditioner
+
+```jldoctest
+julia> A = [2..4 -2..1; -1..2 2..4]
+2×2 Matrix{Interval{Float64}}:
+  [2, 4]  [-2, 1]
+ [-1, 2]   [2, 4]
+
+julia> b = [-2..2, -2..2]
+2-element Vector{Interval{Float64}}:
+ [-2, 2]
+ [-2, 2]
+
+julia> idmp = InverseDiagonalMidpoint()
+InverseDiagonalMidpoint()
+
+julia> idmp(A, b)
+(Interval{Float64}[[0.666666, 1.33334] [-0.666667, 0.333334]; [-0.333334, 0.666667] [0.666666, 1.33334]], Interval{Float64}[[-0.666667, 0.666667], [-0.666667, 0.666667]])
 ```
 """
-struct InverseDiagonalMidpoint <: Precondition end
+struct InverseDiagonalMidpoint <: AbstractPrecondition end
 
-function (idp::InverseDiagonalMidpoint)(A, b)
+function (idmp::InverseDiagonalMidpoint)(A::AbstractMatrix{T},
+                                         b::AbstractVector{T}) where {T<:Interval}
     R = inv(Diagonal(mid.(A)))
     return R*A, R*b
 end
