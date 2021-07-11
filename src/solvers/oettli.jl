@@ -49,7 +49,7 @@ end
 
 
 """
-    NonLinearOettliPrager <: AbstractLinearSolver
+    NonLinearOettliPrager <: AbstractIterativeSolver
 
 Type for the OettliPrager solver of the interval linear system ``Ax=b``. The solver first
 converts the system of interval equalities into a system of real inequalities using
@@ -102,7 +102,7 @@ Paving:
 - boundary approx. of length 823
 ```
 """
-struct NonLinearOettliPrager <: AbstractLinearSolver
+struct NonLinearOettliPrager <: AbstractIterativeSolver
     tol::Float64
 end
 NonLinearOettliPrager() = NonLinearOettliPrager(0.01)
