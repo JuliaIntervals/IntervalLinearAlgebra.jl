@@ -16,16 +16,16 @@ lwo = 1
 A1 = [2..4 0..1; 0..2 2..4]
 b1 = [0..2, -2..0]
 
-p1 = oettli(A1, b1, X, vars)
+p1 = solve(A1, b1, NonLinearOettliPrager())
 
-plot(p1.inner, legend=false, ratio=1, lw=lw, axis=nothing, 
+plot(p1.inner, legend=false, ratio=1, lw=lw, axis=nothing,
             border=:none, color="#9558B2", alpha=α, background_color=:transparent)
 
 plot!(p1.boundary, color="#9558B2", lw = lwo, lc="#9558B2", α=αo)
 A2 = [2..4 -2..0; -1..0 2..4]
 b2 = [0..2, 0..2]
 
-p2 = oettli(A2, b2, X, vars)
+p2 = p1 = solve(A2, b2, NonLinearOettliPrager())
 
 plot!(p2.inner, legend=false, lw=lw, color="#389826", alpha=α)
 plot!(p2.boundary, color="#389826", lw = lwo, lc="#389826", α=αo)
@@ -33,7 +33,7 @@ plot!(p2.boundary, color="#389826", lw = lwo, lc="#389826", α=αo)
 A3 = [2..4 -2..0; -1..0 2..4]
 b3 = [-2..0, -2..0]
 
-p3 = oettli(A3, b3, X, vars)
+p3 = p1 = solve(A3, b3, NonLinearOettliPrager())
 
 plot!(p3.inner, legend=false, lw=lw, color="#CB3C33", alpha=α)
 plot!(p3.boundary, color="#CB3C33", lw = lwo, lc="#CB3C33", α=αo)
@@ -41,7 +41,7 @@ plot!(p3.boundary, color="#CB3C33", lw = lwo, lc="#CB3C33", α=αo)
 A4 = [2..4 0..1; 0..2 2..4]
 b4 = [-2..0, 0..2]
 
-p4 = oettli(A4, b4, X, vars)
+p4 = p1 = solve(A4, b4, NonLinearOettliPrager())
 
 plot!(p4.inner, legend=false, lw=lw, color="#4063D8", alpha=α)
 plot!(p4.boundary, color="#4063D8", lw = lwo, lc="#4063D8", α=αo)

@@ -1,16 +1,18 @@
 # IntervalLinearAlgebra
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](.LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Build Status](https://github.com/lucaferranti/IntervalLinearAlgebra.jl/workflows/CI/badge.svg)](https://github.com/lucaferranti/IntervalLinearAlgebra.jl/actions)
 [![Coverage](https://codecov.io/gh/lucaferranti/IntervalLinearAlgebra.jl/branch/main/graph/badge.svg?token=RYREIXL051)](https://codecov.io/gh/lucaferranti/IntervalLinearAlgebra.jl)
-<!--[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/stable)-->
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/dev)
+<!--[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/stable)-->
 
 <p align="center">
-    <img src="docs/src/assets/logo.png" alt="IntervalMatrices.jl" width="450"/>
+    <img src="docs/src/assets/logo.png" alt="IntervalLinearAlgebra.jl" width="450"/>
 </p>
 
  <p align="center">
  <i>Linear algebra done rigorously</i></p>
+
+## Overview
 
 This package contains routines to perform numerical linear algebra using interval arithmetic. At the moment, the package functionalities are limited to interval linear systems, but it is constantly evolving.
 
@@ -28,49 +30,25 @@ The package is not registered yet, you can install it from the Julia REPL in pac
 
 You can also look at the examples in [examples](./examples/) and [benchmarking](./perf/)
 
-Here is a quick demo about bounding the solution of an interval linear system using a couple of different algorithms.
+## Quickstart
+
+Here is a quick demo about solving an interval linear system.
 
 ```julia
-julia> using IntervalLinearAlgebra, IntervalArithmetic
+using IntervalLinearAlgebra, IntervalConstraintProgramming, Plots
 
-julia> A = [4..6 -1..1 -1..1 -1..1;-1..1 -6.. -4 -1..1 -1..1;-1..1 -1..1 9..11 -1..1;-1..1 -1..1 -1..1 -11.. -9]
-4×4 Matrix{Interval{Float64}}:
-  [4, 6]   [-1, 1]  [-1, 1]    [-1, 1]
- [-1, 1]  [-6, -4]  [-1, 1]    [-1, 1]
- [-1, 1]   [-1, 1]  [9, 11]    [-1, 1]
- [-1, 1]   [-1, 1]  [-1, 1]  [-11, -9]
+A = [2..4 -1..1;-1..1 2..4]
+b = [-2..2, -1..1]
 
-julia> b = [-2..4, 1..8, -4..10, 2..12]
-4-element Vector{Interval{Float64}}:
-  [-2, 4]
-   [1, 8]
- [-4, 10]
-  [2, 12]
+Xenclose = solve(A, b)
+Xexact = solve(A, b, NonLinearOettliPrager())
 
-julia> jac = Jacobi()
-Jacobi linear solver
-max_iterations = 20
-atol = 0.0
-
-
-julia> solve(A, b, jac)
-4-element Vector{Interval{Float64}}:
- [-2.60002, 3.10002]
- [-3.90002, 1.65002]
- [-1.48335, 2.15001]
- [-2.35001, 0.794453]
-
-julia>  hbr = HansenBliekRohn()
-HansenBliekRohn linear solver
-
-
-julia> solve(A, b, hbr)
-4-element Vector{Interval{Float64}}:
- [-2.50001, 3.10001]
- [-3.90001, 1.20001]
- [-1.40001, 2.15001]
- [-2.35001, 0.6]
+plot(Xexact.inner, ratio=1, label="exact", legend=:top)
+plot!(IntervalBox(Xenclose), label="enclosure")
 ```
+<p align="center">
+    <img src="docs/src/assets/quickstart.png" alt="IntervalMatrices.jl" width="450"/>
+</p>
 
 ## References
 
