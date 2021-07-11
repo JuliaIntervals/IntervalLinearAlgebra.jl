@@ -4,8 +4,14 @@
 [![Coverage](https://codecov.io/gh/lucaferranti/IntervalLinearAlgebra.jl/branch/main/graph/badge.svg?token=RYREIXL051)](https://codecov.io/gh/lucaferranti/IntervalLinearAlgebra.jl)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/dev)
 
-![IntervalLinearAlgebra.jl](assets/logo.png)
-*Linear algebra done rigorously*
+```@raw html
+<p align="center">
+    <img src="assets/logo.png" alt="IntervalLinearAlgebra.jl" width="450"/>
+</p>
+
+ <p align="center">
+ <i>Linear algebra done rigorously</i></p>
+```
 
 ## Overview
 
