@@ -13,13 +13,20 @@ makedocs(;
         prettyurls=get(ENV, "CI", "false") == "true",
         canonical="https://lucaferranti.github.io/IntervalLinearAlgebra.jl",
         assets=String[],
+        collapselevel=1,
     ),
     pages=[
         "Home" => "index.md",
         "Tutorials" => "wip.md",
         "Applications" => "wip.md",
         "Explanations" => "wip.md",
-        "API" => "api.md",
+        "API" => [
+            "Interval matrices classification" => "api/classify.md",
+            "solver interface" => "api/solve.md",
+            "Algorithms" => "api/algorithms.md",
+            "Preconditioners" => "api/precondition.md",
+            "Miscellaneous" => "api/misc.md"
+        ],
         "References" => "references.md"
     ],
 )

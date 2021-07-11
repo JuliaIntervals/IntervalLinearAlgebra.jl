@@ -42,14 +42,14 @@ struct NoPrecondition <: AbstractPrecondition end
 (np::NoPrecondition)(A::AbstractMatrix{T}, b::AbstractVector{T}) where {T<:Interval} = A, b
 
 """
-    InverseMidpoint <: Precondition
+    InverseMidpoint <: AbstractPrecondition
 
 Preconditioner that preconditions the linear system ``Ax=b`` with ``A_c^{-1}``,
 where ``A_c`` is the midpoint matrix of ``A``.
 
 ### Notes
 
-- An object of type `NoPrecondition` is a function with method
+- An object of type `InverseMidpoint` is a function with method
 
         (imp::InverseMidpoint)(A::AbstractMatrix{T},
                                b::AbstractVector{T}) where {T<:Interval}
@@ -83,7 +83,7 @@ function (imp::InverseMidpoint)(A::AbstractMatrix{T},
 end
 
 """
-    InverseDiagonalMidpoint <: Precondition
+    InverseDiagonalMidpoint <: AbstractPrecondition
 
 Preconditioner that preconditions the linear system ``Ax=b`` with the diagonal matrix of
 ``A_c^{-1}``, where ``A_c`` is the midpoint matrix of ``A``.
