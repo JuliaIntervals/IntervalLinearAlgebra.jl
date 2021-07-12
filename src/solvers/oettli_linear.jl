@@ -1,6 +1,6 @@
 using .LazySets
 
-struct LinearOettliPrager <: DirectSolver end
+struct LinearOettliPrager <: AbstractDirectSolver end
 
 function (opl::LinearOettliPrager)(A, b)
     n = length(b)
@@ -20,7 +20,7 @@ function (opl::LinearOettliPrager)(A, b)
 
         polytopes[i] =  HPolytope(A1, b1)
     end
-    return polytopes
+    return identity.(filter!(!isempty, polytopes))
 end
 
 _default_precondition(_, ::LinearOettliPrager) = NoPrecondition()
