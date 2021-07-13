@@ -9,8 +9,9 @@ function (opl::LinearOettliPrager)(A, b)
     Ar = IntervalArithmetic.radius.(A)
     br = IntervalArithmetic.radius.(b)
 
-    orthants = list_orthants(length(b))
-    polytopes = Vector{HPolytope}(undef, length(orthants))
+    polytopes = Vector{HPolytope}(undef, 2^n)
+    orthants = DiagDirections(n)
+
     @inbounds for (i, d) in enumerate(orthants)
         D = Diagonal(d)
         Ard = -Ar*D
