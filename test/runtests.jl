@@ -2,6 +2,11 @@ using IntervalLinearAlgebra, StaticArrays, IntervalConstraintProgramming, LazySe
 using Test
 
 @testset "IntervalLinearAlgebra.jl" begin
+
+    @testset "Utils" begin
+        @test list_orthants(2) == [[1, 1], [-1, 1], [-1, -1], [1, -1]]
+    end
+
     @testset "precondition" begin
         A = [2..4 -2..1; -1..2 2..4]
         b = [-2..2, -2..2]
