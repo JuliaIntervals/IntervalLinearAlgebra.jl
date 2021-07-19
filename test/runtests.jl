@@ -1,6 +1,8 @@
 using IntervalLinearAlgebra, StaticArrays, IntervalConstraintProgramming, LazySets
 using Test
 
+const IA = IntervalArithmetic
+
 @testset "IntervalLinearAlgebra.jl" begin
 
     @testset "Utils" begin
@@ -136,8 +138,8 @@ using Test
         @test all(ones(n) .∈ x)
         @test cert
 
-        Ain = convert.(Interval{Float64}, Interval.(Arat, Arat))
-        bin = convert.(Interval{Float64}, Interval.(brat, brat))
+        Ain = convert.(IA.Interval{Float64}, IA.Interval.(Arat, Arat))
+        bin = convert.(IA.Interval{Float64}, IA.Interval.(brat, brat))
 
         x, cert = epsilon_inflation(Ain, bin)
 
