@@ -165,6 +165,10 @@ const IA = IntervalArithmetic
     end
 
     @testset "Matrix multiplication" begin
+
+        # test default settings
+        @test getconfiguration() == Dict(:multiplication => :fast)
+
         A = [2..4 -2..1; -1..2 2..4]
         setmultiplication(:slow)
         @test A*A == [0..18 -16..8; -8..16 0..18]
