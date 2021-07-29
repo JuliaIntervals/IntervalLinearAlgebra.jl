@@ -158,16 +158,8 @@ end
 ## Default settings
 _default_solver() = GaussianElimination()
 
-function _default_precondition(A, ::GaussianElimination)
+function _default_precondition(A, ::AbstractDirectSolver)
     if is_strictly_diagonally_dominant(A) || is_M_matrix(A)
-        return NoPrecondition()
-    else
-        return InverseMidpoint()
-    end
-end
-
-function _default_precondition(A, ::HansenBliekRohn)
-    if is_H_matrix(A)
         return NoPrecondition()
     else
         return InverseMidpoint()
