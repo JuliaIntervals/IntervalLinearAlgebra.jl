@@ -19,8 +19,8 @@ Sets the algorithm used to perform matrix multiplication with interval matrices.
 ### Notes
 
 - By default, `:fast` is used.
-- Using `fast` is generally significantly faster, but it may return larger intervals
-  (50% wider at most).
+- Using `fast` is generally significantly faster, but it may return larger intervals,
+  especially if midpoint and radius have the same order of magnitude (50% overestimate at most).
 """
 function setmultiplication(multype)
     type = MultiplicationType{multype}()
@@ -62,4 +62,43 @@ function *(::MultiplicationType{:fast},
     end
 
     return Interval.(Cinf, Csup)
+end
+
+function *(::MultiplicationType{:rank1},
+           A::AbstractMatrix{Interval{T}},
+           B::AbstractMatrix{Interval{T}}) where {T<:Real}
+
+    Ainf = inf.(A)
+    Asup = sup.(A)
+    Binf = inf.(B)
+    Bsup = sup.(B)
+
+    n = size(A, 2)
+
+    Csup =  zeros(T, (size(A,1), size(B,2)))
+    Cinf = zeros(T, size(A, 1), size(B, 2))
+
+    Cinf = setrounding(T, RoundDown) do
+        for i in 1:n
+            Cinf .+= min.(Ainf[:, i] * Binf[i, :]',
+                          Ainf[:, i] * Bsup[i, :]',
+                          Asup[:, i] * Binf[i, :]',
+                          Asup[:, i] * Bsup[i, :]')
+        end
+        return Cinf
+    end
+
+    Csup = setrounding(T, RoundUp) do
+        for i in 1:n
+            Csup .+= max.(Ainf[:, i] * Binf[i, :]',
+                          Ainf[:, i] * Bsup[i, :]',
+                          Asup[:, i] * Binf[i, :]',
+                          Asup[:, i] * Bsup[i, :]')
+        end
+        return Csup
+    end
+
+    return Interval.(Cinf, Csup)
+
+
 end
