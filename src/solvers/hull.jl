@@ -65,14 +65,20 @@ function (hbr::HansenBliekRohn)(A::AbstractMatrix{T},
                                 b::AbstractVector{T}) where {T<:Interval}
     n = length(b)
     compA = comparison_matrix(A)
-    compA_inv = inv(compA)
-    u = compA_inv*mag.(b)
+    compA_inv, cert = epsilon_inflation(compA, Diagonal(ones(n)))
+
+    cert || @warn "Could not find a verified enclosure of ⟨A⟩⁻¹"
+
+    u = compA_inv * mag.(b)
     d = diag(compA_inv)
-    α = diag(compA) .- 1 ./d
-    α = Interval.(-α, α) #TODO: probably directed rounded is needed here, need to check
-    β = @. u/d - mag(b)
-    β = Interval.(-β, β)
-    x = (b .+ β)./(diag(A) .+ α)
+
+    _α = sup.(diag(compA) .- 1 ./ d)
+    α = Interval.(-_α, _α)
+
+    _β = @. sup(u/d - mag(b))
+    β = Interval.(-_β, _β)
+
+    return (b .+ β) ./ (diag(A) .+ α)
 
 end
 
