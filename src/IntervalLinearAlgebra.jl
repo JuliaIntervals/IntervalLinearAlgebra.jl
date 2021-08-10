@@ -10,13 +10,13 @@ function  __init__()
     @require IntervalConstraintProgramming = "138f1668-1576-5ad7-91b9-7425abbf3153" include("solvers/oettli.jl")
     @require LazySets = "b4f0291d-fe17-52bc-9479-3d1a343d9043" include("solvers/oettli_linear.jl")
 
-    setmultiplication(config[:multiplication])
+    set_multiplication_mode(config[:multiplication])
 end
 
 @reexport using LinearAlgebra, IntervalArithmetic
 
 export
-    setmultiplication, getconfiguration,
+    set_multiplication_mode, get_multiplication_mode,
     LinearKrawczyk, Jacobi, GaussSeidel, GaussianElimination, HansenBliekRohn, NonLinearOettliPrager, LinearOettliPrager,
     NoPrecondition, InverseMidpoint, InverseDiagonalMidpoint,
     solve, enclose, epsilon_inflation,

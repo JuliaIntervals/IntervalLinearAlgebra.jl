@@ -2,7 +2,7 @@ const config = Dict(:multiplication => :fast)
 
 struct MultiplicationType{T} end
 
-getconfiguration() = config
+get_multiplication_mode() = config
 
 """
     setmultiplication(multype)
@@ -13,6 +13,7 @@ Sets the algorithm used to perform matrix multiplication with interval matrices.
 
 - `multype` -- symbol describing the algorithm used
    - `:slow` -- uses traditional matrix multiplication algorithm.
+   - `:rank1` -- uses rank1 update
    - `:fast` -- computes an enclosure of the matrix product using the midpoint-radius
                 notation of the matrix [`RUM10`](@ref).
 
@@ -22,7 +23,7 @@ Sets the algorithm used to perform matrix multiplication with interval matrices.
 - Using `fast` is generally significantly faster, but it may return larger intervals,
   especially if midpoint and radius have the same order of magnitude (50% overestimate at most).
 """
-function setmultiplication(multype)
+function set_multiplication_mode(multype)
     type = MultiplicationType{multype}()
     @eval *(A::AbstractMatrix{Interval{T}} where T, B::AbstractMatrix{Interval{T}} where T) =
         *($type, A, B)
@@ -80,20 +81,20 @@ function *(::MultiplicationType{:rank1},
 
     Cinf = setrounding(T, RoundDown) do
         for i in 1:n
-            Cinf .+= min.(Ainf[:, i] * Binf[i, :]',
-                          Ainf[:, i] * Bsup[i, :]',
-                          Asup[:, i] * Binf[i, :]',
-                          Asup[:, i] * Bsup[i, :]')
+            Cinf .+= min.(view(Ainf, :, i) * view(Binf, i, :)',
+                          view(Ainf, :, i) * view(Bsup, i, :)',
+                          view(Asup, :, i) * view(Binf, i, :)',
+                          view(Asup, :, i) * view(Bsup, i, :)')
         end
         return Cinf
     end
 
     Csup = setrounding(T, RoundUp) do
         for i in 1:n
-            Csup .+= max.(Ainf[:, i] * Binf[i, :]',
-                          Ainf[:, i] * Bsup[i, :]',
-                          Asup[:, i] * Binf[i, :]',
-                          Asup[:, i] * Bsup[i, :]')
+            Csup .+= max.(view(Ainf, :, i) * view(Binf, i, :)',
+                          view(Ainf, :, i) * view(Bsup, i, :)',
+                          view(Asup, :, i) * view(Binf, i, :)',
+                          view(Asup, :, i) * view(Bsup, i, :)')
         end
         return Csup
     end

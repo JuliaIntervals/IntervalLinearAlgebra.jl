@@ -11,7 +11,7 @@ random_interval_matrix(N) = Interval.(randn(N, N) .± abs.(randn(N, N)))
 
 for (j, mult_mode) in enumerate((:fast, :rank1, :slow))
 
-    setmultiplication(mult_mode)
+    set_multiplication_mode(mult_mode)
     Random.seed!(seed)
     for (i, N) in enumerate(sizes)
         A = random_interval_matrix(N)
@@ -24,7 +24,7 @@ for (j, mult_mode) in enumerate((:fast, :rank1, :slow))
 end
 
 # normal multiplication with accurate rounding mode
-setmultiplication(:slow)
+set_multiplication_mode(:slow)
 setrounding(Interval, :accurate)
 Random.seed!(seed)
 for (i, N) in enumerate(sizes)
@@ -37,7 +37,7 @@ end
 
 # back to default settings
 setrounding(Interval, :tight)
-setmultiplication(:fast)
+set_multiplication_mode(:fast)
 
 # floating point multiplication
 times_float = zeros(size(sizes))
@@ -89,9 +89,9 @@ for (i, N) in enumerate(sizes)
             A = random_interval_matrix(N, r)
             B = random_interval_matrix(N, r)
 
-            setmultiplication(:fast)
+            set_multiplication_mode(:fast)
             Cfast = A * B
-            setmultiplication(:slow)
+            set_multiplication_mode(:slow)
             Cslow = A * B
 
             ratios = (diam.(Cfast)./diam.(Cslow) .- 1) * 100
