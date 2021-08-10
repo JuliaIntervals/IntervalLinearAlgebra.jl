@@ -5,7 +5,6 @@ Type for the OettliPrager solver of the interval linear system ``Ax=b``. The sol
 converts the system of interval equalities into a system of real inequalities using
 Oettli-Präger theorem [[OET64]](@ref) and then finds the feasible set by solving a LP
 problem in each orthant using `LazySets.jl`.
-lt 0.01.
 
 ### Notes
 - You need to import `LazySets.jl` to use this functionality.
