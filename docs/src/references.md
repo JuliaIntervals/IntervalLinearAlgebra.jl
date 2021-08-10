@@ -151,3 +151,29 @@ S.M. Rump, [*Verification methods: Rigorous results using floating-point arithme
 ```@raw html
 </details></li></ul>
 ```
+
+#### [RUM99]
+
+```@raw html
+<ul><li>
+```
+Rump, Siegfried M. [*Fast and parallel interval arithmetic*](https://www.tuhh.de/ti3/paper/rump/Ru99b.pdf), BIT Numerical Mathematics 39.3, 534-554, 1999
+```@raw html
+<li style="list-style: none"><details>
+<summary>bibtex</summary>
+```
+```
+@article{rump1999fast,
+  title={Fast and parallel interval arithmetic},
+  author={Rump, Siegfried M},
+  journal={BIT Numerical Mathematics},
+  volume={39},
+  number={3},
+  pages={534--554},
+  year={1999},
+  publisher={Springer}
+}
+```
+```@raw html
+</details></li></ul>
+```

@@ -38,15 +38,15 @@ The package is not registered yet, it can be installed as
 ## Quickstart
 
 ```julia
-using IntervalLinearAlgebra, IntervalConstraintProgramming, Plots
+using IntervalLinearAlgebra, LazySets, Plots
 
 A = [2..4 -1..1;-1..1 2..4]
 b = [-2..2, -1..1]
 
 Xenclose = solve(A, b)
-Xexact = solve(A, b, NonLinearOettliPrager())
+polytopes = solve(A, b, LinearOettliPrager())
 
-plot(Xexact.inner, ratio=1, label="exact", legend=:top)
+plot(UnionSetArray(polytopes), ratio=1, label="solution set", legend=:top)
 plot!(IntervalBox(Xenclose), label="enclosure")
 ```
 
