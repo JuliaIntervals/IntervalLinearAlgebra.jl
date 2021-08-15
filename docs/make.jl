@@ -7,11 +7,11 @@ DocMeta.setdocmeta!(IntervalLinearAlgebra, :DocTestSetup, :(using IntervalLinear
 makedocs(;
     modules=[IntervalLinearAlgebra],
     authors="Luca Ferranti",
-    repo="https://github.com/lucaferranti/IntervalLinearAlgebra.jl/blob/{commit}{path}#{line}",
+    repo="https://github.com/JuliaIntervals/IntervalLinearAlgebra.jl/blob/{commit}{path}#{line}",
     sitename="IntervalLinearAlgebra.jl",
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
-        canonical="https://lucaferranti.github.io/IntervalLinearAlgebra.jl",
+        canonical="https://juliaintervals.github.io/IntervalLinearAlgebra.jl",
         assets=String[],
         collapselevel=1,
     ),
@@ -36,5 +36,5 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/lucaferranti/IntervalLinearAlgebra.jl", devbranch = "main"
+    repo="github.com/JuliaIntervals/IntervalLinearAlgebra.jl", devbranch = "main"
 )
