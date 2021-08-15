@@ -3,7 +3,7 @@
 Algorithms used to solve interval linear systems.
 
 ```@index
-Pages=["classify.md"]
+Pages=["algorithms.md"]
 ```
 
 ## Enclosure computation
@@ -25,5 +25,6 @@ LinearKrawczyk
 ## Exact characterization
 
 ```@docs
+LinearOettliPrager
 NonLinearOettliPrager
 ```

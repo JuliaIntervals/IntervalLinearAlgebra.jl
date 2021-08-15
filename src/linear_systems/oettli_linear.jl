@@ -1,7 +1,5 @@
 using .LazySets
 
-struct LinearOettliPrager <: AbstractDirectSolver end
-
 function (opl::LinearOettliPrager)(A, b)
     n = length(b)
     Ac = mid.(A)

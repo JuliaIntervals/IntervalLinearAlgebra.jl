@@ -6,6 +6,12 @@ Other possibly useful functionalities.
 Pages = ["misc.md"]
 ```
 
+## Matrix multiplication API
+```@docs
+set_multiplication_mode
+```
+
+## Others
 ```@autodocs
 Modules = [IntervalLinearAlgebra]
 Pages = ["utils.jl", "rref.jl"]

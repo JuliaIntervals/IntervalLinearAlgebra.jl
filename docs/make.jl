@@ -1,5 +1,4 @@
 using IntervalLinearAlgebra
-using IntervalConstraintProgramming
 using Documenter
 
 DocMeta.setdocmeta!(IntervalLinearAlgebra, :DocTestSetup, :(using IntervalLinearAlgebra); recursive=true)
@@ -23,8 +22,9 @@ makedocs(;
         "API" => [
             "Interval matrices classification" => "api/classify.md",
             "solver interface" => "api/solve.md",
-            "Algorithms" => "api/algorithms.md",
+            "Interval linear systems" => "api/algorithms.md",
             "Preconditioners" => "api/precondition.md",
+            "Verified real linear systems" => "api/epsilon_inflation.md",
             "Miscellaneous" => "api/misc.md"
         ],
         "References" => "references.md"
