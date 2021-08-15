@@ -127,6 +127,34 @@ J. Rohn. *Solvability of systems of interval linear equations and inequalities*,
 ```
 ---
 
+#### [ROH95]
+
+```@raw html
+<ul><li>
+```
+J. Rohn and V. Kreinovich. [*Computing exact componentwise bounds on solutions of lineary systems with interval data is NP-hard*](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.88.8810&rep=rep1&type=pdf). SIAM Journal on Matrix
+Analysis and Applications, 16(2):415–420, 1995.
+```@raw html
+<li style="list-style: none"><details>
+<summary>bibtex</summary>
+```
+```
+@article{rohn1995computing,
+  title={Computing exact componentwise bounds on solutions of lineary systems with interval data is NP-hard},
+  author={Rohn, Jiri and Kreinovich, Vladik},
+  journal={SIAM Journal on Matrix Analysis and Applications},
+  volume={16},
+  number={2},
+  pages={415--420},
+  year={1995},
+  publisher={SIAM}
+}
+```
+```@raw html
+</details></li></ul>
+```
+---
+
 #### [RUM10]
 
 ```@raw html
@@ -151,6 +179,7 @@ S.M. Rump, [*Verification methods: Rigorous results using floating-point arithme
 ```@raw html
 </details></li></ul>
 ```
+---
 
 #### [RUM99]
 

@@ -1,4 +1,5 @@
 using IntervalLinearAlgebra
+using Plots
 using Documenter
 
 DocMeta.setdocmeta!(IntervalLinearAlgebra, :DocTestSetup, :(using IntervalLinearAlgebra); recursive=true)
@@ -18,7 +19,10 @@ makedocs(;
         "Home" => "index.md",
         "Tutorials" => "wip.md",
         "Applications" => "wip.md",
-        "Explanations" => "wip.md",
+        "Explanations" => [
+            "Interval system solution set" => "explanations/solution_set.md",
+            "Preconditioning" => "explanations/preconditioning.md"
+        ],
         "API" => [
             "Interval matrices classification" => "api/classify.md",
             "solver interface" => "api/solve.md",
