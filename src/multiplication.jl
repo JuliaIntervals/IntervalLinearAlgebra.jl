@@ -22,7 +22,7 @@ Sets the algorithm used to perform matrix multiplication with interval matrices.
 - By default, `:fast` is used.
 - Using `fast` is generally significantly faster, but it may return larger intervals,
   especially if midpoint and radius have the same order of magnitude
-    (50% overestimate at most) [[RUM94]](@ref).
+    (50% overestimate at most) [[RUM99]](@ref).
 """
 function set_multiplication_mode(multype)
     type = MultiplicationType{multype}()

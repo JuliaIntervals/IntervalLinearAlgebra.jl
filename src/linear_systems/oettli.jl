@@ -32,7 +32,7 @@ julia> b = [-2..2, -2..2]
 
 julia> polytopes = solve(A, b, LinearOettliPrager());
 
-julia> typeof(ans)
+julia> typeof(polytopes)
 Vector{HPolytope{Float64, SparseArrays.SparseVector{Float64, Int64}}}
 ```
 """
