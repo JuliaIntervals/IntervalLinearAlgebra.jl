@@ -49,7 +49,7 @@ L. Jaulin and B. Desrochers, [*Introduction to the algebra of separators with ap
 ```
 ---
 
-#### [NEU99]
+#### [NEU90]
 
 ```@raw html
 <ul><li>
