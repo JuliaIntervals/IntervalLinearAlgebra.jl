@@ -18,7 +18,7 @@ Consider the square interval linear system
 C\mathbf{Ax}=C\mathbf{b},
 ```
 
-which is called *preconditioned system*. Popular choices for ``C`` are
+which is called *preconditioned system*. Let us denote by ``A_c`` the *midpoint matrix* of ``\mathbf{A}``. Popular choices for ``C`` are
 
 - Inverse midpoint preconditioning: ``C\approx A_c^{-1}``
 - Inverse diagonal midpoint preconditioning: ``C\approx D_{A_c}^{-1}`` where ``D_{A_c}`` is the diagonal matrix containing the main diagonal of ``A_c``.
@@ -48,7 +48,7 @@ A = tril(fill(1..1, N, N))
 and let ``\mathbf{b}`` having ``[-2, 2]`` as first element and all other elements set to zero
 
 ```@example precondition
-b = [-2..2, fill(0..0, N-1)...]
+b = vcat(-2..2, fill(0, N-1))
 ```
 
 the "pen and paper" solution would be  ``[[-2, 2], [-2, 2], [0, 0], [0, 0], [0, 0]]^\mathsf{T}``, that is a vector with ``[-2, 2]`` as first two elements and all other elements set to zero. Now, let us try to solve without preconditioning.
