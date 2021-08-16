@@ -36,7 +36,7 @@ Some algorithms require the matrix to have a specific structure in order to be u
 
 Even if the algorithms theoretically work, they can be prone to numerical instability without preconditioning. This is demonstrated with the following example, a more deep theoretical analysis can be found in [[NEU90]](@ref).
 
-Let ``\mathbf{A}`` an interval lower triangular matrix with all ``[1, 1]`` in the lower part, for example
+Let ``\mathbf{A}`` be an interval lower triangular matrix with all ``[1, 1]`` in the lower part, for example
 
 ```@example precondition
 using IntervalLinearAlgebra
