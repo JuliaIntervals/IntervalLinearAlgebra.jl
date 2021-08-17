@@ -17,7 +17,9 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
-        "Tutorials" => "wip.md",
+        "Tutorials" => [
+            "Linear systems" => "tutorials/linear_systems.md"
+        ],
         "Applications" => "wip.md",
         "Explanations" => [
             "Interval system solution set" => "explanations/solution_set.md",
