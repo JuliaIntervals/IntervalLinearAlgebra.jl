@@ -211,6 +211,33 @@ S.M. Rump, [*Verification methods: Rigorous results using floating-point arithme
 ```
 ---
 
+#### [RUM01]
+
+```@raw html
+<ul><li>
+```
+Rump, Siegfried M. [*Computational error bounds for multiple or nearly multiple eigenvalues*](https://www.tuhh.de/ti3/paper/rump/Ru99c.pdf), Linear algebra and its applications 324.1-3 (2001): 209-226.
+```@raw html
+<li style="list-style: none"><details>
+<summary>bibtex</summary>
+```
+```
+@article{rump2001computational,
+  title={Computational error bounds for multiple or nearly multiple eigenvalues},
+  author={Rump, Siegfried M},
+  journal={Linear algebra and its applications},
+  volume={324},
+  number={1-3},
+  pages={209--226},
+  year={2001},
+  publisher={Elsevier}
+}
+```
+```@raw html
+</details></li></ul>
+```
+---
+
 #### [RUM99]
 
 ```@raw html

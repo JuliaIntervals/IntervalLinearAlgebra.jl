@@ -16,6 +16,8 @@ end
 
 @reexport using LinearAlgebra, IntervalArithmetic
 
+const IA = IntervalArithmetic
+
 export
     set_multiplication_mode, get_multiplication_mode,
     LinearKrawczyk, Jacobi, GaussSeidel, GaussianElimination, HansenBliekRohn, NonLinearOettliPrager, LinearOettliPrager,
@@ -24,7 +26,7 @@ export
     comparison_matrix, interval_norm, interval_isapprox, Orthants,
     is_H_matrix, is_strongly_regular, is_strictly_diagonally_dominant, is_Z_matrix, is_M_matrix,
     rref,
-    eigenbox
+    eigenbox, verify_eigenvalues, bound_perron_frobenius_eigenvalue
 
 
 include("linear_systems/enclosures.jl")
@@ -38,4 +40,5 @@ include("classify.jl")
 include("rref.jl")
 
 include("eigenvalues/interval_eigenvalues.jl")
+include("eigenvalues/verify_eigs.jl")
 end
