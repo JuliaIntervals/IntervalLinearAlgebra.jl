@@ -7,7 +7,7 @@ Pages = ["linear_systems.md"]
 This tutorial will show you how to solve linear systems rigorously using `IntervalLinearAlgebra.jl`.
 ## Solve interval linear systems
 
-An interval linear system ``\mathbf{Ax}=\mathbf{b}`` is a linear system where ``\mathbf{A}`` and ``\mathbf{b}`` contain intervals. In general, the solution set ``\mathbf{x}`` can have a complex non-convex shape and can thus be hard to characterize exactly (see [this article](../explanations/solution_set.md) for more details). Hence we are interesting in finding an interval box containing ``\mathbf{x}``. In `IntervalLinearAlgebra.jl`, this is achieved through the `solve` function, which gives a handy interface to choose the algorithm and preconditioning mechanism. The syntax to call solve is 
+An interval linear system ``\mathbf{Ax}=\mathbf{b}`` is a linear system where ``\mathbf{A}`` and ``\mathbf{b}`` contain intervals. In general, the solution set ``\mathbf{x}`` can have a complex non-convex shape and can thus be hard to characterize exactly (see [this article](../explanations/solution_set.md) for more details). Hence we are interested in finding an interval box containing ``\mathbf{x}``. In `IntervalLinearAlgebra.jl`, this is achieved through the `solve` function, which gives a handy interface to choose the algorithm and preconditioning mechanism. The syntax to call solve is 
 
 ```julia
 solve(A, b, method, precondition)
