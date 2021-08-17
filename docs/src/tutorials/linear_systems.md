@@ -108,4 +108,4 @@ x1, cert = epsilon_inflation(A1, b)
 x1
 ```
 
-that's because the matrix `A1` is non-regular (it contains the matrix ``\begin{bmatrix}1&2\\3&4\end{bmatrix}`` which is singluar) and in this case the solution set is unbounded, hence the algorithm could not prove (rightly) that `x1` is an enclosure of the true solution. 
+Since the matrix `A1` is non-regular (it contains the matrix ``\begin{bmatrix}1&2\\3&4\end{bmatrix}`` which is singluar), the solution set is unbounded, hence the algorithm could not prove (rightly) that `x1` is an enclosure of the true solution. 
