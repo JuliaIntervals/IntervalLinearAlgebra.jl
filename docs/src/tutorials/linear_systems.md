@@ -70,7 +70,7 @@ solve(A, b, GaussianElimination())
 solve(A, b, GaussSeidel())
 ```
 
-For iterative methods, an additional optional parameter `X0` representing the initial enclosure can be given. If not given, a rough initial enclosure is computed using the [`enclose`](@ref) function.
+For iterative methods, an additional optional parameter `X0` representing an initial guess for the solution's enclosure can be given. If not given, a rough initial enclosure is computed using the [`enclose`](@ref) function.
 
 ```@example ils
 X0 = fill(-5..5, 4)
