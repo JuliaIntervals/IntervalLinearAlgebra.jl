@@ -97,7 +97,7 @@ x, cert = epsilon_inflation(A, b)
 x
 ```
 
-This function returns two values an interval vector `x` and a boolean certificate `cert`. If `cert==true` then `x` is guaranteed to be an enclosure of the real linear system `Ax=b`. If `cert == false` then the algorithm could not verify that the enclosure is rigorous, i.e. it may or may not contain the true solution.
+This function returns two values: an interval vector `x` and a boolean certificate `cert`. If `cert==true` then `x` is guaranteed to be an enclosure of the real linear system `Ax=b`. If `cert == false` then the algorithm could not verify that the enclosure is rigorous, i.e. it may or may not contain the true solution.
 
 In the following example the epsilon inflation returns a non-rigorous bound
 
