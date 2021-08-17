@@ -37,6 +37,11 @@
     @test all(interval_isapprox.(x1, [-14..14, -14..14]))
     x2 = solve(A, b, HansenBliekRohn())
     @test all(interval_isapprox.(x2, [-14..14, -14..14]))
+
+    # test exceptions
+    @test_throws DimensionMismatch solve(Am, bm[1:end-1])
+    @test_throws DimensionMismatch solve(Am[:, 1:end-1], bm, hbr)
+    @test_throws DimensionMismatch solve(Am, bm, gs, NoPrecondition(), [1..2, 3..4])
 end
 
 @testset "Reduced Row Echelon Form" begin

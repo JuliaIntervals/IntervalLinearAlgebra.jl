@@ -5,6 +5,7 @@ using StaticArrays, Requires, Reexport
 import Base: *
 import CommonSolve: solve
 import IntervalArithmetic: mid
+using LinearAlgebra: checksquare
 
 function  __init__()
     @require IntervalConstraintProgramming = "138f1668-1576-5ad7-91b9-7425abbf3153" include("linear_systems/oettli_nonlinear.jl")

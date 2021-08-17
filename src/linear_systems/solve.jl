@@ -48,13 +48,9 @@ function solve(A::AbstractMatrix{T},
                precondition::AbstractPrecondition=_default_precondition(A, solver),
                X::AbstractVector{T}=enclose(A, b)) where {T<:Interval}
 
-    if size(A, 1) == size(A, 2) == length(b) == length(X)
-        A, b = precondition(A, b)
-
-        return solver(A, b, X)
-    else
-        throw(ArgumentError("Dimension mismatch"))
-    end
+    checksquare(A) == length(b) == length(X) || throw(DimensionMismatch())
+    A, b = precondition(A, b)
+    return solver(A, b, X)
 
 end
 
@@ -106,12 +102,11 @@ function solve(A::AbstractMatrix{T},
                precondition::AbstractPrecondition=_default_precondition(A, solver)) where
                {T<:Interval}
 
-    if size(A, 1) == size(A, 2) == length(b)
-        A, b = precondition(A, b)
-        return solver(A, b)
-    else
-        throw(ArgumentError("Dimension mismatch"))
-    end
+    checksquare(A) == length(b) || throw(DimensionMismatch())
+
+    A, b = precondition(A, b)
+    return solver(A, b)
+
 end
 
 
@@ -159,12 +154,11 @@ function solve(A::AbstractMatrix{T},
                solver::AbstractLinearSolver=_default_solver(),
                precondition::AbstractPrecondition=_default_precondition(A, solver)) where {T<:Interval}
 
-    if size(A, 1) == size(A, 2) == length(b)
-        A, b = precondition(A, b)
-        return solver(A, b)
-    else
-        throw(ArgumentError("Dimension mismatch"))
-    end
+    checksquare(A) == length(b) || throw(DimensionMismatch())
+
+    A, b = precondition(A, b)
+    return solver(A, b)
+
 end
 
 ## Default settings
