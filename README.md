@@ -1,6 +1,6 @@
 # IntervalLinearAlgebra
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Build Status](https://github.com/juliaintervals/IntervalLinearAlgebra.jl/workflows/CI/badge.svg)](https://github.com/lucaferranti/IntervalLinearAlgebra.jl/actions)
+[![Build Status](https://github.com/juliaintervals/IntervalLinearAlgebra.jl/workflows/CI/badge.svg)](https://github.com/juliaintervals/IntervalLinearAlgebra.jl/actions)
 [![codecov](https://codecov.io/gh/juliaintervals/IntervalLinearAlgebra.jl/branch/main/graph/badge.svg?token=mgCzKMPiwK)](https://codecov.io/gh/juliaintervals/IntervalLinearAlgebra.jl)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://juliaintervals.github.io/IntervalLinearAlgebra.jl/dev)
 <!--[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://juliaintervals.github.io/IntervalLinearAlgebra.jl/stable)-->
