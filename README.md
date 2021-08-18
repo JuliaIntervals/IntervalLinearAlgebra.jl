@@ -1,9 +1,9 @@
 # IntervalLinearAlgebra
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Build Status](https://github.com/lucaferranti/IntervalLinearAlgebra.jl/workflows/CI/badge.svg)](https://github.com/lucaferranti/IntervalLinearAlgebra.jl/actions)
+[![Build Status](https://github.com/juliaintervals/IntervalLinearAlgebra.jl/workflows/CI/badge.svg)](https://github.com/lucaferranti/IntervalLinearAlgebra.jl/actions)
 [![codecov](https://codecov.io/gh/juliaintervals/IntervalLinearAlgebra.jl/branch/main/graph/badge.svg?token=mgCzKMPiwK)](https://codecov.io/gh/juliaintervals/IntervalLinearAlgebra.jl)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://juliaintervals.github.io/IntervalLinearAlgebra.jl/dev)
-<!--[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/stable)-->
+<!--[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://juliaintervals.github.io/IntervalLinearAlgebra.jl/stable)-->
 
 <p align="center">
     <img src="docs/src/assets/logo.png" alt="IntervalLinearAlgebra.jl" width="450"/>
@@ -21,12 +21,12 @@ This package contains routines to perform numerical linear algebra using interva
 The package is not registered yet, you can install it from the Julia REPL in package mode as follows
 
 ```julia
-(@v1.6) pkg> add https://github.com/lucaferranti/intervallinearalgebra.jl
+(@v1.6) pkg> add https://github.com/juliaintervals/intervallinearalgebra.jl
 ```
 
 ## Documentation
-<!-- - [**STABLE**](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/stable) -- Documentation of the latest release -->
-- [**DEV**](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/dev) -- Documentation of the current version on main (work in progress)
+<!-- - [**STABLE**](https://juliaintervals.github.io/IntervalLinearAlgebra.jl/stable) -- Documentation of the latest release -->
+- [**DEV**](https://juliaintervals.github.io/IntervalLinearAlgebra.jl/dev) -- Documentation of the current version on main (work in progress)
 
 You can also look at the examples in [examples](./examples/) and [benchmarking](./perf/)
 
@@ -55,7 +55,7 @@ plot!(IntervalBox(Xenclose), label="enclosure")
 An excellent introduction to interval linear algebra is
 J. Horácek, _Interval Linear and Nonlinear Systems_, 2019, available [here](https://kam.mff.cuni.cz/~horacek/source/horacek_phdthesis.pdf)
 
-See also the complete list of [references](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/dev/references) for the concepts and algorithms used in this package (work in progress).
+See also the complete list of [references](https://juliaintervals.github.io/IntervalLinearAlgebra.jl/dev/references) for the concepts and algorithms used in this package (work in progress).
 
 ## Related packages
 
