@@ -11,7 +11,7 @@ end
     Q, _ = qr(rand(n, n))
     A = Symmetric(IA.Interval.(Q) * D * IA.Interval.(Q)')
 
-    F, cert = verify_eigenvalues(A)
+    evals, evecs, cert = verify_eigen(A)
     @test all(cert)
-    @test all(ev .∈ F.values)
+    @test all(ev .∈ evals)
 end

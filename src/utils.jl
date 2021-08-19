@@ -172,25 +172,3 @@ end
 
 Base.firstindex(O::Orthants) = 1
 Base.lastindex(O::Orthants) = length(O)
-
-"""
-    bound_perron_frobenius_eigenvalue(A)
-
-Finds an upper bound for the Perron-Frobenius eigenvalue of the **non-negative** matrix `A`.
-"""
-function bound_perron_frobenius_eigenvalue(A::Matrix{T}) where {T<:Real}
-    any(A .< 0) && throw(ArgumentError("Matrix contains negative entries"))
-    return _bound_perron_frobenius_eigenvalue(A)
-end
-
-function _bound_perron_frobenius_eigenvalue(M::Matrix{T}) where {T<:Real}
-    if length(M) == 1 # case of 1x1 matrix
-        ρ = M[1]
-    else
-        ev = eigvecs(M)
-        xpf = abs.(ev[:, end])
-        tmp = sup.((IA.Interval.(M) * IA.Interval.(xpf)) ./ IA.Interval.(xpf))
-        ρ = maximum(tmp)
-    end
-    return ρ
-end
