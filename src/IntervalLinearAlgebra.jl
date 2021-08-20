@@ -1,11 +1,11 @@
 module IntervalLinearAlgebra
 
 using StaticArrays, Requires, Reexport
+using LinearAlgebra: checksquare
 
 import Base: *
 import CommonSolve: solve
 import IntervalArithmetic: mid
-using LinearAlgebra: checksquare
 
 function  __init__()
     @require IntervalConstraintProgramming = "138f1668-1576-5ad7-91b9-7425abbf3153" include("linear_systems/oettli_nonlinear.jl")
@@ -23,7 +23,8 @@ export
     solve, enclose, epsilon_inflation,
     comparison_matrix, interval_norm, interval_isapprox, list_orthants,
     is_H_matrix, is_strongly_regular, is_strictly_diagonally_dominant, is_Z_matrix, is_M_matrix,
-    rref
+    rref,
+    eigenbox
 
 
 include("linear_systems/enclosures.jl")
@@ -35,4 +36,6 @@ include("multiplication.jl")
 include("utils.jl")
 include("classify.jl")
 include("rref.jl")
+
+include("eigenvalues/interval_eigenvalue.jl")
 end
