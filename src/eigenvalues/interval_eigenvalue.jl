@@ -49,7 +49,7 @@ function eigenbox(A::AbstractMatrix{Interval{T}}) where {T}
     return λ + μ*im
 end
 
-function eigenbox(M::Matrix{Complex{Interval{T}}}) where {T}
+function eigenbox(M::AbstractMatrix{Complex{Interval{T}}}) where {T}
     A = real.(M)
     B = imag.(M)
     λ = eigenbox(Symmetric(0.5*[A+A' B'-B;
