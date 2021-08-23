@@ -27,10 +27,11 @@ makedocs(;
         ],
         "API" => [
             "Interval matrices classification" => "api/classify.md",
-            "solver interface" => "api/solve.md",
+            "Solver interface" => "api/solve.md",
             "Interval linear systems" => "api/algorithms.md",
             "Preconditioners" => "api/precondition.md",
             "Verified real linear systems" => "api/epsilon_inflation.md",
+            "Eigenvalues" => "api/eigenvalues.md",
             "Miscellaneous" => "api/misc.md"
         ],
         "References" => "references.md"

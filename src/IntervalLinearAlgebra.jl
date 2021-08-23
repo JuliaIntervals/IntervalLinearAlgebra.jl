@@ -37,5 +37,5 @@ include("utils.jl")
 include("classify.jl")
 include("rref.jl")
 
-include("eigenvalues/interval_eigenvalue.jl")
+include("eigenvalues/interval_eigenvalues.jl")
 end
