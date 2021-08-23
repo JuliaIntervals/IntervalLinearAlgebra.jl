@@ -21,7 +21,7 @@ export
     LinearKrawczyk, Jacobi, GaussSeidel, GaussianElimination, HansenBliekRohn, NonLinearOettliPrager, LinearOettliPrager,
     NoPrecondition, InverseMidpoint, InverseDiagonalMidpoint,
     solve, enclose, epsilon_inflation,
-    comparison_matrix, interval_norm, interval_isapprox, list_orthants,
+    comparison_matrix, interval_norm, interval_isapprox, Orthants,
     is_H_matrix, is_strongly_regular, is_strictly_diagonally_dominant, is_Z_matrix, is_M_matrix,
     rref
 

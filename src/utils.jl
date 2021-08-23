@@ -130,33 +130,45 @@ end
 
 
 """
-    list_orthants(n::Integer)
+    Orthants
 
-Returns a list of all the ``2ⁿ`` vectors of length ``n`` with elements ``±1``.
+Iterator to go through all the ``2ⁿ`` vectors of length ``n`` with elements ``±1``.
+This is equivalento to going through the orthants of an ``n``-dimensional euclidean space.
 
-### Examples
+### Fields
+
+n::Int -- dimension of the vector space
+
+### Example
+
 ```jldoctest
-julia> list_orthants(2)
-4-element Vector{Vector{Float64}}:
- [1.0, 1.0]
- [-1.0, 1.0]
- [-1.0, -1.0]
- [1.0, -1.0]
+julia> for or in Orthants(2)
+       @show or
+       end
+or = [1, 1]
+or = [-1, 1]
+or = [1, -1]
+or = [-1, -1]
 ```
 """
-function list_orthants(n)
-    @inbounds begin
-        z = zeros(n)
-        e = ones(n)
-        Y = [e]
-        while any(iszero.(z))
-            k = findfirst(iszero, z)
-            z[1:k-1] .= 0
-            z[k] = 1
-            y = copy(Y[end])
-            y[k]  *= -1
-            push!(Y, y)
-        end
-    end
-    return Y
+struct Orthants
+    n::Int
 end
+
+Base.eltype(::Type{Orthants}) = Vector{Int}
+Base.length(O::Orthants) = 2^(O.n)
+
+function Base.iterate(O::Orthants, state=1)
+    state > 2 ^ O.n && return nothing
+
+    vec = -2*digits(state-1, base=2, pad=O.n) .+ 1
+    return (vec, state+1)
+end
+
+function Base.getindex(O::Orthants, i::Int)
+    1 <= i <= length(O) || throw(BoundsError(O, i))
+    return -2*digits(i-1, base=2, pad=O.n) .+ 1
+end
+
+Base.firstindex(O::Orthants) = 1
+Base.lastindex(O::Orthants) = length(O)
