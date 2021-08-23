@@ -159,10 +159,10 @@ Base.eltype(::Type{Orthants}) = Vector{Int}
 Base.length(O::Orthants) = 2^(O.n)
 
 function Base.iterate(O::Orthants, state=1)
-    state >= 2 ^ O.n && return nothing
+    state > 2 ^ O.n && return nothing
 
     vec = -2*digits(state-1, base=2, pad=O.n) .+ 1
-    return (vec, state)
+    return (vec, state+1)
 end
 
 function Base.getindex(O::Orthants, i::Int)
