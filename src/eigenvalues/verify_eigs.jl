@@ -55,7 +55,7 @@ as simple.
 
 ### Algorithm
 
-The algorithm for this function is described in [[RUM99b]](@ref).
+The algorithm for this function is described in [[RUM01]](@ref).
 
 ### Example
 
@@ -102,9 +102,27 @@ end
 
 
 """
-    bound_perron_frobenius_eigenvalue(A)
+    bound_perron_frobenius_eigenvalue(A, max_iter=10)
 
 Finds an upper bound for the Perron-Frobenius eigenvalue of the **non-negative** matrix `A`.
+
+### Input
+
+- `A` -- square real non-negative matrix
+- `max_iter` -- maximum number of iterations of the power method used internally to compute
+    an initial approximation of the Perron-Frobenius eigenvector
+
+### Example
+
+```julia-repl
+julia> A = [1 2;3 4]
+2×2 Matrix{Int64}:
+ 1  2
+ 3  4
+
+julia> bound_perron_frobenius_eigenvalue(A)
+5.372281323275249
+```
 """
 function bound_perron_frobenius_eigenvalue(A::AbstractMatrix{T}, max_iter=10) where {T<:Real}
     any(A .< 0) && throw(ArgumentError("Matrix contains negative entries"))
