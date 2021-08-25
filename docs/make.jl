@@ -33,7 +33,8 @@ makedocs(;
             "Verified real linear systems" => "api/epsilon_inflation.md",
             "Miscellaneous" => "api/misc.md"
         ],
-        "References" => "references.md"
+        "References" => "references.md",
+        "Contributing" => "CONTRIBUTING.md"
     ],
 )
 
