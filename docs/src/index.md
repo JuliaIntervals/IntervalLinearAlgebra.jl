@@ -1,21 +1,10 @@
-# IntervalLinearAlgebra.jl
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/lucaferranti/IntervalLinearAlgebra.jl/blob/main/LICENSE)
-[![Build Status](https://github.com/lucaferranti/IntervalLinearAlgebra.jl/workflows/CI/badge.svg)](https://github.com/lucaferranti/IntervalLinearAlgebra.jl/actions)
-[![Coverage](https://codecov.io/gh/lucaferranti/IntervalLinearAlgebra.jl/branch/main/graph/badge.svg?token=RYREIXL051)](https://codecov.io/gh/lucaferranti/IntervalLinearAlgebra.jl)
-[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://lucaferranti.github.io/IntervalLinearAlgebra.jl/dev)
+![](assets/logo-text.svg)
 
-```@raw html
-<p align="center">
-    <img src="assets/logo.png" alt="IntervalLinearAlgebra.jl" width="450"/>
-</p>
-
- <p align="center">
- <i>Linear algebra done rigorously</i></p>
-```
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/lucaferranti/IntervalLinearAlgebra.jl/blob/main/LICENSE)[![Build Status](https://github.com/juliaintervals/IntervalLinearAlgebra.jl/workflows/CI/badge.svg)](https://github.com/juliaintervals/IntervalLinearAlgebra.jl/actions)[![Coverage](https://codecov.io/gh/juliaintervals/IntervalLinearAlgebra.jl/branch/main/graph/badge.svg?token=mgCzKMPiwK)](https://codecov.io/gh/juliaintervals/IntervalLinearAlgebra.jl)
 
 ## Overview
 
-Documentation for [IntervalLinearAlgebra.jl](https://github.com/lucaferranti/IntervalLinearAlgebra.jl), a package contains functionalities to solve numerical linear algebra tasks using interval arithmetic.
+Documentation for [IntervalLinearAlgebra.jl](https://github.com/lucaferranti/IntervalLinearAlgebra.jl), a package for numerical linear algebra using interval arithmetic.
 
 ## Features
 

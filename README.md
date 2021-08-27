@@ -1,16 +1,8 @@
-# IntervalLinearAlgebra
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Build Status](https://github.com/juliaintervals/IntervalLinearAlgebra.jl/workflows/CI/badge.svg)](https://github.com/juliaintervals/IntervalLinearAlgebra.jl/actions)
-[![codecov](https://codecov.io/gh/juliaintervals/IntervalLinearAlgebra.jl/branch/main/graph/badge.svg?token=mgCzKMPiwK)](https://codecov.io/gh/juliaintervals/IntervalLinearAlgebra.jl)
-[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://juliaintervals.github.io/IntervalLinearAlgebra.jl/dev)
-<!--[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://juliaintervals.github.io/IntervalLinearAlgebra.jl/stable)-->
+![](docs/src/assets/logo-text.svg)
 
-<p align="center">
-    <img src="docs/src/assets/logo.png" alt="IntervalLinearAlgebra.jl" width="450"/>
-</p>
-
- <p align="center">
- <i>Linear algebra done rigorously</i></p>
+| **Pkg Info** | **Build status** | **Documentation** |
+|:------------:|:----------------:|:-----------------:|
+|[![license: MIT][mit-img]](LICENSE)|[![CI][ci-img]][ci-url][![codecov][cov-img]][cov-url]|[![docs-dev][dev-img]][dev-url]|
 
 ## Overview
 
@@ -26,7 +18,7 @@ The package is not registered yet, you can install it from the Julia REPL in pac
 
 ## Documentation
 <!-- - [**STABLE**](https://juliaintervals.github.io/IntervalLinearAlgebra.jl/stable) -- Documentation of the latest release -->
-- [**DEV**](https://juliaintervals.github.io/IntervalLinearAlgebra.jl/dev) -- Documentation of the current version on main (work in progress)
+- [**DEV**][dev-url] -- Documentation of the current version on main (work in progress)
 
 You can also look at the examples in [examples](./examples/) and [benchmarking](./perf/)
 
@@ -65,3 +57,17 @@ See also the complete list of [references](https://juliaintervals.github.io/Inte
 ## Acknowledgment
 
 The development of this package started during the Google Summer of Code (GSoC) 2021 program for the Julia organisation. The author wishes to thank his mentors [David Sanders](https://github.com/dpsanders) and [Marcelo Forets](https://github.com/mforets) for the constant guidance and feedback. During the GSoC program, this project was financially supported by Google.
+
+[mit-img]: https://img.shields.io/badge/license-MIT-yellow.svg
+
+[ci-img]: https://github.com/juliaintervals/IntervalLinearAlgebra.jl/workflows/CI/badge.svg
+[ci-url]: https://github.com/juliaintervals/IntervalLinearAlgebra.jl/actions
+
+[cov-img]: https://codecov.io/gh/juliaintervals/IntervalLinearAlgebra.jl/branch/main/graph/badge.svg?token=mgCzKMPiwK
+[cov-url]: https://codecov.io/gh/juliaintervals/IntervalLinearAlgebra.jl
+
+[stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
+[stable-url]: https://juliaintervals.github.io/IntervalLinearAlgebra.jl/stable
+
+[dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
+[dev-url]: https://juliaintervals.github.io/IntervalLinearAlgebra.jl/dev
