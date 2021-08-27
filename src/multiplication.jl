@@ -26,9 +26,15 @@ Sets the algorithm used to perform matrix multiplication with interval matrices.
 """
 function set_multiplication_mode(multype)
     type = MultiplicationType{multype}()
-    @eval *(A::AbstractMatrix{Interval{T}} where T, B::AbstractMatrix{Interval{T}} where T) =
+    @eval *(A::AbstractMatrix{Interval{T}}, B::AbstractMatrix{Interval{T}}) where T =
         *($type, A, B)
 
+    @eval *(A::AbstractMatrix{T}, B::AbstractMatrix{Interval{T}}) where T = *($type, A, B)
+
+    @eval *(A::AbstractMatrix{Interval{T}}, B::AbstractMatrix{T}) where T = *($type, A, B)
+
+    @eval *(A::Diagonal, B::AbstractMatrix{Interval{T}}) where T = *($type, A, B)
+    @eval *(A::AbstractMatrix{Interval{T}}, B::Diagonal) where T = *($type, A, B)
     config[:multiplication] = multype
 end
 
@@ -65,6 +71,58 @@ function *(::MultiplicationType{:fast},
 
     return Interval.(Cinf, Csup)
 end
+
+
+function *(::MultiplicationType{:fast},
+    A::AbstractMatrix{T},
+    B::AbstractMatrix{Interval{T}}) where {T<:Real}
+
+    Binf = inf.(B)
+    Bsup = sup.(B)
+
+    mB, R, Csup = setrounding(T, RoundUp) do
+        mB = Binf + 0.5 * (Bsup - Binf)
+
+        rB = mB - Binf
+
+        R = abs.(A) * rB
+        Csup = A * mB + R
+
+        return mB, R, Csup
+    end
+
+    Cinf = setrounding(T, RoundDown) do
+        A * mB - R
+    end
+
+    return Interval.(Cinf, Csup)
+end
+
+function *(::MultiplicationType{:fast},
+    A::AbstractMatrix{Interval{T}},
+    B::AbstractMatrix{T}) where {T<:Real}
+
+    Ainf = inf.(A)
+    Asup = sup.(A)
+
+    mA, R, Csup = setrounding(T, RoundUp) do
+        mA = Ainf + 0.5 * (Asup - Ainf)
+
+        rA = mA - Ainf
+
+        R = rA * abs.(B)
+        Csup = mA * B + R
+
+        return mA, R, Csup
+    end
+
+    Cinf = setrounding(T, RoundDown) do
+        mA * B - R
+    end
+
+    return Interval.(Cinf, Csup)
+end
+
 
 function *(::MultiplicationType{:rank1},
            A::AbstractMatrix{Interval{T}},
