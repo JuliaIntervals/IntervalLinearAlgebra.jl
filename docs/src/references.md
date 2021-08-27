@@ -1,5 +1,35 @@
 # [References](@id all_ref)
 
+#### [HLA13] 
+
+```@raw html
+<ul><li>
+```
+M. Hladík. Bounds on eigenvalues of real and complex interval matrices. Appl. Math. Comput., 219(10):5584–5591, 2013.
+```@raw html
+<li style="list-style: none"><details>
+<summary>bibtex</summary>
+```
+```
+@article{Hla2013a,
+ author = "Milan Hlad\'{\i}k",
+ title = "Bounds on eigenvalues of real and complex interval matrices",
+ journal = "Appl. Math. Comput.",
+ fjournal = "Applied Mathematics and Computation",
+ volume = "219",
+ number = "10",
+ pages = "5584-5591",
+ year = "2013",
+ issn = "0096-3003",
+ doi = "10.1016/j.amc.2012.11.075",
+}
+```
+```@raw html
+</details></li></ul>
+```
+---
+
+
 #### [HOR19] 
 
 ```@raw html
