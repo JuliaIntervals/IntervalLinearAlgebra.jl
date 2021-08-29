@@ -21,7 +21,7 @@ end
     # real eigenvalues case
     P = rand(n, n)
     Pinv, _ = epsilon_inflation(P, Diagonal(ones(n)))
-    A = IA.Interval.(P) * IA.Interval.(D) * Pinv
+    A = IA.Interval.(P) * D * Pinv
 
     evals, evecs, cert = verify_eigen(A)
     @test all(cert)

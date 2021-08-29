@@ -75,7 +75,7 @@ end
 
 function verify_eigen(A::Symmetric, λ, X0; kwargs...)
     ρ, X, cert = _verify_eigen(A, λ, X0; kwargs...)
-    return λ ± ρ, X0 + X, cert
+    return λ ± ρ, X0 + real.(X), cert
 end
 
 function _verify_eigen(A, λ::Number, X0::AbstractVector;
@@ -92,14 +92,10 @@ function _verify_eigen(A, λ::Number, X0::AbstractVector;
     C = I - R * C
     Zinfl = w * IA.Interval.(-mag.(Z), mag.(Z)) .+ IA.Interval(-ϵ, ϵ)
 
-    X = Z
+    X = Complex.(Z)
     cert = false
     @inbounds for _ in 1:maxiter
-        if eltype(X) <: Complex # TODO: use dispatch
-            Y = (real.(X) + Zinfl) + (imag.(X) + Zinfl) * im
-        else
-            Y = X + Zinfl
-        end
+        Y = (real.(X) + Zinfl) + (imag.(X) + Zinfl) * im
 
         Ytmp = Y * Y[v]
         Ytmp[v] = 0
