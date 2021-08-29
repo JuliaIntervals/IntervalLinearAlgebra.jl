@@ -1,36 +1,3 @@
-function verify_eigen(A::Symmetric{T, Matrix{T}}, λ::Number, X0::AbstractVector;
-                      w=0.1, ϵ=floatmin(), maxiter=10) where {T}
-
-    _, v = findmax(abs.(X0))
-
-    R = mid.(A) - λ * I
-    R[:, v] .= -X0
-    R = inv(R)
-    C = IA.Interval.(A) - λ * I
-    Z = -R * (C * X0)
-    C[:, v] .= -X0
-    C = I - Interval.(R) * C
-    Zinfl = w * ( IA.Interval.(-mag.(Z), mag.(Z)) .+ IA.Interval(-ϵ, ϵ) )
-
-    X = Z
-    cert = false
-    @inbounds for _ in 1:maxiter
-        Y = X + Zinfl
-        Ytmp = Y * Y[v]
-        Ytmp[v] = 0
-
-        X = Z + C * Y + R * Ytmp
-        cert = all(X .⊂ Y)
-        cert && break
-    end
-
-    ρ = mag(X[v])
-    X[v] = 0
-
-    return λ ± ρ, X0 + X, cert
-end
-
-
 """
     verify_eigen(A[, λ, X0]; w=0.1, ϵ=1e-16, maxiter=10)
 
@@ -83,11 +50,12 @@ julia> cert
  1
 ```
 """
-function verify_eigen(A::Symmetric{T, Matrix{T}}; kwargs...) where {T<:Real}
+function verify_eigen(A; kwargs...)
     evals, evecs = eigen(mid.(A))
 
-    evalues = IA.Interval.(similar(evals))
-    evectors = IA.Interval.(similar(evecs))
+    T = interval_eigtype(A, evals[1])
+    evalues = similar(evals, T)
+    evectors = similar(evecs, T)
 
     cert = Vector{Bool}(undef, length(evals))
     @inbounds for (i, λ₀) in enumerate(evals)
@@ -98,6 +66,53 @@ function verify_eigen(A::Symmetric{T, Matrix{T}}; kwargs...) where {T<:Real}
 
     end
     return evalues, evectors, cert
+end
+
+function verify_eigen(A, λ, X0; kwargs...)
+    ρ, X, cert = _verify_eigen(A, λ, X0; kwargs...)
+    return (real(λ) ± ρ) + (imag(λ) ± ρ) * im, X0 + X, cert
+end
+
+function verify_eigen(A::Symmetric, λ, X0; kwargs...)
+    ρ, X, cert = _verify_eigen(A, λ, X0; kwargs...)
+    return λ ± ρ, X0 + X, cert
+end
+
+function _verify_eigen(A, λ::Number, X0::AbstractVector;
+                      w=0.1, ϵ=floatmin(), maxiter=10)
+
+    _, v = findmax(abs.(X0))
+
+    R = mid.(A) - λ * I
+    R[:, v] .= -X0
+    R = inv(R)
+    C = IA.Interval.(A) - λ * I
+    Z = -R * (C * X0)
+    C[:, v] .= -X0
+    C = I - R * C
+    Zinfl = w * IA.Interval.(-mag.(Z), mag.(Z)) .+ IA.Interval(-ϵ, ϵ)
+
+    X = Z
+    cert = false
+    @inbounds for _ in 1:maxiter
+        if eltype(X) <: Complex # TODO: use dispatch
+            Y = (real.(X) + Zinfl) + (imag.(X) + Zinfl) * im
+        else
+            Y = X + Zinfl
+        end
+
+        Ytmp = Y * Y[v]
+        Ytmp[v] = 0
+
+        X = Z + C * Y + R * Ytmp
+        cert = all(X .⊂ Y)
+        cert && break
+    end
+
+    ρ = mag(X[v])
+    X[v] = 0
+
+    return ρ, X, cert
 end
 
 
@@ -152,3 +167,8 @@ function _power_iteration(A, max_iter)
     end
     return xp
 end
+
+
+interval_eigtype(::Symmetric, ::T) where {T<:Real} = Interval{T}
+interval_eigtype(::AbstractMatrix, ::T) where {T<:Real} = Complex{Interval{T}}
+interval_eigtype(::AbstractMatrix, ::Complex{T}) where {T<:Real} = Complex{Interval{T}}

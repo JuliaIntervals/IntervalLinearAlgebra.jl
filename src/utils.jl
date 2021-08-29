@@ -1,4 +1,5 @@
 mid(x::Real) = x
+mid(x::Complex) = x
 
 """
     interval_isapprox(a::Interval, b::Interval; kwargs)
@@ -172,3 +173,7 @@ end
 
 Base.firstindex(O::Orthants) = 1
 Base.lastindex(O::Orthants) = length(O)
+
+
+_unchecked_interval(x::Real) = Interval(x)
+_unchecked_interval(x::Complex) = Interval(real(x)) + Interval(imag(x)) * im
