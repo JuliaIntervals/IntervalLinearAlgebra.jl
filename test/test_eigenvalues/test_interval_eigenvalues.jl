@@ -5,8 +5,11 @@
          0 -1 -1..1;
          -1..1 -1..1 0.1])
 
-    ev = eigenbox(A)
-    @test interval_isapprox(ev, -2.4143..1.5143; atol=1e-3)
+    evrohn = eigenbox(A)
+    @test interval_isapprox(evrohn, -2.4143..1.5143; atol=1e-3)
+
+    evhertz = eigenbox(A, HertzMethod)
+    @test interval_isapprox(evhertz, -1.9674..1.0674; atol=1e-3)
 
     # real matrix
     A = [-3.. -2 4..5 4..6 -1..1.5;
@@ -18,6 +21,9 @@
     @test interval_isapprox(real(ev), -8.8221..3.4408; atol=1e-3)
     @test interval_isapprox(imag(ev), -10.7497..10.7497; atol=1e-3)
 
+    evhertz = eigenbox(A, HertzMethod)
+    @test interval_isapprox(real(evhertz), -7.3691..3.2742; atol=1e-3)
+    @test interval_isapprox(imag(evhertz), -8.794..8.794; atol=1e-3)
 
     # hermitian matrix
     A = Hermitian([1..2 (5..9)+(2..5)*im (3..5)+(2..4)im;
