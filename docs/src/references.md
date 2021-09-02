@@ -108,8 +108,7 @@ A. Neumaier, *Interval methods for systems of equations*, Cambridge university p
 ```@raw html
 <ul><li>
 ```
-W. Oettli and W. Prager, *Compatibility of approximate solution of linear equa-
-tions with given error bounds for coefficients and right-hand sides*, Numerische
+W. Oettli and W. Prager, *Compatibility of approximate solution of linear equations with given error bounds for coefficients and right-hand sides*, Numerische
 Mathematik, 6(1):405–409, 1964.
 ```@raw html
 <li style="list-style: none"><details>
