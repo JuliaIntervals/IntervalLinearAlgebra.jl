@@ -56,12 +56,12 @@ savefig("eigs.png") # hide
 
 ![](eigs.png)
 
-Internally, the generical interval eigenvalue proper is reduced to a symmetric interval eigenvalue problem, as described in [[HLA13]](@ref). It is good to highlight that The symmetric interval eigenvalue problem can be solved in two ways
+Internally, the generical interval eigenvalue problem is reduced to a real symmetric interval eigenvalue problem, as described in [[HLA13]](@ref). It is good to remind that a real symmetric matrix has only real eigenvalues. The real symmetric interval eigenvalue problem can be solved in two ways
 
 - Rohn method -- (default one) computes an enclosure of the eigenvalues set for the symmetric interval matrix. This is fast but the enclosure can be strictly larger than the hull
 - Hertz method -- computes the exact hull of the eigenvalues for the symmetric interval matrix. Generally, these leads to tigher bounds, but it has exponential complexity, so it will be unfeasible for big matrices.
 
-The function `eigenbox` takes a second optional parameter (RohnMethod by default) to specify what algorithm to use for the symmetric interval eigenvalue problem. The following example bounds the eigenvalues of the previous matrix using HertzMethod, as can be noticed by the figure below, the Hertz method gives a tighter bound on the eigenvalues set.
+The function `eigenbox` can take a second optional parameter (RohnMethod by default) to specify what algorithm to use for the real symmetric interval eigenvalue problem. The following example bounds the eigenvalues of the previous matrix using HertzMethod, as can be noticed by the figure below, the Hertz method gives a tighter bound on the eigenvalues set.
 
 ```@example eigs
 eboxhertz = eigenbox(A, HertzMethod)
@@ -83,7 +83,7 @@ savefig("eigs2.png") # hide
 
 ## Verified floating point computations of eigenvalues
 
-In the previous section we considered the problem of finding the solution set (or an enclosure of it) of an interval matrix. In this section, we consider the problem of computing eigenvalues and eigenvectors of a floating point matrix *rigorously*, that is we want to find an enclosure of the true eigenvalues and eigenvectors of the matrix. In `IntervalLinearAlgebra.jl` this is achieved using the [`verify_eigen`](@ref) function, as the following example demonstrates.
+In the previous section we considered the problem of finding the eigenvalue set (or an enclosure of it) of an interval matrix. In this section, we consider the problem of computing eigenvalues and eigenvectors of a floating point matrix *rigorously*, that is we want to find an enclosure of the true eigenvalues and eigenvectors of the matrix. In `IntervalLinearAlgebra.jl` this is achieved using the [`verify_eigen`](@ref) function, as the following example demonstrates.
 
 ```@example eigs
 A = [1 2; 3 4]
