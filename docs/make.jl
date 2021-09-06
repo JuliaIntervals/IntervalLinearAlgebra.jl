@@ -18,7 +18,8 @@ makedocs(;
     pages=[
         "Home" => "index.md",
         "Tutorials" => [
-            "Linear systems" => "tutorials/linear_systems.md"
+            "Linear systems" => "tutorials/linear_systems.md",
+            "Eigenvalue computations" => "tutorials/eigenvalues.md"
         ],
         "Applications" => "wip.md",
         "Explanations" => [
