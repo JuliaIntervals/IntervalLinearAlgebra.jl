@@ -63,10 +63,10 @@ Internally, the generical interval eigenvalue problem is reduced to a real symme
 - Rohn method -- (default one) computes an enclosure of the eigenvalues set for the symmetric interval matrix. This is fast but the enclosure can be strictly larger than the hull
 - Hertz method -- computes the exact hull of the eigenvalues for the symmetric interval matrix. Generally, these leads to tigher bounds, but it has exponential complexity, so it will be unfeasible for big matrices.
 
-The function `eigenbox` can take a second optional parameter (RohnMethod() by default) to specify what algorithm to use for the real symmetric interval eigenvalue problem. The following example bounds the eigenvalues of the previous matrix using HertzMethod(), as can be noticed by the figure below, the Hertz method gives a tighter bound on the eigenvalues set.
+The function `eigenbox` can take a second optional parameter (Rohn() by default) to specify what algorithm to use for the real symmetric interval eigenvalue problem. The following example bounds the eigenvalues of the previous matrix using Hertz(), as can be noticed by the figure below, the Hertz method gives a tighter bound on the eigenvalues set.
 
 ```@example eigs
-eboxhertz = eigenbox(A, HertzMethod())
+eboxhertz = eigenbox(A, Hertz())
 ```
 
 ```@example eigs

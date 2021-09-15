@@ -26,7 +26,7 @@ export
     comparison_matrix, interval_norm, interval_isapprox, Orthants,
     is_H_matrix, is_strongly_regular, is_strictly_diagonally_dominant, is_Z_matrix, is_M_matrix,
     rref,
-    eigenbox, RohnMethod, HertzMethod, verify_eigen, bound_perron_frobenius_eigenvalue
+    eigenbox, Rohn, Hertz, verify_eigen, bound_perron_frobenius_eigenvalue
 
 
 include("linear_systems/enclosures.jl")

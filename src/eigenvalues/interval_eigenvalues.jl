@@ -1,10 +1,10 @@
 abstract type AbstractIntervalEigenSolver end
 
-struct HertzMethod <: AbstractIntervalEigenSolver end
-struct RohnMethod <: AbstractIntervalEigenSolver end
+struct Hertz <: AbstractIntervalEigenSolver end
+struct Rohn <: AbstractIntervalEigenSolver end
 
 """
-    eigenbox(A[, method=RohnMethod()])
+    eigenbox(A[, method=Rohn()])
 
 Returns an enclosure of all the eigenvalues of `A`. If `A` is symmetric, than the
 output is a real interval, otherwise it is a complex interval.
@@ -16,9 +16,9 @@ output is a real interval, otherwise it is a complex interval.
     eigenvalues of general matrices is also reduced to the symmetric case).
     Possible values are
 
-      - `RohnMethod` -- (default) fast method to compute an enclosure of the eigenvalues of
+      - `Rohn` -- (default) fast method to compute an enclosure of the eigenvalues of
             a symmetric interval matrix
-      - `HertzMethod` -- finds the exact hull of the eigenvalues of a symmetric interval
+      - `Hertz` -- finds the exact hull of the eigenvalues of a symmetric interval
             matrix, but has exponential complexity.
 
 ### Algorithm
@@ -42,11 +42,11 @@ julia> A = [0 -1 -1; 2 -1.399.. -0.001 0; 1 0.5 -1]
 julia> eigenbox(A)
 [-1.90679, 0.970154] + [-2.51903, 2.51903]im
 
-julia> eigenbox(A, HertzMethod())
+julia> eigenbox(A, Hertz())
 [-1.64732, 0.520456] + [-2.1112, 2.1112]im
 ```
 """
-function eigenbox(A::Symmetric{Interval{T}, Matrix{Interval{T}}}, ::RohnMethod) where {T}
+function eigenbox(A::Symmetric{Interval{T}, Matrix{Interval{T}}}, ::Rohn) where {T}
 
     AΔ = Symmetric(radius.(A))
     Ac = Symmetric(mid.(A))
@@ -59,7 +59,7 @@ function eigenbox(A::Symmetric{Interval{T}, Matrix{Interval{T}}}, ::RohnMethod) 
 end
 
 
-function eigenbox(A::Symmetric{Interval{T}, Matrix{Interval{T}}}, ::HertzMethod) where {T}
+function eigenbox(A::Symmetric{Interval{T}, Matrix{Interval{T}}}, ::Hertz) where {T}
 
     n = checksquare(A)
     Amax = Matrix{T}(undef, n, n)
@@ -123,4 +123,4 @@ function eigenbox(M::Hermitian{Complex{Interval{T}}, Matrix{Complex{Interval{T}}
 end
 
 # default
-eigenbox(A) = eigenbox(A, RohnMethod())
+eigenbox(A) = eigenbox(A, Rohn())
