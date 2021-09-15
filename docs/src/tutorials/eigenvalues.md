@@ -32,6 +32,8 @@ ebox = eigenbox(A)
 To get a qualitative evaluation of the enclosure, we can simulate the solution set of ``\mathbf{A}`` using Montecarlo, as it is done in the following example
 
 ```@example eigs
+using Random; # hide
+Random.seed!(42) # hide
 using Plots
 N = 1000
 
@@ -61,10 +63,10 @@ Internally, the generical interval eigenvalue problem is reduced to a real symme
 - Rohn method -- (default one) computes an enclosure of the eigenvalues set for the symmetric interval matrix. This is fast but the enclosure can be strictly larger than the hull
 - Hertz method -- computes the exact hull of the eigenvalues for the symmetric interval matrix. Generally, these leads to tigher bounds, but it has exponential complexity, so it will be unfeasible for big matrices.
 
-The function `eigenbox` can take a second optional parameter (RohnMethod by default) to specify what algorithm to use for the real symmetric interval eigenvalue problem. The following example bounds the eigenvalues of the previous matrix using HertzMethod, as can be noticed by the figure below, the Hertz method gives a tighter bound on the eigenvalues set.
+The function `eigenbox` can take a second optional parameter (RohnMethod() by default) to specify what algorithm to use for the real symmetric interval eigenvalue problem. The following example bounds the eigenvalues of the previous matrix using HertzMethod(), as can be noticed by the figure below, the Hertz method gives a tighter bound on the eigenvalues set.
 
 ```@example eigs
-eboxhertz = eigenbox(A, HertzMethod)
+eboxhertz = eigenbox(A, HertzMethod())
 ```
 
 ```@example eigs
@@ -106,12 +108,10 @@ The function also accepts interval inputs. This is handy if the input matrix ele
 To test the function, let us consider the following example. First we generate random eigenvalues and eigenvectors
 
 ```@example eigs
-using Random; # hide
-Random.seed!(42) # hide
-ev = sort(randn(10))
+ev = sort(randn(5))
 D = Diagonal(ev)
-P = randn(10, 10)
-Pinv, _ = epsilon_inflation(P, Diagonal(ones(10)))
+P = randn(5, 5)
+Pinv, _ = epsilon_inflation(P, Diagonal(ones(5)))
 A = interval.(P) * D * Pinv
 ```
 

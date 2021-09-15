@@ -1,8 +1,10 @@
-struct HertzMethod end
-struct RohnMethod end
+abstract type AbstractIntervalEigenSolver end
+
+struct HertzMethod <: AbstractIntervalEigenSolver end
+struct RohnMethod <: AbstractIntervalEigenSolver end
 
 """
-    eigenbox(A[, method=RohnMethod])
+    eigenbox(A[, method=RohnMethod()])
 
 Returns an enclosure of all the eigenvalues of `A`. If `A` is symmetric, than the
 output is a real interval, otherwise it is a complex interval.
@@ -44,7 +46,7 @@ julia> eigenbox(A, HertzMethod)
 [-1.64732, 0.520456] + [-2.1112, 2.1112]im
 ```
 """
-function eigenbox(A::Symmetric{Interval{T}, Matrix{Interval{T}}}, ::Type{RohnMethod}) where {T}
+function eigenbox(A::Symmetric{Interval{T}, Matrix{Interval{T}}}, ::RohnMethod) where {T}
 
     AΔ = Symmetric(radius.(A))
     Ac = Symmetric(mid.(A))
@@ -57,7 +59,7 @@ function eigenbox(A::Symmetric{Interval{T}, Matrix{Interval{T}}}, ::Type{RohnMet
 end
 
 
-function eigenbox(A::Symmetric{Interval{T}, Matrix{Interval{T}}}, ::Type{HertzMethod}) where {T}
+function eigenbox(A::Symmetric{Interval{T}, Matrix{Interval{T}}}, ::HertzMethod) where {T}
 
     n = checksquare(A)
     Amax = Matrix{T}(undef, n, n)
@@ -87,7 +89,8 @@ function eigenbox(A::Symmetric{Interval{T}, Matrix{Interval{T}}}, ::Type{HertzMe
     return IA.Interval(λmin, λmax)
 end
 
-function eigenbox(A::AbstractMatrix{Interval{T}}, method) where {T}
+function eigenbox(A::AbstractMatrix{Interval{T}},
+                  method::AbstractIntervalEigenSolver) where {T}
 
     λ = eigenbox(Symmetric(0.5*(A + A')), method)
 
@@ -98,7 +101,8 @@ function eigenbox(A::AbstractMatrix{Interval{T}}, method) where {T}
     return λ + μ*im
 end
 
-function eigenbox(M::AbstractMatrix{Complex{Interval{T}}}, method) where {T}
+function eigenbox(M::AbstractMatrix{Complex{Interval{T}}},
+                  method::AbstractIntervalEigenSolver) where {T}
     A = real.(M)
     B = imag.(M)
     λ = eigenbox(Symmetric(0.5*[A+A' B'-B;
@@ -111,11 +115,12 @@ function eigenbox(M::AbstractMatrix{Complex{Interval{T}}}, method) where {T}
 end
 
 
-function eigenbox(M::Hermitian{Complex{Interval{T}}, Matrix{Complex{Interval{T}}}}, method) where T
+function eigenbox(M::Hermitian{Complex{Interval{T}}, Matrix{Complex{Interval{T}}}},
+                  method::AbstractIntervalEigenSolver) where {T}
     A = real(M)
     B = imag(M)
     return eigenbox(Symmetric([A B';B A]), method)
 end
 
 # default
-eigenbox(A) = eigenbox(A, RohnMethod)
+eigenbox(A) = eigenbox(A, RohnMethod())

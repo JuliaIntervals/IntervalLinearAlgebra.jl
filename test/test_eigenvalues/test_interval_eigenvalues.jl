@@ -8,7 +8,7 @@
     evrohn = eigenbox(A)
     @test interval_isapprox(evrohn, -2.4143..1.5143; atol=1e-3)
 
-    evhertz = eigenbox(A, HertzMethod)
+    evhertz = eigenbox(A, HertzMethod())
     @test interval_isapprox(evhertz, -1.9674..1.0674; atol=1e-3)
 
     # real matrix
@@ -21,7 +21,7 @@
     @test interval_isapprox(real(ev), -8.8221..3.4408; atol=1e-3)
     @test interval_isapprox(imag(ev), -10.7497..10.7497; atol=1e-3)
 
-    evhertz = eigenbox(A, HertzMethod)
+    evhertz = eigenbox(A, HertzMethod())
     @test interval_isapprox(real(evhertz), -7.3691..3.2742; atol=1e-3)
     @test interval_isapprox(imag(evhertz), -8.794..8.794; atol=1e-3)
 
