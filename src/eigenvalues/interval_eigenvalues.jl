@@ -42,7 +42,7 @@ julia> A = [0 -1 -1; 2 -1.399.. -0.001 0; 1 0.5 -1]
 julia> eigenbox(A)
 [-1.90679, 0.970154] + [-2.51903, 2.51903]im
 
-julia> eigenbox(A, HertzMethod)
+julia> eigenbox(A, HertzMethod())
 [-1.64732, 0.520456] + [-2.1112, 2.1112]im
 ```
 """
