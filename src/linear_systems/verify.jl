@@ -89,7 +89,7 @@ function epsilon_inflation(A::AbstractMatrix{T}, b::AbstractArray{S, N};
     for _ in 1:iter_max
         y = r1 * x .+ ϵ1
         x = z + C * y
-        if all(x .⊂ y)
+        if all(isinterior.(x, y))
             return xs + x, true
         end
     end
