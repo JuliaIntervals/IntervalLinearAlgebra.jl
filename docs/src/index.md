@@ -9,7 +9,7 @@ This package contains routines to perform numerical linear algebra using interva
 An first overview of the package was given at JuliaCon 2021, the slides are available [here](https://github.com/lucaferranti/ILAjuliacon2021).
 
 ```@raw html
-<iframe width="560" height="315" src="https://www.youtube.com/embed/fre0TKgLJwg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe style="width:560px; height:315px" src="https://www.youtube.com/embed/fre0TKgLJwg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 ```
 
 ## Features
