@@ -101,7 +101,7 @@ function _verify_eigen(A, λ::Number, X0::AbstractVector;
         Ytmp[v] = 0
 
         X = Z + C * Y + R * Ytmp
-        cert = all(X .⊂ Y)
+        cert = all(isinterior.(X, Y))
         cert && break
     end
 
