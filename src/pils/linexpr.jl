@@ -14,22 +14,27 @@ end
 
 ## VARIABLES CONSTRUCTION
 
-macro linvars(x...)
-    _vars_dict[:vars] = Symbol[]
+ _get_vars(x::Symbol) = [x]
+
+function _get_vars(x...)
+
     if length(x) == 1
         s = x[1].args[1]
         start = x[1].args[2].args[2]
         stop = x[1].args[2].args[3]
-        _vars_dict[:vars] = [Symbol(s, i) for i in start:stop]
+        return [Symbol(s, i) for i in start:stop]
     else
-        _vars_dict[:vars] = collect(x)
+        return collect(x)
     end
+end
 
-    n = length(_vars_dict[:vars])
+macro linvars(x...)
+    vars = _get_vars(x...)
+    _vars_dict[:vars] = vars
+
     ex = quote end
-
-    for (i, s) in enumerate(_vars_dict[:vars])
-        c = zeros(Int, n + 1)
+    for (i, s) in enumerate(vars)
+        c = zeros(Int, length(vars) + 1)
         c[i] = 1
         push!(ex.args, :($(esc(s)) = AffineExpression($c)))
     end

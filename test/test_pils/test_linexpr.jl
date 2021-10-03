@@ -11,6 +11,11 @@
     @test x1 isa AffineExpression{Int}
     @test x1.coeffs == [1, 0, 0, 0, 0, 0]
     @test x5.coeffs == [0, 0, 0, 0, 1, 0]
+
+    @linvars x
+
+    @test x isa AffineExpression{Int}
+    @test x.coeffs == [1, 0]
 end
 
 @testset "linear expressions operations" begin
