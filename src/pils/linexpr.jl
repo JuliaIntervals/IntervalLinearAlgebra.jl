@@ -70,10 +70,12 @@ for op in (:+, :-)
         return AffineExpression($op(ae1.coeffs, ae2.coeffs))
     end
 
-    @eval function $op(ae::AffineExpression, n::Number)
-        cnew = copy(ae.coeffs)
-        cnew[end] = $op(cnew[end], n)
-        return AffineExpression(cnew)
+    @eval function $op(ae::AffineExpression{T}, n::S) where {T<:Number, S<:Number}
+        TS = promote_type(T, S)
+        c = similar(ae.coeffs, TS)
+        c .= ae.coeffs
+        c[end] = $op(c[end], n)
+        return AffineExpression(c)
     end
 end
 

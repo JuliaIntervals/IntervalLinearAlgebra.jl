@@ -45,6 +45,7 @@ end
     @test pprodright.coeffs == [2, -2, 6, 0]
     @test pdiv.coeffs == [0.5, -0.5, 1.5, 0]
 
+    @test p2 + 0.5 == x + y - z - 1.5
 end
 
 @testset "linear expressions conversions" begin
