@@ -24,6 +24,7 @@ end
 
     @test +p1 == p1
     @test -p1 == -x + y - 3z
+    @test p2([1, 1, 1]) == -1
 
     psum = p1 + p2
     pdiff = p1 - p2
@@ -50,6 +51,7 @@ end
 
 @testset "linear expressions conversions" begin
     @test promote_type(AffineExpression{Int}, Float64) == AffineExpression{Float64}
+    @test promote_type(AffineExpression{Int}, AffineExpression{Float64}) == AffineExpression{Float64}
 
     @linvars x y
 
@@ -61,4 +63,7 @@ end
 
     @test a == x + y + 1
     @test b == 1.5
+
+    @test convert(AffineExpression, 1.2) isa AffineExpression{Float64}
+    @test convert(AffineExpression, 1.2) == 1.2
 end
