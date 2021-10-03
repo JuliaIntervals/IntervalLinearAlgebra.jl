@@ -1,15 +1,26 @@
-@testset "linear expressions" begin
+@testset "linear expressions variables" begin
     @linvars x y z
 
-    @test x isa IntervalLinearAlgebra.AffineExpression{Int}
+    @test x isa AffineExpression{Int}
     @test x.coeffs == [1, 0, 0, 0]
     @test y.coeffs == [0, 1, 0, 0]
     @test z.coeffs == [0, 0, 1, 0]
+
+    @linvars x[1:5]
+
+    @test x1 isa AffineExpression{Int}
+    @test x1.coeffs == [1, 0, 0, 0, 0, 0]
+    @test x5.coeffs == [0, 0, 0, 0, 1, 0]
+end
+
+@testset "linear expressions operations" begin
+    @linvars x y z
 
     p1 = x - y + 3z
     @test IntervalLinearAlgebra._tostring(p1) == "x-y+3z"
     p2 = y + x - z - 2
     @test IntervalLinearAlgebra._tostring(p2) == "x+y-z-2"
+    @test IntervalLinearAlgebra._tostring(p1 - p1) == "0"
 
     @test +p1 == p1
     @test -p1 == -x + y - 3z
@@ -34,4 +45,19 @@
     @test pprodright.coeffs == [2, -2, 6, 0]
     @test pdiv.coeffs == [0.5, -0.5, 1.5, 0]
 
+end
+
+@testset "linear expressions conversions" begin
+    @test promote_type(AffineExpression{Int}, Float64) == AffineExpression{Float64}
+
+    @linvars x y
+
+    p1 = x + y + 1
+    a, b = promote(p1, 1.5)
+
+    @test a isa AffineExpression{Float64}
+    @test b isa AffineExpression{Float64}
+
+    @test a == x + y + 1
+    @test b == 1.5
 end

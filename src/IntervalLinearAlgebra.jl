@@ -27,7 +27,7 @@ export
     is_H_matrix, is_strongly_regular, is_strictly_diagonally_dominant, is_Z_matrix, is_M_matrix,
     rref,
     eigenbox, Rohn, Hertz, verify_eigen, bound_perron_frobenius_eigenvalue,
-    @linvars
+    AffineExpression, @linvars
 
 
 include("linear_systems/enclosures.jl")

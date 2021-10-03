@@ -1,12 +1,18 @@
-import Base: +, -, *, ==, show
+import Base: +, -, *, ==, show, convert, promote_rule
+
+const _vars_dict = Dict(:vars => Symbol[])
 
 struct AffineExpression{T}
     coeffs::Vector{T}
 end
 
-## VARIABLES CONSTRUCTION
+function AffineExpression(x::T) where {T<:Number}
+    c = zeros(promote_type(T, Int), length(_vars_dict[:vars]) + 1)
+    c[end] = x
+    return AffineExpression(c)
+end
 
-const _vars_dict = Dict(:vars => Symbol[])
+## VARIABLES CONSTRUCTION
 
 macro linvars(x...)
     _vars_dict[:vars] = Symbol[]
@@ -89,4 +95,18 @@ end
 -(n::Number, ae::AffineExpression) = n + (-ae)
 
 ==(ae1::AffineExpression, ae2::AffineExpression) = ae1.coeffs == ae2.coeffs
-## CONVERTIONS
+==(ae1::AffineExpression, n::Number) = iszero(ae1.coeffs[1:end-1]) && ae1.coeffs[end] == n
+
+## Convetion and promotion
+
+function promote_rule(::Type{AffineExpression{T}}, ::Type{S}) where {T<:Number, S<:Number}
+    AffineExpression{promote_type(T, S)}
+end
+
+function promote_rule(::Type{AffineExpression{T}}, ::Type{AffineExpression{S}}) where {T<:Number, S<:Number}
+    AffineExpression{promote_type(T, S)}
+end
+
+convert(::Type{AffineExpression}, x::Number) = AffineExpression(x)
+convert(::Type{AffineExpression{T}}, x::Number) where T = AffineExpression(convert(T, x))
+convert(::Type{AffineExpression{T}}, ae::AffineExpression) where {T<:Number} = AffineExpression{T}(ae.coeffs)
