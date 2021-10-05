@@ -7,13 +7,6 @@ import Base: *
 import CommonSolve: solve
 import IntervalArithmetic: mid
 
-function  __init__()
-    # @require IntervalConstraintProgramming = "138f1668-1576-5ad7-91b9-7425abbf3153" include("linear_systems/oettli_nonlinear.jl")
-    @require LazySets = "b4f0291d-fe17-52bc-9479-3d1a343d9043" include("linear_systems/oettli_linear.jl")
-
-    set_multiplication_mode(config[:multiplication])
-end
-
 @reexport using LinearAlgebra, IntervalArithmetic
 
 const IA = IntervalArithmetic
