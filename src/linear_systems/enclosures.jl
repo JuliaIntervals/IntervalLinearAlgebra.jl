@@ -69,6 +69,7 @@ function (hbr::HansenBliekRohn)(A::AbstractMatrix{T},
 
     cert || @warn "Could not find a verified enclosure of ⟨A⟩⁻¹"
 
+    all(sum(compA_inv; dims=2) .> 0) || throw(ArgumentError("applying Hanben-Bliek-Rohn to a non-H-matrix."))
     u = compA_inv * mag.(b)
     d = diag(compA_inv)
 
