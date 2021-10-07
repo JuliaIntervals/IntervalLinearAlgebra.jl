@@ -6,7 +6,9 @@ Pages = ["FEM_example.md"]
 
 In this section, a problem based on Example 4.1 from [https://github.com/JuliaIntervals/IntervalLinearAlgebra.jl/files/7271616/skalna2006.pdf] is considered. The matrix of the system is obtained using the Finite Element Method.
 
-ADD FIGURE
+```@raw html
+<img src="add route to svg" alt="structure diagram" width="500"/>
+```
 
 The stiffness matrix of a truss element in the local coordinate system is given by
 ```math
