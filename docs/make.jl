@@ -21,7 +21,7 @@ makedocs(;
             "Linear systems" => "tutorials/linear_systems.md",
             "Eigenvalue computations" => "tutorials/eigenvalues.md"
         ],
-        "Applications" => "wip.md",
+        "Applications" => "applications/FEM_example.md",
         "Explanations" => [
             "Interval system solution set" => "explanations/solution_set.md",
             "Preconditioning" => "explanations/preconditioning.md"
