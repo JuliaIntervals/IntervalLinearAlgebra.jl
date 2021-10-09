@@ -1,7 +1,20 @@
-using IntervalLinearAlgebra
-using Plots
 using Documenter
+using IntervalLinearAlgebra
+using Literate
+using Plots
 
+const litdir = joinpath(@__DIR__, "literate")
+
+for (root, _, files) in walkdir(litdir)
+    for file in files
+        if endswith(file, ".jl")
+            subfolder = splitpath(root)[end]
+            input = joinpath(root, file)
+            output = joinpath(@__DIR__, "src", subfolder)
+            Literate.markdown(input, output; credit=false,  mdstrings=true)
+        end
+    end
+end
 DocMeta.setdocmeta!(IntervalLinearAlgebra, :DocTestSetup, :(using IntervalLinearAlgebra); recursive=true)
 
 makedocs(;
@@ -41,5 +54,7 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/JuliaIntervals/IntervalLinearAlgebra.jl", devbranch = "main"
+    repo="github.com/JuliaIntervals/IntervalLinearAlgebra.jl",
+    devbranch = "main",
+    push_preview=true
 )
