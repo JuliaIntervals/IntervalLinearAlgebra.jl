@@ -1,7 +1,7 @@
-# # A simple FEM example
-# In this section, a problem based on Example 4.1 from [https://github.com/JuliaIntervals/IntervalLinearAlgebra.jl/files/7271616/skalna2006.pdf] is considered. The matrix of the system is obtained using the Finite Element Method.
+# # A simple FEM application
 #
-# \fig{lgbm_hp1.svg}
+# ## Introduction
+# The Finite Element Method is widely used to solve PDEs in Engineering applications and particularly in Structural Analysis problems [Add citation Bathe]. A specific case os structures is Truss structures, where trusses or bars are connected but not welded. Truss models are considered during the conceptual design of bridges or other structures.
 #
 # The stiffness matrix of a truss element in the local coordinate system is given by
 # ```math
@@ -16,7 +16,7 @@
 # \right),
 # ```
 #
-# where $s$ is the stiffness, given by $EA/L$, with $E$ being the young modulus, $A$ the area of the cross-section and $L$ the length of that truss element.
+# where $s$ is the stiffness, given by $EA/L$, with $E$ being the Young modulus, $A$ the area of the cross-section and $L$ the length of that truss element.
 #
 # The change-of-basis matrix is given by
 # ```math
@@ -40,55 +40,7 @@
 # K_G d_G = f_G \qquad K_G = Q K_L Q^T
 # ```
 #
-# For element 1->3 the global stiffness matrix is
-# ```math
-# K_{13} = s_{13}
-# \left(
-#   \begin{matrix}
-#   1 & 0 & -1 & 0 \\
-#   0 & 0 &  0 & 0 \\
-# -1 & 0 &  1 & 0 \\
-#   0 & 0 &  0 & 0
-# \end{matrix}
-# \right), \qquad s_{13}=\frac{2.0e11 \times 0.005}{2}
-# ```
-#
-# For element 1->2 the global stiffness matrix is
-# ```math
-# K_{12} = s_{12} \frac{1}{2}
-# \left(
-#   \begin{matrix}
-#   1 & -1 & -1 & 1 \\
-#   -1 & 1 &  1 & -1 \\
-# -1 & 1 &  1 & -1 \\
-#   1 & -1 &  -1 & 1
-# \end{matrix}
-# \right), \qquad s_{12}=\frac{2.0e11 \times 0.005}{2 \sqrt{2}}
-# ```
-#
-# TO FILL...
-
-# Parameters
-E = 2e11 ; # Young modulus
-A = 5e-3 ; # Cross-section area
-
-nodesCMatrix = [ 0. 0. ;
-                 1. 1. ;
-                 2. 0. ;
-                 3. 1. ;
-                 4. 0. ]
-
-connecMatrix = [ 1 2 ;
-                 1 3 ;
-                 2 3 ;
-                 2 4 ;
-                 3 4 ;
-                 3 5 ;
-                 4 5 ]
-fixedDofs     = [2 9 10 ]
-
-# Functions
-# computes the unitary stiffness matrix for an element defined by the coordinates of its first and second nodes
+# The stiffness matrix can be computed using the following function, which computes the unitary stiffness matrix for an element defined by the coordinates of its first and second nodes.
 function unitaryStiffnessMatrix( coordFirstNode, coordSecondNode  )
   diff      = (coordSecondNode - coordFirstNode)
   length   = sqrt( diff'*diff )
@@ -99,7 +51,33 @@ function unitaryStiffnessMatrix( coordFirstNode, coordSecondNode  )
   Kglo     = Qloc2glo * Kloc * transpose(Qloc2glo)
   return     Kglo, length
 end
+#
+# ## Problem with fixed parameters
+# In this section, a problem based on Example 4.1 from [https://github.com/JuliaIntervals/IntervalLinearAlgebra.jl/files/7271616/skalna2006.pdf] is considered. The following diagram shows the truss structure considered.
+#
+# \fig{../../assets/trussDiagram.png}
+#
+# The scalar parameters considered are given by
+E = 2e11 ; # Young modulus
+A = 5e-3 ; # Cross-section area
+# while the coordinate matrix is given by
+nodesCMatrix = [ 0. 0. ;
+                 1. 1. ;
+                 2. 0. ;
+                 3. 1. ;
+                 4. 0. ]
+# and connectivity matrix is given by
+connecMatrix = [ 1 2 ;
+                 1 3 ;
+                 2 3 ;
+                 2 4 ;
+                 3 4 ;
+                 3 5 ;
+                 4 5 ]
+# and the fixed degrees of freedom (supports) are
+fixedDofs     = [2 9 10 ]
 
+# calculations
 numNodes = size( nodesCMatrix )[1]
 numElems = size( connecMatrix )[1]
 freeDofs = zeros(Int8, 2*numNodes-length(fixedDofs))
@@ -117,6 +95,7 @@ print(freeDofs)
 KG = zeros( 2*numNodes, 2*numNodes ) ;
 FG = zeros( 2*numNodes )
 
+# assembly
 for elem in 1:numElems
   print(" assembling stiffness matrix of element ", elem , "\n")
   indexFirstNode  = connecMatrix[ elem, 1 ]
@@ -136,5 +115,6 @@ KG = KG[ :, freeDofs ]
 FG = FG[ freeDofs ]
 
 u = KG \ FG
-
 print(u)
+
+# ## Problem with interval parameters
