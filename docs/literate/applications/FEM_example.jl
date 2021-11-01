@@ -1,7 +1,7 @@
 # # A simple FEM application
 #
 # ## Introduction
-# The Finite Element Method is widely used to solve PDEs in Engineering applications and particularly in Structural Analysis problems [Add citation Bathe]. A specific case os structures is Truss structures, where trusses or bars are connected but not welded. Truss models are considered during the conceptual design of bridges or other structures.
+# The Finite Element Method is widely used to solve PDEs in Engineering applications and particularly in Structural Analysis problems [[BAT14]](@ref). A specific case os structures is Truss structures, where trusses or bars are connected but not welded. Truss models are considered during the conceptual design of bridges or other structures.
 #
 # The stiffness matrix of a truss element in the local coordinate system is given by
 # ```math
