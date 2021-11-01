@@ -1,7 +1,19 @@
 # # A simple FEM application
 #
 # ## Introduction
-# The Finite Element Method is widely used to solve PDEs in Engineering applications and particularly in Structural Analysis problems [[BAT14]](@ref). A specific case os structures is Truss structures, where trusses or bars are connected but not welded. Truss models are considered during the conceptual design of bridges or other structures.
+#
+# ### General description
+# The Finite Element Method is widely used to solve PDEs in Engineering applications and particularly in Structural Analysis problems [[BAT14]](@ref). The procedure consists discretizing the domain into _elements_ and assembly a system of balance equations. For linear problems, this system can be usually written as
+#
+# ```math
+# K \cdot d = f
+# \qquad
+# K = \sum_e K_e
+# ```
+# where $f$ is the vector of external loads, $K_e$ is the element stiffness matrix and $d$ is the vector of unknown displacements.
+#
+# ### FEM for truss structures
+# A frequent and simple type of structures are _Truss structures_, which are formed by bars connected but not welded. Truss models are considered during the conceptual design of bridges or other structures.
 #
 # The stiffness matrix of a truss element in the local coordinate system is given by
 # ```math
@@ -16,7 +28,7 @@
 # \right),
 # ```
 #
-# where $s$ is the stiffness, given by $EA/L$, with $E$ being the Young modulus, $A$ the area of the cross-section and $L$ the length of that truss element.
+# where $s =\frac{E A}{L}, with $E$ being the Young modulus, $A$ the area of the cross-section and $L$ the length of that truss element.
 #
 # The change-of-basis matrix is given by
 # ```math
@@ -40,10 +52,10 @@
 # K_G d_G = f_G \qquad K_G = Q K_L Q^T
 # ```
 #
-# The stiffness matrix can be computed using the following function, which computes the unitary stiffness matrix for an element defined by the coordinates of its first and second nodes.
+# The unitary stiffness matrix (for $s=1$) can be computed using the following function.
 function unitaryStiffnessMatrix( coordFirstNode, coordSecondNode  )
   diff      = (coordSecondNode - coordFirstNode)
-  length   = sqrt( diff'*diff )
+  length   = sqrt( diff' * diff )
   c        = diff[1] / length ;
   s        = diff[2] / length ;
   Qloc2glo = [ c -s 0 0 ; s c 0 0 ; 0 0 c -s ; 0 0 s c ] ;
@@ -52,10 +64,12 @@ function unitaryStiffnessMatrix( coordFirstNode, coordSecondNode  )
   return     Kglo, length
 end
 #
-# ## Problem with fixed parameters
+# ### Problem with fixed parameters
 # In this section, a problem based on Example 4.1 from [https://github.com/JuliaIntervals/IntervalLinearAlgebra.jl/files/7271616/skalna2006.pdf] is considered. The following diagram shows the truss structure considered.
 #
+# ![](../assets/trussDiagram.png)
 # \fig{../../assets/trussDiagram.png}
+# \fig{../assets/trussDiagram.png}
 #
 # The scalar parameters considered are given by
 E = 2e11 ; # Young modulus
