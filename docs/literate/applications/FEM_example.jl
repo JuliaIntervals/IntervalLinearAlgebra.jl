@@ -28,7 +28,7 @@
 # \right),
 # ```
 #
-# where $s =\frac{E A}{L}, with $E$ being the Young modulus, $A$ the area of the cross-section and $L$ the length of that truss element.
+# where $s =\frac{E A}{L}$, with $E$ being the Young modulus, $A$ the area of the cross-section and $L$ the length of that truss element.
 #
 # The change-of-basis matrix is given by
 # ```math
@@ -36,9 +36,9 @@
 # \left(
 #   \begin{matrix}
 # \cos(\alpha) & -\sin(\alpha) & 0 & 0 \\
-#  sin(alpha) & cos(alpha) &  0 & 0 \\
-#  0 & 0 &  cos(alpha) & sin(alpha) \\
-#  0 & 0 &  sin(alpha) & cos(alpha)
+#  \sin(alpha) & \cos(alpha) &  0 & 0 \\
+#  0 & 0 &  \cos(alpha) & -\sin(alpha) \\
+#  0 & 0 &  \sin(alpha) & \cos(alpha)
 # \end{matrix}
 # \right),
 # ```
@@ -64,52 +64,49 @@ function unitaryStiffnessMatrix( coordFirstNode, coordSecondNode  )
   return     Kglo, length
 end
 #
+# ## Example problem
+#
 # ### Problem with fixed parameters
-# In this section, a problem based on Example 4.1 from [https://github.com/JuliaIntervals/IntervalLinearAlgebra.jl/files/7271616/skalna2006.pdf] is considered. The following diagram shows the truss structure considered.
+# In this section, a problem based on Example 4.1 from (https://github.com/JuliaIntervals/IntervalLinearAlgebra.jl/files/7271616/skalna2006.pdf) is considered. The following diagram shows the truss structure considered.
 #
 # ![](../assets/trussDiagram.png)
-# \fig{../../assets/trussDiagram.png}
-# \fig{../assets/trussDiagram.png}
 #
 # The scalar parameters considered are given by
 E = 2e11 ; # Young modulus
 A = 5e-3 ; # Cross-section area
-# while the coordinate matrix is given by
+# The coordinate matrix is given by
 nodesCMatrix = [ 0. 0. ;
                  1. 1. ;
                  2. 0. ;
                  3. 1. ;
-                 4. 0. ]
-# and connectivity matrix is given by
+                 4. 0. ];
+# the connectivity matrix is given by
 connecMatrix = [ 1 2 ;
                  1 3 ;
                  2 3 ;
                  2 4 ;
                  3 4 ;
                  3 5 ;
-                 4 5 ]
-# and the fixed degrees of freedom (supports) are
-fixedDofs     = [2 9 10 ]
-
+                 4 5 ];
+# and the fixed degrees of freedom (supports) are defined by the vector
+fixedDofs     = [2 9 10 ];
+#
 # calculations
-numNodes = size( nodesCMatrix )[1]
-numElems = size( connecMatrix )[1]
-freeDofs = zeros(Int8, 2*numNodes-length(fixedDofs))
-indDof  = 1 ;
-counter = 0 ;
+numNodes = size( nodesCMatrix )[1]; # compute the number of nodes
+numElems = size( connecMatrix )[1]; # compute the number of elements
+freeDofs = zeros(Int8, 2*numNodes-length(fixedDofs));
+indDof  = 1 ; counter = 0 ;
 while indDof <= (2*numNodes)
   if !(indDof in fixedDofs)
     global counter = counter + 1 ;
     freeDofs[ counter ] = indDof ;
-    print(indDof)
   end
   global indDof = indDof + 1 ;
 end
-print(freeDofs)
-KG = zeros( 2*numNodes, 2*numNodes ) ;
-FG = zeros( 2*numNodes )
-
+#
 # assembly
+KG = zeros( 2*numNodes, 2*numNodes );
+FG = zeros( 2*numNodes );
 for elem in 1:numElems
   print(" assembling stiffness matrix of element ", elem , "\n")
   indexFirstNode  = connecMatrix[ elem, 1 ]
@@ -124,11 +121,34 @@ for elem in 1:numElems
   end
 end
 FG[4] = -1e4 ;
-KG = KG[ freeDofs, : ]
-KG = KG[ :, freeDofs ]
-FG = FG[ freeDofs ]
+KG = KG[ freeDofs, : ] ;
+KG = KG[ :, freeDofs ] ;
+FG = FG[ freeDofs ];
 
 u = KG \ FG
-print(u)
+UG = zeros( 2*numNodes );
+UG[ freeDofs ] = u ;
+#
+# #### Deformed structure
+#
+using Plots
 
-# ## Problem with interval parameters
+scaleFactor = 2e3 ;
+
+plot();
+for elem in 1:numElems
+  indexFirstNode  = connecMatrix[ elem, 1 ];
+  indexSecondNode = connecMatrix[ elem, 2 ];
+  plot!( nodesCMatrix[ [indexFirstNode, indexSecondNode], 1 ],
+         nodesCMatrix[ [indexFirstNode, indexSecondNode], 2 ],
+         linecolor = "blue" , legend = false)
+
+  plot!( nodesCMatrix[ [indexFirstNode, indexSecondNode], 1 ]
+           + scaleFactor* [ UG[indexFirstNode*2-1], UG[indexSecondNode*2-1]] ,
+         nodesCMatrix[ [indexFirstNode, indexSecondNode], 2 ]
+           + scaleFactor* [ UG[indexFirstNode*2  ], UG[indexSecondNode*2  ]] ,
+           linecolor = "red", legend = false )
+end
+#savefig("deformed.png")
+# ### Problem with interval parameters
+#
