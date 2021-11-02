@@ -52,6 +52,15 @@ end
     @test pdiv.coeffs == [0.5, -0.5, 1.5, 0]
 
     @test p2 + 0.5 == x + y - z - 1.5
+
+    A = [1 2;3 4]
+    @test x * A == [x 2x;3x 4x]
+    @test A * x == [x 2x;3x 4x]
+
+    @test zero(p1) == AffineExpression(0)
+    @test one(p1) == AffineExpression(1)
+    @test zero(AffineExpression{Int}) == AffineExpression(0)
+    @test one(AffineExpression{Int}) == AffineExpression(1)
 end
 
 @testset "linear expressions conversions" begin

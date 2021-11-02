@@ -1,4 +1,4 @@
-import Base: +, -, *, ==, show, convert, promote_rule
+import Base: +, -, *, ==, show, convert, promote_rule, zero, one
 
 const _vars_dict = Dict(:vars => Symbol[])
 
@@ -14,7 +14,7 @@ end
 
 ## VARIABLES CONSTRUCTION
 
- _get_vars(x::Symbol) = [x]
+_get_vars(x::Symbol) = [x]
 
 function _get_vars(x...)
 
@@ -66,6 +66,26 @@ end
 
 show(io::IO, ae::AffineExpression) = print(io, _tostring(ae))
 
+
+#########################
+# BASIC FUNCTIONS       #
+#########################
+
+function zero(::AffineExpression{T}) where {T}
+    return AffineExpression(zeros(T, length(_vars_dict[:vars]) + 1))
+end
+
+function zero(::Type{AffineExpression{T}}) where {T}
+    return AffineExpression(zeros(T, length(_vars_dict[:vars]) + 1))
+end
+
+one(::Type{AffineExpression{T}}) where {T} = zero(AffineExpression{T}) + 1
+one(::AffineExpression{T}) where {T} = zero(AffineExpression{T}) + 1
+
+# coefficients(ae::AffineExpression) = ae.coeffs[1:end-1]
+# coefficient(ae::AffineExpression, i) = ae.coeffs[i]
+# offset(ae::AffineExpression) = ae.coeffs[end]
+
 #########################
 # ARITHMETIC OPERATIONS #
 #########################
@@ -103,6 +123,14 @@ end
 
 ==(ae1::AffineExpression, ae2::AffineExpression) = ae1.coeffs == ae2.coeffs
 ==(ae1::AffineExpression, n::Number) = iszero(ae1.coeffs[1:end-1]) && ae1.coeffs[end] == n
+
+function *(ae::AffineExpression, A::AbstractArray{T, N}) where {T<:Number, N}
+    return map(x -> x * ae, A)
+end
+
+function *(A::AbstractArray{T, N}, ae::AffineExpression) where {T<:Number, N}
+    return map(x -> x * ae, A)
+end
 
 ## Convetion and promotion
 
