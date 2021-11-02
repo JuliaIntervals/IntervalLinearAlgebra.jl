@@ -158,5 +158,6 @@ ylabel!("y") # hide
 title!( "Deformed with scale factor " * string(scaleFactor) ) # hide
 savefig("deformed.png") # hide
 #
+# ![](deformed.png)
 # ### Problem with interval parameters
 #
