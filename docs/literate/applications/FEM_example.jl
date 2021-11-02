@@ -36,7 +36,7 @@
 # \left(
 #   \begin{matrix}
 # \cos(\alpha) & -\sin(\alpha) & 0 & 0 \\
-#  \sin(alpha) & \cos(alpha) &  0 & 0 \\
+#  \sin(\alpha) & \cos(\alpha) &  0 & 0 \\
 #  0 & 0 &  \cos(alpha) & -\sin(alpha) \\
 #  0 & 0 &  \sin(alpha) & \cos(alpha)
 # \end{matrix}
