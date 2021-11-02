@@ -141,14 +141,22 @@ for elem in 1:numElems
   indexSecondNode = connecMatrix[ elem, 2 ];
   plot!( nodesCMatrix[ [indexFirstNode, indexSecondNode], 1 ],
          nodesCMatrix[ [indexFirstNode, indexSecondNode], 2 ],
+         linestyle = :dash,
+         aspect_ratio = :equal,
          linecolor = "blue" , legend = false)
 
   plot!( nodesCMatrix[ [indexFirstNode, indexSecondNode], 1 ]
            + scaleFactor* [ UG[indexFirstNode*2-1], UG[indexSecondNode*2-1]] ,
          nodesCMatrix[ [indexFirstNode, indexSecondNode], 2 ]
            + scaleFactor* [ UG[indexFirstNode*2  ], UG[indexSecondNode*2  ]] ,
+           markershape = :circle,
+           aspect_ratio = :equal,
            linecolor = "red", legend = false )
 end
-#savefig("deformed.png")
+xlabel!("x") # hide
+ylabel!("y") # hide
+title!( "Deformed with scale factor " * string(scaleFactor) ) # hide
+savefig("deformed.png") # hide
+#
 # ### Problem with interval parameters
 #
