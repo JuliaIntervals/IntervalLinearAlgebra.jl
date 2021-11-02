@@ -287,3 +287,31 @@ Rump, Siegfried M. [*Fast and parallel interval arithmetic*](https://www.tuhh.de
 ```@raw html
 </details></li></ul>
 ```
+---
+
+#### [SKA06]
+
+```@raw html
+<ul><li>
+```
+Skalna, Iwona [*A Method for Outer Interval Solution of Systems of Linear Equations Depending Linearly on Interval Parameters*](https://doi.org/10.1007/s11155-006-4878-y),
+Reliable Computing, 12.2, 107-120, 2006
+```@raw html
+<li style="list-style: none"><details>
+<summary>bibtex</summary>
+```
+```
+@article{skalna2006,
+  title={A Method for Outer Interval Solution of Systems of Linear Equations Depending Linearly on Interval Parameters},
+  author={Skalna, Iwona},
+  journal={Reliable Computing},
+  volume={12},
+  number={2},
+  pages={107--120},
+  year={2006},
+  publisher={Springer}
+}
+```
+```@raw html
+</details></li></ul>
+```

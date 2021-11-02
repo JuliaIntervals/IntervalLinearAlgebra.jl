@@ -66,28 +66,32 @@ end
 #
 # ## Example problem
 #
-# ### Problem with fixed parameters
-# In this section, a problem based on Example 4.1 from (https://github.com/JuliaIntervals/IntervalLinearAlgebra.jl/files/7271616/skalna2006.pdf) is considered. The following diagram shows the truss structure considered.
+# A problem based on Example 4.1 from [[SKA06]](@ref) is considered. The following diagram shows the truss structure considered.
 #
 # ![](../assets/trussDiagram.png)
+#
+#
+# ### Case with fixed parameters
 #
 # The scalar parameters considered are given by
 E = 2e11 ; # Young modulus
 A = 5e-3 ; # Cross-section area
 # The coordinate matrix is given by
+## coordinates   x  y
 nodesCMatrix = [ 0. 0. ;
                  1. 1. ;
                  2. 0. ;
                  3. 1. ;
                  4. 0. ];
 # the connectivity matrix is given by
-connecMatrix = [ 1 2 ;
-                 1 3 ;
-                 2 3 ;
-                 2 4 ;
-                 3 4 ;
-                 3 5 ;
-                 4 5 ];
+## connectivity  start end
+connecMatrix = [ 1     2 ;
+                 1     3 ;
+                 2     3 ;
+                 2     4 ;
+                 3     4 ;
+                 3     5 ;
+                 4     5 ];
 # and the fixed degrees of freedom (supports) are defined by the vector
 fixedDofs     = [2 9 10 ];
 #
@@ -131,33 +135,34 @@ UG[ freeDofs ] = u ;
 #
 # #### Deformed structure
 #
+# The reference (dashed blue line) and deformed (solid red)  configurations of the structure are ploted. Since the displacements are very small, a `scaleFactor` is considered to amplify the deformation and ease the visualization.
+#
 using Plots
-
 scaleFactor = 2e3 ;
-
 plot();
 for elem in 1:numElems
   indexFirstNode  = connecMatrix[ elem, 1 ];
   indexSecondNode = connecMatrix[ elem, 2 ];
+  # plot reference element
   plot!( nodesCMatrix[ [indexFirstNode, indexSecondNode], 1 ],
          nodesCMatrix[ [indexFirstNode, indexSecondNode], 2 ],
-         linestyle = :dash,
-         aspect_ratio = :equal,
-         linecolor = "blue" , legend = false)
+         linestyle = :dash,  aspect_ratio = :equal,
+         linecolor = "blue", legend = false)
 
+  # plot deformed element
   plot!( nodesCMatrix[ [indexFirstNode, indexSecondNode], 1 ]
            + scaleFactor* [ UG[indexFirstNode*2-1], UG[indexSecondNode*2-1]] ,
          nodesCMatrix[ [indexFirstNode, indexSecondNode], 2 ]
-           + scaleFactor* [ UG[indexFirstNode*2  ], UG[indexSecondNode*2  ]] ,
-           markershape = :circle,
-           aspect_ratio = :equal,
-           linecolor = "red", legend = false )
+           + scaleFactor* [ UG[indexFirstNode*2  ], UG[indexSecondNode*2  ]] , markershape = :circle, aspect_ratio = :equal, linecolor = "red",
+           linewidth=1.5, legend = false )
 end
-xlabel!("x") # hide
-ylabel!("y") # hide
+xlabel!("x (m)") # hide
+ylabel!("y (m)") # hide
 title!( "Deformed with scale factor " * string(scaleFactor) ) # hide
 savefig("deformed.png") # hide
 #
 # ![](deformed.png)
+#
 # ### Problem with interval parameters
 #
+# TO DO
