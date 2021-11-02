@@ -143,13 +143,13 @@ plot();
 for elem in 1:numElems
   indexFirstNode  = connecMatrix[ elem, 1 ];
   indexSecondNode = connecMatrix[ elem, 2 ];
-  # plot reference element
+  ## plot reference element
   plot!( nodesCMatrix[ [indexFirstNode, indexSecondNode], 1 ],
          nodesCMatrix[ [indexFirstNode, indexSecondNode], 2 ],
          linestyle = :dash,  aspect_ratio = :equal,
          linecolor = "blue", legend = false)
 
-  # plot deformed element
+  ## plot deformed element
   plot!( nodesCMatrix[ [indexFirstNode, indexSecondNode], 1 ]
            + scaleFactor* [ UG[indexFirstNode*2-1], UG[indexSecondNode*2-1]] ,
          nodesCMatrix[ [indexFirstNode, indexSecondNode], 2 ]
