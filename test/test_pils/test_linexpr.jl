@@ -1,18 +1,21 @@
 @testset "linear expressions variables" begin
-    @linvars x y z
+    vars = @linvars x y z
 
+    @test vars == [x, y, z]
     @test x isa AffineExpression{Int}
     @test x.coeffs == [1, 0, 0, 0]
     @test y.coeffs == [0, 1, 0, 0]
     @test z.coeffs == [0, 0, 1, 0]
 
-    @linvars x[1:5]
+    vars2 = @linvars x[1:5]
+    @test vars2 == [x1, x2, x3, x4, x5]
 
     @test x1 isa AffineExpression{Int}
     @test x1.coeffs == [1, 0, 0, 0, 0, 0]
     @test x5.coeffs == [0, 0, 0, 0, 1, 0]
 
-    @linvars x
+    vars3 = @linvars x
+    @test vars3 == [x]
 
     @test x isa AffineExpression{Int}
     @test x.coeffs == [1, 0]

@@ -3,7 +3,7 @@ module IntervalLinearAlgebra
 using StaticArrays, Requires, Reexport
 using LinearAlgebra: checksquare
 
-import Base: *
+import Base: +, -, *, ==, show, convert, promote_rule, zero, one
 import CommonSolve: solve
 import IntervalArithmetic: mid
 

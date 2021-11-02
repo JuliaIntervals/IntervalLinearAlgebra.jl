@@ -1,5 +1,3 @@
-import Base: +, -, *, ==, show, convert, promote_rule, zero, one
-
 const _vars_dict = Dict(:vars => Symbol[])
 
 """
@@ -51,14 +49,22 @@ Macro to construct the variables used to represent [`AffineExpression`](@ref).
 ### Examples
 
 ```jldoctest
-julia> @linvars x # creates the variable x
-x
+julia> @linvars x
+1-element Vector{AffineExpression{Int64}}:
+ x
 
-julia> @linvars x y z # creates variables x y z
-z
+julia> @linvars x y z
+3-element Vector{AffineExpression{Int64}}:
+ x
+ y
+ z
 
-julia> @linvars x[1:4] # creates variables x1 x2 x3 x4
-x4
+julia> @linvars x[1:4]
+4-element Vector{AffineExpression{Int64}}:
+ x1
+ x2
+ x3
+ x4
 ```
 """
 macro linvars(x...)
@@ -66,11 +72,14 @@ macro linvars(x...)
     _vars_dict[:vars] = vars
 
     ex = quote end
+    vars_ex = Expr(:vect)
     for (i, s) in enumerate(vars)
         c = zeros(Int, length(vars) + 1)
         c[i] = 1
         push!(ex.args, :($(esc(s)) = AffineExpression($c)))
+        push!(vars_ex.args, s)
     end
+    push!(ex.args, esc(vars_ex))
     return ex
 end
 
