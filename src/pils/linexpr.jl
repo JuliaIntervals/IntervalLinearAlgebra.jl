@@ -2,6 +2,21 @@ import Base: +, -, *, ==, show, convert, promote_rule, zero, one
 
 const _vars_dict = Dict(:vars => Symbol[])
 
+"""
+    AffineExpression{T}
+
+Data structure to represent affine expressions, such as ``x+2y+z+4``.
+
+### Examples
+
+```jldoctest
+julia> @linvars x y z
+z
+
+julia> p1 = x + 2y + z + 4
+x+2y+z+4
+```
+"""
 struct AffineExpression{T}
     coeffs::Vector{T}
 end
@@ -28,6 +43,24 @@ function _get_vars(x...)
     end
 end
 
+"""
+    @linvars(x...)
+
+Macro to construct the variables used to represent [`AffineExpression`](@ref).
+
+### Examples
+
+```jldoctest
+julia> @linvars x # creates the variable x
+x
+
+julia> @linvars x y z # creates variables x y z
+z
+
+julia> @linvars x[1:4] # creates variables x1 x2 x3 x4
+x4
+```
+"""
 macro linvars(x...)
     vars = _get_vars(x...)
     _vars_dict[:vars] = vars
