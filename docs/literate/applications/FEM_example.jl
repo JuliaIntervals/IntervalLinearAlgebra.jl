@@ -70,17 +70,6 @@ end
 #
 # ![](../assets/trussDiagram.png)
 #
-# ```@raw html
-# <img src="../assets/trussDiagram.svg" alt="truss example diagram" width="500"/>
-# ```
-#
-# ```@raw html
-# <img src="../assets/trussDiagram.png" alt="truss example diagram" width="500"/>
-# ```
-#
-# ```@raw html
-# <img src="./assets/trussDiagram.svg" alt="truss example diagram" width="500"/>
-# ```
 #
 # ### Case with fixed parameters
 #
