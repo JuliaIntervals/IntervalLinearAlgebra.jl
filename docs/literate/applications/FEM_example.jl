@@ -69,7 +69,7 @@ end
 # A problem based on Example 4.1 from [[SKA06]](@ref) is considered. The following diagram shows the truss structure considered.
 #
 # ```@raw html
-# <img src="../assets/trussDiagram.svg" style="width: 100%" alt="truss diagram"/>
+# <img src="../../assets/trussDiagram.svg" style="width: 100%" alt="truss diagram"/>
 # ```
 #
 # ### Case with fixed parameters
