@@ -1,6 +1,31 @@
 # [References](@id all_ref)
 
-#### [HLA13] 
+#### [BAT14]
+
+```@raw html
+<ul><li>
+```
+K.-J. Bathe, Finite Element Procedures, Watertown, USA, 2014.
+```@raw html
+<li style="list-style: none"><details>
+<summary>bibtex</summary>
+```
+```
+@book{Bathe2014,
+	address = {Watertown, USA},
+	author = {Bathe, Klaus-J{\"{u}}rgen},
+	edition = {2},
+	title = {{Finite Element Procedures}},
+	year = {2014},
+  url  = {https://web.mit.edu/kjb/www/Books/FEP_2nd_Edition_4th_Printing.pdf}
+}
+```
+```@raw html
+</details></li></ul>
+```
+---
+
+#### [HLA13]
 
 ```@raw html
 <ul><li>
@@ -30,7 +55,7 @@ M. Hladík. Bounds on eigenvalues of real and complex interval matrices. Appl. M
 ---
 
 
-#### [HOR19] 
+#### [HOR19]
 
 ```@raw html
 <ul><li>
@@ -53,7 +78,7 @@ J. Horácek, [*Interval Linear and Nonlinear Systems*](https://kam.mff.cuni.cz/~
 ```
 ---
 
-#### [JAU14] 
+#### [JAU14]
 
 ```@raw html
 <ul><li>
@@ -84,7 +109,7 @@ L. Jaulin and B. Desrochers, [*Introduction to the algebra of separators with ap
 ```@raw html
 <ul><li>
 ```
-A. Neumaier, *Interval methods for systems of equations*, Cambridge university press, 1990 
+A. Neumaier, *Interval methods for systems of equations*, Cambridge university press, 1990
 ```@raw html
 <li style="list-style: none"><details>
 <summary>bibtex</summary>
@@ -256,6 +281,34 @@ Rump, Siegfried M. [*Fast and parallel interval arithmetic*](https://www.tuhh.de
   number={3},
   pages={534--554},
   year={1999},
+  publisher={Springer}
+}
+```
+```@raw html
+</details></li></ul>
+```
+---
+
+#### [SKA06]
+
+```@raw html
+<ul><li>
+```
+Skalna, Iwona [*A Method for Outer Interval Solution of Systems of Linear Equations Depending Linearly on Interval Parameters*](https://doi.org/10.1007/s11155-006-4878-y),
+Reliable Computing, 12.2, 107-120, 2006
+```@raw html
+<li style="list-style: none"><details>
+<summary>bibtex</summary>
+```
+```
+@article{skalna2006,
+  title={A Method for Outer Interval Solution of Systems of Linear Equations Depending Linearly on Interval Parameters},
+  author={Skalna, Iwona},
+  journal={Reliable Computing},
+  volume={12},
+  number={2},
+  pages={107--120},
+  year={2006},
   publisher={Springer}
 }
 ```
