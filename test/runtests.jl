@@ -1,4 +1,4 @@
-using IntervalLinearAlgebra, StaticArrays, LazySets
+using IntervalLinearAlgebra, StaticArrays, LazySets, IntervalConstraintProgramming
 using Test
 
 const IA = IntervalArithmetic
