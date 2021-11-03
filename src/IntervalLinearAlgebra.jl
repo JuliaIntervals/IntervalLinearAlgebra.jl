@@ -3,7 +3,7 @@ module IntervalLinearAlgebra
 using StaticArrays, Requires, Reexport
 using LinearAlgebra: checksquare
 
-import Base: *
+import Base: +, -, *, ==, show, convert, promote_rule, zero, one
 import CommonSolve: solve
 import IntervalArithmetic: mid
 
@@ -19,7 +19,8 @@ export
     comparison_matrix, interval_norm, interval_isapprox, Orthants,
     is_H_matrix, is_strongly_regular, is_strictly_diagonally_dominant, is_Z_matrix, is_M_matrix,
     rref,
-    eigenbox, Rohn, Hertz, verify_eigen, bound_perron_frobenius_eigenvalue
+    eigenbox, Rohn, Hertz, verify_eigen, bound_perron_frobenius_eigenvalue,
+    AffineExpression, @linvars
 
 
 include("linear_systems/enclosures.jl")
@@ -31,6 +32,7 @@ include("multiplication.jl")
 include("utils.jl")
 include("classify.jl")
 include("rref.jl")
+include("pils/linexpr.jl")
 
 include("eigenvalues/interval_eigenvalues.jl")
 include("eigenvalues/verify_eigs.jl")
