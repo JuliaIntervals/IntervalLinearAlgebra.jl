@@ -37,6 +37,7 @@ include("classify.jl")
 include("rref.jl")
 include("pils/linexpr.jl")
 include("pils/affine_parametric_array.jl")
+include("pils/pils_solvers.jl")
 
 include("eigenvalues/interval_eigenvalues.jl")
 include("eigenvalues/verify_eigs.jl")
