@@ -2,12 +2,15 @@ abstract type ParametricIntervalLinearSolver end
 
 struct Skalna06 <: ParametricIntervalLinearSolver end
 
-function (sk::Skalna06)(A::AffineParametricArray,
-                        b::AffineParametricArray,
-                        p::Vector{<:Interval})
+_eval_vec(b::AffineParametricVector, mp) = b(mp)
+_eval_vec(b::AbstractVector, _) = b
+
+function (sk::Skalna06)(A::AffineParametricMatrix,
+                        b::AbstractVector,
+                        p::AbstractVector{<:Interval})
     mp = map(mid, p)
     R = inv(A(mp))
-    bp = b(mp)
+    bp = _eval_vec(b, mp)
     x0 = R * bp
     D = (R * A)(p)
 
@@ -19,7 +22,7 @@ function (sk::Skalna06)(A::AffineParametricArray,
 end
 
 function solve(A::AffineParametricMatrix,
-               b::AffineParametricVector,
+               b::AbstractVector,
                p::Vector{<:Interval},
                solver::ParametricIntervalLinearSolver=Skalna06())
 
