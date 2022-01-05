@@ -7,7 +7,7 @@ _eval_vec(b::AbstractVector, _) = b
 
 function (sk::Skalna06)(A::AffineParametricMatrix,
                         b::AbstractVector,
-                        p::AbstractVector{<:Interval})
+                        p)
     mp = map(mid, p)
     R = inv(A(mp))
     bp = _eval_vec(b, mp)
@@ -23,7 +23,7 @@ end
 
 function solve(A::AffineParametricMatrix,
                b::AbstractVector,
-               p::Vector{<:Interval},
+               p,
                solver::ParametricIntervalLinearSolver=Skalna06())
 
     checksquare(A) == length(b) || throw(DimensionMismatch())

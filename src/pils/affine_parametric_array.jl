@@ -8,7 +8,7 @@ const AffineParametricMatrix{T, MT} = AffineParametricArray{T, 2, MT} where {T, 
 const AffineParametricVector{T, VT} = AffineParametricArray{T, 1, VT} where {T, VT <: AbstractVector{T}}
 
 # apas are callable
-function (apa::AffineParametricArray)(p::AbstractVector)
+function (apa::AffineParametricArray)(p)
     length(p) + 1 == length(apa.coeffs) || throw(ArgumentError("dimension mismatch"))
     return sum(apa.coeffs[i] * p[i] for i in eachindex(p)) + apa.coeffs[end]
 end
