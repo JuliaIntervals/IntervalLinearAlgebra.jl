@@ -8,7 +8,7 @@ Data structure to represent affine expressions, such as ``x+2y+z+4``.
 ### Examples
 
 ```jldoctest
-julia> @linvars x y z
+julia> @affinevars x y z
 3-element Vector{AffineExpression{Int64}}:
  x
  y
