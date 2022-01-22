@@ -165,5 +165,59 @@ savefig("deformed.png") # hide
 # ![](deformed.png)
 #
 # ### Problem with interval parameters
-#
-# TO DO
+
+md"""
+Suppose now we have a 10% uncertainty for the stiffness $s_{23}$ associated with the third
+element. To model the problem, we introduce the symbolic variable `s23` using the IntervalLinearAlgebra macro `@linvars`.
+"""
+
+using IntervalLinearAlgebra
+@linvars s23
+
+# now we can construct the matrix as before
+
+KGp = zeros(AffineExpression{Float64}, 2*numNodes, 2*numNodes );
+for elem in 1:numElems
+  print(" assembling stiffness matrix of element ", elem , "\n")
+  indexFirstNode  = connecMatrix[ elem, 1 ]
+  indexSecondNode = connecMatrix[ elem, 2 ]
+  dofsElem = [2*indexFirstNode-1 2*indexFirstNode 2*indexSecondNode-1 2*indexSecondNode ]
+  KGelem, lengthElem = unitaryStiffnessMatrix( nodesCMatrix[ indexSecondNode, : ], nodesCMatrix[ indexFirstNode, : ] )
+  if elem == 3
+    stiffnessParam = s23
+  else
+    stiffnessParam = E * A / lengthElem ;
+  end
+  for i in 1:4
+    for j in 1:4
+      KGp[ dofsElem[i], dofsElem[j] ] = KGp[ dofsElem[i], dofsElem[j] ] + stiffnessParam * KGelem[i,j]
+    end
+  end
+end
+KGp = KGp[ freeDofs, : ]
+KGp = KGp[ :, freeDofs ]
+
+# Now we can construct the [`AffineParametricArray`](@ref)
+
+KGp = AffineParametricArray(KGp)
+
+# The range of the stiffness is
+
+srange = E * A / sqrt(2) ± 0.1 * E * A / sqrt(2)
+
+# To solve the system, we could of course just subsitute `srange` into the parametric matrix
+# `KGp` and solve the "normal" interval linear system
+
+usimple = solve(KGp(srange), Interval.(FG))
+
+# This approach, however soffers from the [dependency problem](https://en.wikipedia.org/wiki/Interval_arithmetic#Dependency_problem)
+# and hence the compute displacement will be an overestimation of the true displacement.
+
+# To mitigate this issue, algorithms to solve linear systems with parameters have been developed.
+# In this case we use the algorithm presented in [[SKA06]](@ref)
+
+uparam = solve(KGp, FG, srange)
+
+# We can now compare the naive and parametric solution
+
+hcat(usimple, uparam)/1e-6

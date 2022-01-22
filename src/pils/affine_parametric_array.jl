@@ -1,6 +1,5 @@
-struct AffineParametricArray{T, N, MT<:AbstractArray{T, N}, VAR} <: AbstractArray{T, N}
+struct AffineParametricArray{T, N, MT<:AbstractArray{T, N}} <: AbstractArray{T, N}
     coeffs::Vector{MT}
-    vars::Vector{VAR}
 end
 
 const AffineParametricMatrix{T, MT} = AffineParametricArray{T, 2, MT} where {T, MT<:AbstractMatrix{T}}
@@ -13,45 +12,53 @@ function (apa::AffineParametricArray)(p)
     return sum(apa.coeffs[i] * p[i] for i in eachindex(p)) + apa.coeffs[end]
 end
 
-function (apa::AffineParametricArray)()
-   return apa.coeffs[end] + sum(apa.coeffs[i] * apa.vars[i] for i in eachindex(apa.vars))
-end
-
 # Array interface
 IndexStyle(::Type{<:AffineParametricArray}) = IndexLinear()
 size(apa::AffineParametricArray) = size(apa.coeffs[1])
 
-getindex(apa::AffineParametricArray, idx...) = getindex(apa(), idx...)
-
-# operations
-function ==(apa1::AffineParametricArray, apa2::AffineParametricArray)
-    return apa1.vars == apa2.vars && apa1.coeffs == apa2.coeffs
+function getindex(apa::AffineParametricArray, idx...)
+    nvars = length(_vars_dict[:vars])
+    vars = [AffineExpression(Vector(c)) for c in eachcol(Matrix(I, nvars + 1, nvars))]
+    tmp =  sum(getindex(c, idx...) * v for (v, c) in zip(vars, apa.coeffs[1:end-1]))
+    return getindex(apa.coeffs[end], idx...) + tmp
 end
+
+function setindex!(apa::AffineParametricArray, ae::AffineExpression, idx...)
+    @inbounds for i in eachindex(ae.coeffs)
+        setindex!(apa.coeffs[i], ae.coeffs[i], idx...)
+    end
+end
+
+function setindex!(apa::AffineParametricArray, num::Number, idx...)
+    setindex!(apa.coeffs[end], num, idx...)
+end
+
+==(apa1::AffineParametricArray, apa2::AffineParametricArray) = apa1.coeffs == apa2.coeffs
 
 # unary operations
 +(apa::AffineParametricArray) = apa
--(apa::AffineParametricArray) = AffineParametricArray(-apa.coeffs, apa.vars)
+-(apa::AffineParametricArray) = AffineParametricArray(-apa.coeffs)
 
 # addition subtraction
 for op in (:+, :-)
     @eval function $op(apa1::AffineParametricArray, apa2::AffineParametricArray)
-        return AffineParametricArray($op(apa1.coeffs, apa2.coeffs), apa1.vars)
+        return AffineParametricArray($op(apa1.coeffs, apa2.coeffs))
     end
 
-    @eval function $op(apa::AffineParametricArray{T, N, MT, VAR}, B::MS) where {T, N, MT, VAR, S, MS<:AbstractArray{S, N}}
+    @eval function $op(apa::AffineParametricArray{T, N, MT}, B::MS) where {T, N, MT, S, MS<:AbstractArray{S, N}}
         MTS = promote_type(MT, MS)
         coeffs = similar(apa.coeffs, MTS)
         coeffs .= apa.coeffs
         coeffs[end] = $op(coeffs[end], B)
-        return AffineParametricArray(coeffs, apa.vars)
+        return AffineParametricArray(coeffs)
     end
 
-    @eval function $op(B::MS, apa::AffineParametricArray{T, N, MT, VAR}) where {T, N, MT, VAR, S, MS<:AbstractArray{S, N}}
+    @eval function $op(B::MS, apa::AffineParametricArray{T, N, MT}) where {T, N, MT, S, MS<:AbstractArray{S, N}}
         MTS = promote_type(MT, MS)
         coeffs = similar(apa.coeffs, MTS)
         coeffs .= $op(apa.coeffs)
         coeffs[end] = $op(B, apa.coeffs[end])
-        return AffineParametricArray(coeffs, apa.vars)
+        return AffineParametricArray(coeffs)
     end
 end
 
@@ -59,41 +66,34 @@ end
 for op in (:*, :\)
     @eval function $op(A::AbstractMatrix, apa::AffineParametricArray)
         coeffs = [$op(A, coeff) for coeff in apa.coeffs]
-        return AffineParametricArray(coeffs, apa.vars)
+        return AffineParametricArray(coeffs)
     end
 end
 
 function *(apa::AffineParametricMatrix, B::AbstractMatrix)
     coeffs = [coeff*B for coeff in apa.coeffs]
-    return AffineParametricArray(coeffs, apa.vars)
+    return AffineParametricArray(coeffs)
 end
 
 function *(apa::AffineParametricMatrix, v::AbstractVector)
     coeffs = [coeff*v for coeff in apa.coeffs]
-    return AffineParametricArray(coeffs, apa.vars)
+    return AffineParametricArray(coeffs)
 end
 
-*(apa::AffineParametricArray, n::Number) = AffineParametricArray(apa.coeffs * n, apa.vars)
-*(n::Number, apa::AffineParametricArray) = AffineParametricArray(apa.coeffs * n, apa.vars)
-/(apa::AffineParametricArray, n::Number) = AffineParametricArray(apa.coeffs / n, apa.vars)
+*(apa::AffineParametricArray, n::Number) = AffineParametricArray(apa.coeffs * n)
+*(n::Number, apa::AffineParametricArray) = AffineParametricArray(apa.coeffs * n)
+/(apa::AffineParametricArray, n::Number) = AffineParametricArray(apa.coeffs / n)
 
 # with AffineExpression
-function AffineParametricArray(A::AbstractArray{<:AffineExpression}, vars::Vector{<:AffineExpression})
-    ncoeffs = length(vars) + 1
+function AffineParametricArray(A::AbstractArray{<:AffineExpression})
+    ncoeffs = length(first(A).coeffs)
     coeffs = [map(a -> a.coeffs[i], A) for i in 1:ncoeffs]
-    return AffineParametricArray(coeffs, vars)
+    return AffineParametricArray(coeffs)
 end
 
-function AffineParametricArray(A::AbstractArray{<:Number}, vars::Vector{<:AffineExpression})
-    ncoeffs = length(vars) + 1
+function AffineParametricArray(A::AbstractArray{<:Number})
+    ncoeffs = length(_vars_dict[:vars]) + 1
     coeffs = [zero(A) for _ in 1:ncoeffs]
     coeffs[end] = A
-    # vars = [AffineExpression(Vector(c)) for c in eachcol(Matrix{T}(I, ncoeffs, ncoeffs-1))]
-    return AffineParametricArray(coeffs, vars)
-end
-
-function setindex!(apa::AffineParametricArray, ae::AffineExpression, idx...)
-    @inbounds for i in eachindex(ae.coeffs)
-        setindex!(apa.coeffs[i], ae.coeffs[i], idx...)
-    end
+    return AffineParametricArray(coeffs)
 end
