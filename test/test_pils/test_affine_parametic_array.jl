@@ -1,5 +1,5 @@
 @testset "Affine Parametric Array construction" begin
-    @linvars x y z
+    @affinevars x y z
 
     vars = [x, y, z]
 
@@ -24,7 +24,7 @@
 end
 
 @testset "Affine parametric array operations" begin
-    @linvars x y z
+    @affinevars x y z
     vars = [x, y, z]
 
     A = AffineParametricArray([x+1 y+2;x+y+z+1 x-z], vars)

@@ -45,24 +45,24 @@ function _get_vars(x...)
 end
 
 """
-    @linvars(x...)
+    @affinevars(x...)
 
 Macro to construct the variables used to represent [`AffineExpression`](@ref).
 
 ### Examples
 
 ```jldoctest
-julia> @linvars x
+julia> @affinevars x
 1-element Vector{AffineExpression{Int64}}:
  x
 
-julia> @linvars x y z
+julia> @affinevars x y z
 3-element Vector{AffineExpression{Int64}}:
  x
  y
  z
 
-julia> @linvars x[1:4]
+julia> @affinevars x[1:4]
 4-element Vector{AffineExpression{Int64}}:
  x1
  x2
@@ -70,7 +70,7 @@ julia> @linvars x[1:4]
  x4
 ```
 """
-macro linvars(x...)
+macro affinevars(x...)
     vars = _get_vars(x...)
     _vars_dict[:vars] = vars
 

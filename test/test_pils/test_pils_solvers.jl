@@ -7,7 +7,7 @@
     s13 = s31 = s24 = s42 = s35 = s53 = E*σ/2
 
     # dummy variable
-    @linvars s23
+    @affinevars s23
 
     K = AffineParametricArray([s12/2+s13 -s12/2 -s12/2 -s13 0 0 0;
         -s21/2 (s21+s23)/2+s24 (s21-s23)/2 -s23/2 s23/2 -s24 0;
