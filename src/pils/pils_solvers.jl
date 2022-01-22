@@ -1,5 +1,11 @@
 abstract type ParametricIntervalLinearSolver end
 
+"""
+    Skalna06
+
+Direct solver for interval linear systems with affine-parametric dependency. For more
+information see [[SKA06]](@ref).
+"""
 struct Skalna06 <: ParametricIntervalLinearSolver end
 
 _eval_vec(b::AffineParametricVector, mp) = b(mp)

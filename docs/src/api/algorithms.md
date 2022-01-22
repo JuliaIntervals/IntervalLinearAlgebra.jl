@@ -28,3 +28,11 @@ LinearKrawczyk
 LinearOettliPrager
 NonLinearOettliPrager
 ```
+
+## Parametric Solvers
+
+### Direct Methods
+
+```@docs
+Skalna06
+```
