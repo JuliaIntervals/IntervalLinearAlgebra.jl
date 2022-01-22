@@ -158,6 +158,7 @@ where `file.jl` is the file containing the functions needing `Example.jl`. The l
 ## Documentation guideline
 
 * Documentation is written with [Documenter.jl](https://github.com/JuliaDocs/Documenter.jl). Documentation files are in `docs/src`, generally as markdown file.
+* If you want to modify an existing file, open it and start writing. If you want to add a new page, create a new markdown file in the appropriate subfolder of `docs/src` and add the line `"mytitle" => "path/to/file.md"` to the page structure in the `docs/make.jl` file [here](https://github.com/JuliaIntervals/IntervalLinearAlgebra.jl/blob/main/docs/make.jl#L31-L53). 
 * If you want to include a Julia code example that is **not** executed in the markdown file, use ````` ```julia ````` blocks, e.g.
 
 ````
