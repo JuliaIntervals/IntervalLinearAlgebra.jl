@@ -132,7 +132,7 @@ u = KG \ FG
 UG = zeros( 2*numNodes )
 UG[ freeDofs ] = u
 #
-# The reference (dashed blue line) and deformed (solid red)  configurations of the structure are ploted.
+# The reference (dashed blue line) and deformed (solid red) configurations of the structure are ploted.
 # Since the displacements are very small, a `scaleFactor` is considered to amplify
 # the deformation and ease the visualization.
 #
@@ -162,7 +162,7 @@ savefig("deformed.png") # hide
 #
 # ![](deformed.png)
 #
-# ### Problem with interval parameters
+# #### Problem with interval parameters
 
 md"""
 Suppose now we have a 10% uncertainty for the stiffness $s_{23}$ associated with the third
@@ -205,12 +205,12 @@ KGp = AffineParametricArray(KGp)
 srange = E * A / sqrt(2) ± 0.1 * E * A / sqrt(2)
 
 # To solve the system, we could of course just subsitute `srange` into the parametric matrix
-# `KGp` and solve the "normal" interval linear system
+# `KGp` and solve the "normal" interval linear system (naive approach)
 
 usimple = solve(KGp(srange), Interval.(FG))
 
-# This approach, however soffers from the [dependency problem](https://en.wikipedia.org/wiki/Interval_arithmetic#Dependency_problem)
-# and hence the compute displacement will be an overestimation of the true displacement.
+# This approach, however suffers from the [dependency problem](https://en.wikipedia.org/wiki/Interval_arithmetic#Dependency_problem)
+# and hence the computed displacements will be an overestimation of the true displacements.
 
 # To mitigate this issue, algorithms to solve linear systems with parameters have been developed.
 # In this case we use the algorithm presented in [[SKA06]](@ref)
@@ -230,9 +230,11 @@ next section.
 """
 # ## A continuum mechanics problem
 
-# TODO: GENERAL DESCRIPTION OF THE PROBLEM
+md"""
+In this problem a simple solid plane problem is considered. The solid is fixed on its bottom edge and loaded with a shear tension on the top edge.
+"""
 
-# First, we define and cosntruct the mesh
+# First, we set the geometry and construct a regular grid of points
 
 L   = [1.0, 4.0]         # dimension in each direction
 t   = 0.2                # thickness
@@ -242,7 +244,9 @@ nel = [nx, ny]
 neltot = 2 * nx * ny;    # total number of elements
 nnos         = nel .+ 1       # number of nodes in each direction
 nnosx, nnosy = nnos
-nnostot      = nnosx * nnosy  # total number of nodes
+nnostot      = nnosx * nnosy ;  # total number of nodes
+
+# we compute the vector of indexes of the loaded nodes (bottom ones)
 
 startloadnode = (nnosy - 1) * nnosx + 1 # boundary conditions
 endinloadnode = nnosx * nnosy
@@ -250,13 +254,16 @@ LoadNodes = startloadnode:endinloadnode
 lins1   = range(0, L[1], length=nnosx)
 lins2   = range(0, L[2], length=nnosy)
 
-nodes = zeros(nnostot, 2) # nodes: first column x-coord, second column y-coord
+# and construct the matrix of coordinates of the nodes
 
+nodes = zeros(nnostot, 2) # nodes: first column x-coord, second column y-coord
 for i = 1:nnosy   # first discretize along y-coord
     idx = (nnosx * (i-1) + 1) : (nnosx*i)
     nodes[idx, 1] = lins1
     nodes[idx, 2] = fill(lins2[i], nnosx)
 end
+
+# The connectivity matrix Mcon is computed, considering 3-node triangular elements
 
 Mcon = Matrix{Int64}(undef, neltot, 3); # connectivity matrix
 for j = 1:ny
@@ -268,16 +275,14 @@ for j = 1:ny
     end
 end
 
-Xel = Matrix{Float64}(undef, 3, neltot)
-Yel = Matrix{Float64}(undef, 3, neltot)
+# the undeformed mesh is plotted as follows
 
+Xel = Matrix{Float64}(undef, 3, neltot); Yel = Matrix{Float64}(undef, 3, neltot)
 for i = 1:neltot
     Xel[:, i] = nodes[Mcon[i, :], 1] # the j-th column has the x value at the j-th element
     Yel[:, i] = nodes[Mcon[i, :], 2] # the j-th column has the y value at the j-th element
 end
-
 fig = plot(ratio=1, xlimits=(-1, 3), title="Undeformed mesh", xlabel="x", ylabel="y")
-
 plot!(fig, [Xel[:, 1]; Xel[1, 1]], [Yel[:, 1]; Yel[1, 1]], linecolor=:blue, linewidth=1.4, label="")
 for i = 2:neltot
     plot!(fig, [Xel[:, i]; Xel[1, i]], [Yel[:, i]; Yel[1, i]], linecolor=:blue, linewidth=1.4, label="")
@@ -286,49 +291,45 @@ savefig("undeformed2.png") # hide
 
 # ![](undeformed2.png)
 
-# Let us now define the material parameters. Here we assume a 10% uncertainty on the Young modulus
+# Let us now define the material parameters. Here we assume a 10% uncertainty on the Young modulus, while Poisson ratio and the density are fixed. This can be related to a steel plate problem with an unknown composition, thus unknown exact Young modulus value.
 
-ν  = 0.25   # Poisson modulus
+ν  = 0.25   # Poisson
 ρ  = 8e3  # density
 
 @affinevars E # Young modulus, defined as symbolic variable
 En = 200e9  # nominal value of the young modulus
 Erange = En ± 0.1 * En # uncertainty range of the young modulus
 
-# We can now assemble the stiffness matrix
-
-## matrix for plain stress state
+# We can now assemble the global stiffness matrix.
+# We set the constitutive matrix for a plane stress state.
 C = E / (1-ν^2) * [ 1    ν         0 ;
                     ν    1         0 ;
                     0    0   (1-ν)/2 ]
 
-
-# Degrees of freedom (fixed and free)
+# We compute the free and fixed degrees of freedom
 function nodes2dofs(u)
     v = Vector{Int64}(undef, 2*length(u))
     for i in 1:length(u)
-        v[2i-1] = 2u[i] - 1
-        v[2i] = 2u[i]
+        v[2i-1] = 2u[i] - 1;   v[2i] = 2u[i]
     end
     return v
 end
-
 FixNodes = 1:nnosx
 FixDofs = nodes2dofs(FixNodes)              # first add all dofs of the nodes
 deleteat!(FixDofs, 3:2:(length(FixDofs)-2)) # then remove the free dofs of the nodes
-
 LibDofs = Vector(1:2*nnostot)               # free degrees of fredom
 deleteat!(LibDofs, FixDofs)
+
+# and we assemble the matrix
 
 function stiffness_matrix(x, y, C, t)
 
     A = det([ones(1, 3); x'; y']) / 2 # element area
-
     B = 1 / (2*A) * [y[2]-y[3]                  0    y[3]-y[1]             0    y[1]-y[2]           0   ;
                              0          x[3]-x[2]            0     x[1]-x[3]            0     x[2]-x[1] ;
                      x[3]-x[2]          y[2]-y[3]    x[1]-x[3]     y[3]-y[1]    x[2]-x[1]     y[1]-y[2] ]
 
-    K = B' * C * B * A * t
+    K = B' * C * B * A * t ;
     return K
 end
 
@@ -341,7 +342,7 @@ end
 
 K = AffineParametricArray(KG[LibDofs, LibDofs])
 
-# Finally, we define the load
+# Finally, we assemble the loads vector
 
 areaelemsup = L[1] / nx * t
 
@@ -366,7 +367,7 @@ nothing # hide
 
 u = solve(K, FLib, Erange) # solving
 
-## plotting
+# plotting
 U = zeros(Interval, 2*nnostot)
 U[LibDofs] .= u
 
@@ -378,7 +379,7 @@ nodesdef = hcat(nodes[:, 1] + Ux, nodes[:, 2] + Uy);
 Xeld = Interval.(copy(Xel))
 Yeld = Interval.(copy(Yel))
 
-## build elements coordinate vectors
+# build elements coordinate vectors
 for i = 1:neltot
     Xeld[:, i] = nodesdef[Mcon[i, :], 1] #  the j-th column has the x coordinate of the j-th element
     Yeld[:, i] = nodesdef[Mcon[i, :], 2] #  the j-th column has the y coordinate of the j-th element
