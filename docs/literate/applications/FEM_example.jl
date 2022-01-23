@@ -1,4 +1,4 @@
-# # Applications of ILA to FEM analysis
+# # Application of Interval Linear Algebra to FEM analysis
 # The Finite Element Method is widely used to solve PDEs in Engineering applications and particularly in Structural Analysis problems [[BAT14]](@ref). The procedure consists in discretizing the domain into _elements_ and constructing (_assembling_) a system of balance equations. For linear problems, this system can be usually written as
 # ```math
 # K \cdot d = f
