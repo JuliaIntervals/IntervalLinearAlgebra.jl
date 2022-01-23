@@ -1,11 +1,11 @@
-# # A simple FEM application
-# The Finite Element Method is widely used to solve PDEs in Engineering applications and particularly in Structural Analysis problems [[BAT14]](@ref). The procedure consists discretizing the domain into _elements_ and assembly a system of balance equations. For linear problems, this system can be usually written as
+# # Applications of ILA to FEM analysis
+# The Finite Element Method is widely used to solve PDEs in Engineering applications and particularly in Structural Analysis problems [[BAT14]](@ref). The procedure consists in discretizing the domain into _elements_ and constructing (_assembling_) a system of balance equations. For linear problems, this system can be usually written as
 # ```math
 # K \cdot d = f
 # \qquad
-# K = \sum_e K_e
+# K = \sum_{e=1}^{n_e} K_e
 # ```
-# where $f$ is the vector of external loads, $K_e$ is the element stiffness matrix and $d$
+# where $n_e$ is the number of elements of the domain, $f$ is the vector of external loads, $K_e$ is the stiffness matrix of element $e$, $K$ is the assembled stiffness matrix and $d$
 # is the vector of unknown displacements. This tutorial shows how IntervalLinearAlgebra can
 # be used to solve structural mechanics problems with uncertainty in the parameters. Particularly,
 # it highlights the importance of parametric interval linear systems.
