@@ -22,7 +22,7 @@ export
     is_H_matrix, is_strongly_regular, is_strictly_diagonally_dominant, is_Z_matrix, is_M_matrix,
     rref,
     eigenbox, Rohn, Hertz, verify_eigen, bound_perron_frobenius_eigenvalue,
-    AffineExpression, @linvars,
+    AffineExpression, @affinevars,
     AffineParametricArray, AffineParametricMatrix, AffineParametricVector
 
 
@@ -35,8 +35,9 @@ include("multiplication.jl")
 include("utils.jl")
 include("classify.jl")
 include("rref.jl")
-include("pils/linexpr.jl")
+include("pils/affine_expressions.jl")
 include("pils/affine_parametric_array.jl")
+include("pils/pils_solvers.jl")
 
 include("eigenvalues/interval_eigenvalues.jl")
 include("eigenvalues/verify_eigs.jl")
