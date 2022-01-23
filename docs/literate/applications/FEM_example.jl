@@ -5,15 +5,16 @@
 # \qquad
 # K = \sum_{e=1}^{n_e} K_e
 # ```
-# where $n_e$ is the number of elements of the domain, $f$ is the vector of external loads, $K_e$ is the stiffness matrix of element $e$, $K$ is the assembled stiffness matrix and $d$
+# where $n_e$ is the number of elements of the domain, $f$ is the vector of external loads, $K_e$ is the stiffness matrix of element $e$ in global coordinates, $K$ is the assembled stiffness matrix and $d$
 # is the vector of unknown displacements. This tutorial shows how IntervalLinearAlgebra can
 # be used to solve structural mechanics problems with uncertainty in the parameters. Particularly,
 # it highlights the importance of parametric interval linear systems.
 #
 # ## Simple truss structure
 #
-# A frequent and simple type of structures are _Truss structures_, which are formed by bars connected but not welded. Truss models are considered during the conceptual design of bridges or other structures.
+# A frequent and simple type of structures are _Truss structures_, which are formed by bars connected but not welded. Truss models are usually considered during the conceptual design of bridges or other structures.
 #
+# ### Stiffness equations
 # The stiffness matrix of a truss element in the local coordinate system is given by
 # ```math
 # K_L = s
@@ -27,7 +28,7 @@
 # \right),
 # ```
 #
-# where $s =\frac{E A}{L}$, with $E$ being the Young modulus, $A$ the area of the cross-section and $L$ the length of that truss element.
+# where $s =\frac{E A}{L}$ is the stiffness, $E$ is the Young modulus, $A$ is the area of the cross-section and $L$ is the length of that truss element.
 #
 # The change-of-basis matrix is given by
 # ```math
@@ -39,17 +40,18 @@
 #  0 & 0 &  \cos(\alpha) & -\sin(\alpha) \\
 #  0 & 0 &  \sin(\alpha) & \cos(\alpha)
 # \end{matrix}
-# \right),
+# \right).
 # ```
 #
 # The system of equations for each element is written in local coordinates as
 # ```math
 # K_L d_L = f_L
 # ```
-# and using the change-of-basis we obtain
+# and using the change-of-basis we obtain the equations for that element in the global systems of coordinates
 # ```math
-# K_G d_G = f_G \qquad K_G = Q K_L Q^T
+# K_G d_G = f_G \qquad K_G = Q K_L Q^T.
 # ```
+# After the system of equations for each element is in global coordinates, the whole system is assembled.
 #
 # The unitary stiffness matrix (for $s=1$) can be computed using the following function.
 function unitaryStiffnessMatrix( coordFirstNode, coordSecondNode  )
@@ -71,7 +73,7 @@ end
 # <img src="../../assets/trussDiagram.svg" style="width: 100%" alt="truss diagram"/>
 # ```
 #
-# ### Case with fixed parameters
+# #### Case with fixed parameters
 #
 # The scalar parameters considered are given by
 E = 2e11 ; # Young modulus
@@ -89,11 +91,11 @@ connecMatrix = [ 1     2 ;
                  2     4 ;
                  3     4 ;
                  3     5 ;
-                 4     5 ]
+                 4     5 ];
 # and the fixed degrees of freedom (supports) are defined by the vector
-fixedDofs = [2 9 10 ]
+fixedDofs = [ 2 9 10 ];
 
-# calculations
+# The number of elements and nodes are computed, as well as the free degrees of freedom.
 numNodes = size( nodesCMatrix )[1]  # compute the number of nodes
 numElems = size( connecMatrix )[1]  # compute the number of elements
 freeDofs = zeros(Int8, 2*numNodes-length(fixedDofs))
@@ -106,7 +108,7 @@ while indDof <= (2*numNodes)
   global indDof = indDof + 1
 end
 
-# assembly
+# The global stiffness equations are computed for the unknown displacements (free dofs)
 KG = zeros( 2*numNodes, 2*numNodes )
 FG = zeros( 2*numNodes )
 for elem in 1:numElems
@@ -125,7 +127,7 @@ FG[4] = -1e4 ;
 KG = KG[ freeDofs, : ]
 KG = KG[ :, freeDofs ]
 FG = FG[ freeDofs ]
-
+# and the system is solved.
 u = KG \ FG
 UG = zeros( 2*numNodes )
 UG[ freeDofs ] = u
