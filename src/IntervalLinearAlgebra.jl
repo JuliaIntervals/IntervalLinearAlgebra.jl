@@ -23,7 +23,8 @@ export
     rref,
     eigenbox, Rohn, Hertz, verify_eigen, bound_perron_frobenius_eigenvalue,
     AffineExpression, @affinevars,
-    AffineParametricArray, AffineParametricMatrix, AffineParametricVector
+    AffineParametricArray, AffineParametricMatrix, AffineParametricVector,
+    Skalna06
 
 
 include("linear_systems/enclosures.jl")

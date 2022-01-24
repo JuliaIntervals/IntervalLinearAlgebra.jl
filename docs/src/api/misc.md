@@ -11,6 +11,14 @@ Pages = ["misc.md"]
 set_multiplication_mode
 ```
 
+## Symbolic Interface
+
+```@docs
+@affinevars
+AffineExpression
+AffineParametricArray
+```
+
 ## Others
 ```@autodocs
 Modules = [IntervalLinearAlgebra]
