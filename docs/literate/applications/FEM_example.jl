@@ -162,13 +162,13 @@ savefig("deformed.png") # hide
 #
 # ![](deformed.png)
 #
-# #### Problem with interval parameters
+#=
+#### Problem with interval parameters
 
-md"""
 Suppose now we have a 10% uncertainty for the stiffness $s_{23}$ associated with the third
 element. To model the problem, we introduce the symbolic variable `s23` using the
 IntervalLinearAlgebra macro [`@affinevars`](@ref).
-"""
+=#
 
 using IntervalLinearAlgebra
 @affinevars s23
@@ -221,20 +221,19 @@ uparam = solve(KGp, FG, srange)
 
 hcat(usimple, uparam)/1e-6
 
-md"""
+#=
 As you can see, the naive non-parametric approach significantly overestimates the displacements.
 It is true that for this very simple and small structure, both displacements are small, however
 as the number of nodes increases, the effect of the dependency problem also increases and
 the non-parametric approach will fail to give useful results. This is demonstrated in the
 next section.
-"""
-# ## A continuum mechanics problem
 
-md"""
+## A continuum mechanics problem
+
 In this problem a simple solid plane problem is considered. The solid is fixed on its bottom edge and loaded with a shear tension on the top edge.
-"""
 
-# First, we set the geometry and construct a regular grid of points
+First, we set the geometry and construct a regular grid of points
+=#
 
 L   = [1.0, 4.0]         # dimension in each direction
 t   = 0.2                # thickness
@@ -291,7 +290,8 @@ savefig("undeformed2.png") # hide
 
 # ![](undeformed2.png)
 
-# Let us now define the material parameters. Here we assume a 10% uncertainty on the Young modulus, while Poisson ratio and the density are fixed. This can be related to a steel plate problem with an unknown composition, thus unknown exact Young modulus value.
+# Let us now define the material parameters. Here we assume a 10% uncertainty on the Young modulus, while Poisson ratio and the density are fixed. 
+# can be related to a steel plate problem with an unknown composition, thus unknown exact Young modulus value.
 
 ν  = 0.25   # Poisson
 ρ  = 8e3  # density
@@ -396,22 +396,22 @@ for i = 2:neltot
 end
 savefig("displacement2.png") # hide
 
-# ![](displacement2.png)
+#= 
+![](displacement2.png)
 
-md"""
 In this case, ignoring the dependency and treating the problem as a "normal" interval linear
 system would fail. The reason for this is that the matrix is not strongly regular, which is
 a necessary condition for the implemented algorithms to work.
-"""
+=#
 
 is_strongly_regular(K(Erange))
 
-# ## Conclusions
+#=
+## Conclusions
 
-md"""
 This tutorial showed how interval methods can be useful in engineering applications dealing
 with uncertainty. As in most applications the elements in the matrix will depend on some
 common parameters, due to the dependency problem neglecting the parametric structure will
 result in poor results. This highlights the importance of parametric interval methods in
 engineering applications.
-"""
+=#
