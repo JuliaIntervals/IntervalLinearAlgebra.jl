@@ -25,11 +25,10 @@ end
     @affinevars x y z
 
     p1 = x - y + 3z
-    @test IntervalLinearAlgebra._tostring(p1) == "x-y+3z"
+    @test string(p1) == "x-y+3z"
     p2 = y + x - z - 2
-    @test IntervalLinearAlgebra._tostring(p2) == "x+y-z-2"
-    @test IntervalLinearAlgebra._tostring(p1 - p1) == "0"
-
+    @test string(p2) == "x+y-z-2"
+    @test string(p1 - p1) == "0"
     @test +p1 == p1
     @test -p1 == -x + y - 3z
     @test p2([1, 1, 1]) == -1
