@@ -88,29 +88,37 @@ end
 
 (ae::AffineExpression)(p::Vector{<:Number}) = dot(ae.coeffs[1:end-1], p) + ae.coeffs[end]
 
-## printing
-function _tostring(ae::AffineExpression)
-    iszero(ae.coeffs) && return "0"
-    str = ""
-    @inbounds for (i, x) in enumerate(_vars_dict[:vars])
-        c = ae.coeffs[i]
-        iszero(c) && continue
-        sgn = c > 0 ? "+" : "-"
-        c = abs(c) == 1 ? "" : "$(abs(c))"
-        str *= sgn * c * "$(x)"
-    end
+function show(io::IO, ae::AffineExpression)
+    first_printed = false
+    if iszero(ae.coeffs)
+        print(io, 0)
+    else
+        @inbounds for (i, x) in enumerate(_vars_dict[:vars])
+            c = ae.coeffs[i]
+            iszero(c) && continue
+            if c > 0
+                if first_printed
+                    print(io, "+")
+                end
+            else
+                print(io, "-")
+            end
+            if abs(c) != 1
+                print(io, abs(c))
+            end
+            print(io, x)
+            first_printed = true
+        end
 
-    c = last(ae.coeffs)
-    if !iszero(c)
-        sgn = c > 0 ? "+" : ""
-        str *= sgn * "$(c)"
+        c = last(ae.coeffs)
+        if !iszero(c)
+            if c > 0 && first_printed
+                print(io, "+")
+            end
+            print(io, c)
+        end
     end
-    str = (str[1] == '+' ? str[2:end] : str)
-    return str
 end
-
-show(io::IO, ae::AffineExpression) = print(io, _tostring(ae))
-
 
 #########################
 # BASIC FUNCTIONS       #
