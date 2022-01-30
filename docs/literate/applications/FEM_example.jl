@@ -396,9 +396,9 @@ for i = 2:neltot
 end
 savefig("displacement2.png") # hide
 
-#= 
-![](displacement2.png)
+# ![](displacement2.png)
 
+#=
 In this case, ignoring the dependency and treating the problem as a "normal" interval linear
 system would fail. The reason for this is that the matrix is not strongly regular, which is
 a necessary condition for the implemented algorithms to work.
