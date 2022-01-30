@@ -1,7 +1,7 @@
 name = "IntervalLinearAlgebra"
 uuid = "92cbe1ac-9c24-436b-b0c9-5f7317aedcd5"
 authors = ["Luca Ferranti"]
-version = "0.1.4"
+version = "0.1.5"
 
 [deps]
 CommonSolve = "38540f10-b2f7-11e9-35d8-d573e4eb0ff2"
