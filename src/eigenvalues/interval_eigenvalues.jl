@@ -6,7 +6,7 @@ struct Rohn <: AbstractIntervalEigenSolver end
 """
     eigenbox(A[, method=Rohn()])
 
-Returns an enclosure of all the eigenvalues of `A`. If `A` is symmetric, than the
+Returns an enclosure of all the eigenvalues of `A`. If `A` is symmetric, then the
 output is a real interval, otherwise it is a complex interval.
 
 ### Input
