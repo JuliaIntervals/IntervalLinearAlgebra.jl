@@ -42,6 +42,7 @@ include("pils/pils_solvers.jl")
 
 include("eigenvalues/interval_eigenvalues.jl")
 include("eigenvalues/verify_eigs.jl")
+include("eigenvalues/miyajima_svd.jl")
 
 function  __init__()
     @require IntervalConstraintProgramming = "138f1668-1576-5ad7-91b9-7425abbf3153" include("linear_systems/oettli_nonlinear.jl")

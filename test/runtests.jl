@@ -10,6 +10,7 @@ include("test_utils.jl")
 
 include("test_eigenvalues/test_interval_eigenvalues.jl")
 include("test_eigenvalues/test_verify_eigs.jl")
+include("test_eigenvalues/test_miyajima_svd.jl")
 include("test_solvers/test_enclosures.jl")
 include("test_solvers/test_epsilon_inflation.jl")
 include("test_solvers/test_precondition.jl")
