@@ -9,6 +9,7 @@
 abstract type AbstractIntervalSVDSolver end
 
 struct M1 <: AbstractIntervalSVDSolver end
+struct R1 <: AbstractIntervalSVDSolver end
 
 # The method is called svdbox to mirror eigenbox, even if it would be best to call it 
 # svd interval
@@ -53,6 +54,7 @@ Return an enclosure for all the singular values of `A`.
 - `method` -- the method used to compute the enclosure
     Possible values are
         - M1 Algorithm from Theorem 7 in [[MIYA14]](@ref)
+        - R1 Rump Algorithm from Theorem 5 in [[MIYA14]](@ref)
 
 ### Algorithm 
 
@@ -72,14 +74,14 @@ julia> A = [0.9..1.1 0 0 0 2; 0 0 3 0 0; 0 0 0 0 0; 0 2 0 0 0]
 
  julia> IntervalLinearAlgebra.svdbox(A, IntervalLinearAlgebra.M1())
  4-element Vector{Interval{Float64}}:
-   [2.98999, 3.01001]
-   [2.22606, 2.24607]
-   [1.98999, 2.01001]
-  [-0.0100001, 0.0100001]
+  [2.89999, 3.10001]
+  [2.13606, 2.33607]
+  [1.89999, 2.10001]
+ [-0.100001, 0.100001]
 ```
 
 """
-function svdbox(A::AbstractMatrix{Interval{T}}, method = ::M1) where T
+function svdbox(A::AbstractMatrix{Interval{T}}, ::M1) where T
     mA = mid.(A)
     svdA  = svd(mA)
     U = Interval{T}.(svdA.U)
@@ -88,13 +90,13 @@ function svdbox(A::AbstractMatrix{Interval{T}}, method = ::M1) where T
     V = Interval{T}.(svdA.V)
 
     E = U*Σ*Vt - A
-    normE = sqrt(_bound_perron_frobenius_singularvalue(E))
+    normE = sqrt(_bound_perron_frobenius_singularvalue(abs.(E)))
     
     F = Vt*V-I
-    normF = sqrt(_bound_perron_frobenius_singularvalue(F))
+    normF = sqrt(_bound_perron_frobenius_singularvalue(abs.(F)))
 
     G = U'*U-I
-    normG = sqrt(_bound_perron_frobenius_singularvalue(G))
+    normG = sqrt(_bound_perron_frobenius_singularvalue(abs.(G)))
 
     @assert normF < 1 "It is not possible to verify the singular values with this precision"
     @assert normG < 1 "It is not possible to verify the singular values with this precision"
@@ -104,4 +106,36 @@ function svdbox(A::AbstractMatrix{Interval{T}}, method = ::M1) where T
                 for σ in diag(Σ)]
 
     return svdbounds
+end
+
+function certifysvd(A::AbstractMatrix{Interval{T}}, U, V, Vt) where {T}
+    IU = Interval{T}.(U)
+    IV = Interval{T}.(V)
+    IVt = Interval{T}.(Vt)
+    
+    F = IVt*IV-I
+    G = (IU)'*IU-I
+    normF = sqrt(_bound_perron_frobenius_singularvalue(abs.(F)))
+    normG = sqrt(_bound_perron_frobenius_singularvalue(abs.(G)))
+
+    @assert normF < 1 "It is not possible to verify the singular values with this precision"
+    @assert normG < 1 "It is not possible to verify the singular values with this precision"
+
+    M = IU'*A*IV
+    D = diag(M)
+    E = M-diagm(D)
+
+    normE = sqrt(_bound_perron_frobenius_singularvalue(abs.(E)))
+
+    svdbounds = [hull((σ-normE)/sqrt((1+normF)*(1+normG)), 
+                     (σ+normE)/sqrt((1-normF)*(1-normG)))
+                for σ in D]
+
+    return sort!(svdbounds, rev = true)
+end
+
+function svdbox(A::AbstractMatrix{Interval{T}}, ::R1) where T
+    mA = mid.(A)
+    svdA  = svd(mA)
+    return certifysvd(A, svdA.U, svdA.V, svdA.Vt)
 end

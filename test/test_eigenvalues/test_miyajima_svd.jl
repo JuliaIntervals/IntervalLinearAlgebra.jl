@@ -9,4 +9,8 @@ end
     Σ = IntervalLinearAlgebra.svdbox(A, IntervalLinearAlgebra.M1())
 
     @test all([3 ∈ Σ[1], 5 ∈ Σ[2]^2, 2 ∈ Σ[3], 0 ∈ Σ[4]])
+
+    Σ = IntervalLinearAlgebra.svdbox(A, IntervalLinearAlgebra.R1())
+    @test all([3 ∈ Σ[1], 5 ∈ Σ[2]^2, 2 ∈ Σ[3], 0 ∈ Σ[4]])
+
 end
