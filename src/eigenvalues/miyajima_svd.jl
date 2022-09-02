@@ -127,8 +127,8 @@ function certifysvd(A::AbstractMatrix{Interval{T}}, U, V, Vt) where {T}
 
     normE = sqrt(_bound_perron_frobenius_singularvalue(abs.(E)))
 
-    svdbounds = [hull((σ-normE)/sqrt((1+normF)*(1+normG)), 
-                     (σ+normE)/sqrt((1-normF)*(1-normG)))
+    svdbounds = [hull((abs(σ)-normE)/sqrt((1+normF)*(1+normG)), 
+                     (abs(σ)+normE)/sqrt((1-normF)*(1-normG)))
                 for σ in D]
 
     return sort!(svdbounds, rev = true)
