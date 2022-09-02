@@ -25,7 +25,9 @@ function _power_iteration_singularvalue(A, max_iter)
     return xp
 end
 
-
+# we use this function to bound the $2$ norm of a matrix,
+# as remarked in Rump, Verified bounds for singular values,
+# Equation 3.3
 function _bound_perron_frobenius_singularvalue(M, max_iter=10)
 
     size(M) == (1, 1) && return M[1]
@@ -77,7 +79,7 @@ julia> A = [0.9..1.1 0 0 0 2; 0 0 3 0 0; 0 0 0 0 0; 0 2 0 0 0]
 ```
 
 """
-function svdbox(A::AbstractMatrix{Interval{T}}, ::M1) where T
+function svdbox(A::AbstractMatrix{Interval{T}}, method = ::M1) where T
     mA = mid.(A)
     svdA  = svd(mA)
     U = Interval{T}.(svdA.U)
@@ -86,13 +88,13 @@ function svdbox(A::AbstractMatrix{Interval{T}}, ::M1) where T
     V = Interval{T}.(svdA.V)
 
     E = U*Σ*Vt - A
-    normE = _bound_perron_frobenius_singularvalue(E)
+    normE = sqrt(_bound_perron_frobenius_singularvalue(E))
     
     F = Vt*V-I
-    normF = _bound_perron_frobenius_singularvalue(F)
+    normF = sqrt(_bound_perron_frobenius_singularvalue(F))
 
     G = U'*U-I
-    normG = _bound_perron_frobenius_singularvalue(G)
+    normG = sqrt(_bound_perron_frobenius_singularvalue(G))
 
     @assert normF < 1 "It is not possible to verify the singular values with this precision"
     @assert normG < 1 "It is not possible to verify the singular values with this precision"
