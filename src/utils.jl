@@ -1,4 +1,4 @@
-mid(x::Real) = x
+# mid(x::Real) = x #now exported by IntervalArithmetic
 mid(x::Complex) = x
 
 """

@@ -31,6 +31,10 @@ end
 # Equation 3.3
 function _bound_perron_frobenius_singularvalue(M, max_iter=10)
 
+    if any(M.<0)
+        @warn "The matrix has nonpositive entries; M'*M could be nonnegative, but careful"
+    end
+    
     size(M) == (1, 1) && return M[1]
     xpf = IA.Interval.(_power_iteration_singularvalue(mid.(M), max_iter))
     Mxpf = M'* (M * xpf)
@@ -43,9 +47,9 @@ function _bound_perron_frobenius_singularvalue(M, max_iter=10)
     return ρ
 end
 
-
+export svdbox
 """
-    svdbox(A[, method = M1()])
+    svdbox(A[, method = R1()])
 
 Return an enclosure for all the singular values of `A`.
 
@@ -81,6 +85,8 @@ julia> A = [0.9..1.1 0 0 0 2; 0 0 3 0 0; 0 0 0 0 0; 0 2 0 0 0]
 ```
 
 """
+svdbox(A) = svdbox(A, R1())
+
 function svdbox(A::AbstractMatrix{Interval{T}}, ::M1) where T
     mA = mid.(A)
     svdA  = svd(mA)
@@ -134,7 +140,40 @@ function certifysvd(A::AbstractMatrix{Interval{T}}, U, V, Vt) where {T}
     return sort!(svdbounds, rev = true)
 end
 
+function certifysvd(A::AbstractMatrix{Complex{Interval{T}}}, U, V, Vt) where {T}
+    IU = Interval{T}.(real(U))+im*Interval{T}.(imag(U))
+    IV = Interval{T}.(real(V))+im*Interval{T}.(imag(V))
+    IVt = Interval{T}.(real(Vt))+im*Interval{T}.(imag(Vt))
+    
+    F = IVt*IV-I
+    G = (IU)'*IU-I
+    normF = sqrt(_bound_perron_frobenius_singularvalue(abs.(F)))
+    normG = sqrt(_bound_perron_frobenius_singularvalue(abs.(G)))
+
+    @assert normF < 1 "It is not possible to verify the singular values with this precision"
+    @assert normG < 1 "It is not possible to verify the singular values with this precision"
+
+    M = IU'*A*IV
+    D = diag(M)
+    E = M-diagm(D)
+
+    normE = sqrt(_bound_perron_frobenius_singularvalue(abs.(E)))
+
+    svdbounds = [hull((abs(σ)-normE)/sqrt((1+normF)*(1+normG)), 
+                     (abs(σ)+normE)/sqrt((1-normF)*(1-normG)))
+                for σ in D]
+
+    return sort!(svdbounds, rev = true)
+end
+
+
 function svdbox(A::AbstractMatrix{Interval{T}}, ::R1) where T
+    mA = mid.(A)
+    svdA  = svd(mA)
+    return certifysvd(A, svdA.U, svdA.V, svdA.Vt)
+end
+
+function svdbox(A::AbstractMatrix{Complex{Interval{T}}}, ::R1) where T
     mA = mid.(A)
     svdA  = svd(mA)
     return certifysvd(A, svdA.U, svdA.V, svdA.Vt)
