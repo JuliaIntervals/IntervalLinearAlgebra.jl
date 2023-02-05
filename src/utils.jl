@@ -1,6 +1,3 @@
-# mid(x::Real) = x #now exported by IntervalArithmetic
-mid(x::Complex) = x
-
 """
     interval_isapprox(a::Interval, b::Interval; kwargs)
 

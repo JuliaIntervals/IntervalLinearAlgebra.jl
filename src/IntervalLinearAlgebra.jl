@@ -7,7 +7,6 @@ import Base: +, -, *, /, \, ==,
             show, convert, promote_rule, zero, one,
             getindex, IndexStyle, setindex!, size
 import CommonSolve: solve
-import IntervalArithmetic: mid
 
 @reexport using LinearAlgebra, IntervalArithmetic
 
