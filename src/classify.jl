@@ -69,8 +69,9 @@ function is_H_matrix(A::AbstractMatrix{T}) where {T<:Interval}
     m == n || return false
 
     compA = comparison_matrix(A)
-    rank(compA) == n || return false
-    return all(compA\ones(n) .> 0)
+    F = lu(compA; check=false)
+    issuccess(F) || return false
+    return all(>(0), F\ones(n))
 end
 
 
