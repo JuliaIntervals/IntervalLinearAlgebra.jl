@@ -52,6 +52,14 @@ function *(A::AbstractMatrix{Complex{Interval{T}}}, B::AbstractMatrix{Complex{In
     return rA*rB-iA*iB+im*(iA*rB+rA*iB)
 end
 
+function *(A::AbstractMatrix{Complex{T}}, B::AbstractMatrix{Interval{T}}) where {T}
+    return real(A)*B+im*imag(A)*B
+end
+
+function *(A::AbstractMatrix{Interval{T}}, B::AbstractMatrix{Complex{T}}) where {T}
+    return A*real(B)+im*A*imag(B)
+end
+
 
 function *(::MultiplicationType{:slow}, A, B)
     TS = promote_type(eltype(A), eltype(B))
