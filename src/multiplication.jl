@@ -38,6 +38,21 @@ function set_multiplication_mode(multype)
     config[:multiplication] = multype
 end
 
+function *(A::AbstractMatrix{Complex{Interval{T}}}, B::AbstractMatrix) where T
+    return real(A)*B+im*imag(A)*B
+end
+
+function *(A::AbstractMatrix, B::AbstractMatrix{Complex{Interval{T}}}) where T
+    return A*real(B)+im*A*imag(B)
+end
+
+function *(A::AbstractMatrix{Complex{Interval{T}}}, B::AbstractMatrix{Complex{Interval{T}}}) where T
+    rA, iA = real(A), imag(A)
+    rB, iB = real(B), imag(B)
+    return rA*rB-iA*iB+im*(iA*rB+rA*iB)
+end
+
+
 function *(::MultiplicationType{:slow}, A, B)
     TS = promote_type(eltype(A), eltype(B))
     return mul!(similar(B, TS, (size(A,1), size(B,2))), A, B)
