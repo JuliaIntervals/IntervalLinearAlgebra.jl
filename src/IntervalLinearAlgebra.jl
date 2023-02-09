@@ -43,9 +43,23 @@ include("pils/pils_solvers.jl")
 include("eigenvalues/interval_eigenvalues.jl")
 include("eigenvalues/verify_eigs.jl")
 
+using LinearAlgebra
+
+if Sys.ARCH == :x86_64
+    using OpenBLASConsistentFPCSR_jll
+end
+
 function  __init__()
     @require IntervalConstraintProgramming = "138f1668-1576-5ad7-91b9-7425abbf3153" include("linear_systems/oettli_nonlinear.jl")
     @require LazySets = "b4f0291d-fe17-52bc-9479-3d1a343d9043" include("linear_systems/oettli_linear.jl")
+    if Sys.ARCH == :x86_64
+        @info "Switching to OpenBLAS with ConsistentFPCSR = 1 flag enabled, guarantees
+        coherent floating point rounding mode over all threads"
+        BLAS.lbt_forward(OpenBLASConsistentFPCSR_jll.libopenblas_path; verbose =  true)
+    else
+        BLAS.set_num_threads(1)
+        @warn "The number of BLAS threads was set to 1 to ensure rounding mode is consistent"
+    end
 end
 
 set_multiplication_mode(config[:multiplication])
