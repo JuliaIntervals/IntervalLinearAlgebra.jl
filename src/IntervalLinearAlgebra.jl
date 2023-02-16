@@ -53,7 +53,7 @@ function  __init__()
     @require LazySets = "b4f0291d-fe17-52bc-9479-3d1a343d9043" include("linear_systems/oettli_linear.jl")
     if Sys.ARCH == :x86_64
         @info "Switching to OpenBLAS with ConsistentFPCSR = 1 flag enabled, guarantees
-        coherent floating point rounding mode over all threads"
+        correct floating point rounding mode over all threads."
         BLAS.lbt_forward(OpenBLASConsistentFPCSR_jll.libopenblas_path; verbose =  true)
     else
         BLAS.set_num_threads(1)
