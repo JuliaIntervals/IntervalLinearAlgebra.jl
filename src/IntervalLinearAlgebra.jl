@@ -51,7 +51,7 @@ if Sys.ARCH == :x86_64
     using OpenBLASConsistentFPCSR_jll
 else
     @warn "The behaviour of multithreaded OpenBlas on this architecture is unclear,
-    we will import MKL"
+    we will fallback to single threaded OpenBLAS"
 end
 
 function  __init__()
