@@ -75,7 +75,7 @@ function  __init__()
     else
         BLAS.set_num_threads(1)
         @warn "The number of BLAS threads was set to 1 to ensure rounding mode is consistent"
-        if !NumericalTest.rounding_test(1, K)
+        if !NumericalTest.rounding_test(1, 1024)
             @warn "The rounding test failed on 1 thread"
         end
     end
