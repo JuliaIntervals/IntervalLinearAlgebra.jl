@@ -11,7 +11,7 @@ function test_matrix(k)
     return A
 end
 
-using LinearAlgebra, SetRoundingLLVM
+using LinearAlgebra
 """
     rounding_test(n, k)
 
@@ -27,10 +27,10 @@ function rounding_test(n,k)
     
     BLAS.set_num_threads( n )
     A = test_matrix( k )
-    llvm_setrounding(RoundUp)
-    B = BLAS.gemm('N', 'T', 1.0, A, A)
-    llvm_setrounding(RoundNearest)
-    
+    B = setrounding(Float64, RoundUp) do
+        BLAS.gemm('N', 'T', 1.0, A, A)
+    end
+
     return all([B[i,i]==nextfloat(1.0) for i in 1:k-1])
 end
 
