@@ -85,8 +85,5 @@ end
 set_multiplication_mode(config[:multiplication])
 
 using LinearAlgebra
-BLAS.set_num_threads(1)
-@warn "The number of BLAS threads was set to 1 to ensure rounding mode is consistent"
-
 
 end
