@@ -7,7 +7,7 @@ include("test_classify.jl")
 include("test_multiplication.jl")
 include("test_utils.jl")
 
-
+include("test_numerical_test/test_numerical_test.jl")
 include("test_eigenvalues/test_interval_eigenvalues.jl")
 include("test_eigenvalues/test_verify_eigs.jl")
 include("test_eigenvalues/test_miyajima_svd.jl")
