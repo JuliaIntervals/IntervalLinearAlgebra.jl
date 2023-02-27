@@ -104,6 +104,34 @@ L. Jaulin and B. Desrochers, [*Introduction to the algebra of separators with ap
 ```
 ---
 
+
+#### [MIYA14]
+
+```@raw html
+<ul><li>
+```
+S. Miyajima, *Verified bounds for all the singular values of matrix*, CJapan J. Indust. Appl. Math. DOI 10.1007/s13160-014-0145-5 
+```@raw html
+<li style="list-style: none"><details>
+<summary>bibtex</summary>
+```
+```
+@article{miyajima2014svd,
+  title={Verified bounds for all the singular values of matrix},
+  author={Miyajima, Shinya},
+  journal={Japan Journal of Industrial and Applied Mathematics},
+  volume={31},
+  pages={513--539},
+  year={2014},
+  publisher={Springer}
+}
+```
+```@raw html
+</details></li></ul>
+```
+---
+
+
 #### [NEU90]
 
 ```@raw html

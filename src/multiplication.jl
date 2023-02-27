@@ -26,15 +26,19 @@ Sets the algorithm used to perform matrix multiplication with interval matrices.
 """
 function set_multiplication_mode(multype)
     type = MultiplicationType{multype}()
+    
+    # real matrices
     @eval *(A::AbstractMatrix{Interval{T}}, B::AbstractMatrix{Interval{T}}) where T =
         *($type, A, B)
 
     @eval *(A::AbstractMatrix{T}, B::AbstractMatrix{Interval{T}}) where T = *($type, A, B)
-
+    
     @eval *(A::AbstractMatrix{Interval{T}}, B::AbstractMatrix{T}) where T = *($type, A, B)
-
+    
     @eval *(A::Diagonal, B::AbstractMatrix{Interval{T}}) where T = *($type, A, B)
+    
     @eval *(A::AbstractMatrix{Interval{T}}, B::Diagonal) where T = *($type, A, B)
+        
     config[:multiplication] = multype
 end
 
