@@ -48,7 +48,7 @@ julia> eigenbox(A, Hertz())
 """
 function eigenbox(A::Symmetric{Interval{T}, Matrix{Interval{T}}}, ::Rohn) where {T}
 
-    AΔ = Symmetric(radius.(A))
+    AΔ = Symmetric(IntervalArithmetic.radius.(A))
     Ac = Symmetric(mid.(A))
 
     ρ = eigmax(AΔ)
