@@ -9,7 +9,7 @@ Pages = ["eigenvalues.md"]
 ```@autodocs
 Modules=[IntervalLinearAlgebra]
 Pages=["interval_eigenvalues.jl"]
-Private=false
+Private=true
 ```
 
 ## Floating point eigenvalues verification
@@ -17,6 +17,6 @@ Private=false
 ```@autodocs
 Modules=[IntervalLinearAlgebra]
 Pages=["verify_eigs.jl"]
-Private=false
+Private=true
 ```
 

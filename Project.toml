@@ -1,7 +1,7 @@
 name = "IntervalLinearAlgebra"
 uuid = "92cbe1ac-9c24-436b-b0c9-5f7317aedcd5"
 authors = ["Luca Ferranti"]
-version = "0.1.6"
+version = "0.1.7"
 
 [deps]
 CommonSolve = "38540f10-b2f7-11e9-35d8-d573e4eb0ff2"
@@ -15,8 +15,8 @@ StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 [compat]
 CommonSolve = "0.2"
 IntervalArithmetic = "0.20.5"
-IntervalConstraintProgramming = "0.12"
-LazySets = "1.47.2"
+IntervalConstraintProgramming = "0.13"
+LazySets = "2"
 Reexport = "1"
 Requires = "1"
 StaticArrays = "0.12, 1"
