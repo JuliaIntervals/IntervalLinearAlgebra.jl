@@ -22,7 +22,7 @@ makedocs(;
     authors="Luca Ferranti",
     repo="https://github.com/JuliaIntervals/IntervalLinearAlgebra.jl/blob/{commit}{path}#{line}",
     sitename="IntervalLinearAlgebra.jl",
-    strict=false,
+    warnonly=true,
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
         canonical="https://juliaintervals.github.io/IntervalLinearAlgebra.jl",
