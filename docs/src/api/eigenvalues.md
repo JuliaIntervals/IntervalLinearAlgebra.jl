@@ -20,3 +20,10 @@ Pages=["verify_eigs.jl"]
 Private=true
 ```
 
+## Singular Values Verification
+
+```@autodocs
+Modules=[IntervalLinearAlgebra]
+Pages=["miyajima_svd.jl"]
+Private=false
+```

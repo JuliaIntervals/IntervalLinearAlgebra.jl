@@ -41,6 +41,18 @@ include("pils/pils_solvers.jl")
 
 include("eigenvalues/interval_eigenvalues.jl")
 include("eigenvalues/verify_eigs.jl")
+include("eigenvalues/miyajima_svd.jl")
+
+include("numerical_test/multithread.jl")
+
+using LinearAlgebra
+
+if Sys.ARCH == :x86_64
+    using OpenBLASConsistentFPCSR_jll
+else
+    @warn "The behaviour of multithreaded OpenBlas on this architecture is unclear,
+    we will fallback to single threaded OpenBLAS"
+end
 
 include("numerical_test/multithread.jl")
 
@@ -82,5 +94,7 @@ function  __init__()
 end
 
 set_multiplication_mode(config[:multiplication])
+
+using LinearAlgebra
 
 end
