@@ -6,11 +6,21 @@ version = "0.1.6"
 [deps]
 CommonSolve = "38540f10-b2f7-11e9-35d8-d573e4eb0ff2"
 IntervalArithmetic = "d1acc4aa-44c8-5952-acd4-ba5d80a2a253"
+IntervalConstraintProgramming = "138f1668-1576-5ad7-91b9-7425abbf3153"
+LazySets = "b4f0291d-fe17-52bc-9479-3d1a343d9043"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 OpenBLASConsistentFPCSR_jll = "6cdc7f73-28fd-5e50-80fb-958a8875b1af"
 Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
 Requires = "ae029012-a4dd-5104-9daa-d747884805df"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+
+[extensions]
+IntervalConstraintProgrammingExt = "IntervalConstraintProgramming"
+LazySetsExt = "LazySets"
+
+[weakdeps]
+IntervalConstraintProgramming = "138f1668-1576-5ad7-91b9-7425abbf3153"
+LazySets = "b4f0291d-fe17-52bc-9479-3d1a343d9043"
 
 [compat]
 CommonSolve = "0.2"

@@ -1,4 +1,12 @@
-using .IntervalConstraintProgramming
+module IntervalConstraintProgrammingExt
+
+if !isdefined(Base, :get_extension)
+    using ..IntervalLinearAlgebra
+    using ..IntervalConstraintProgramming
+else
+    using IntervalLinearAlgebra
+    using IntervalConstraintProgramming
+end
 
 """
 returns the unrolled expression for \$|a ⋅x - b|\$
@@ -44,18 +52,17 @@ function oettli_eq(a, b, x)
     rhs = oettli_rhs(ar, br, x)
     ex = :(@constraint $lhs - $rhs <= 0)
     @eval $ex
-
 end
 
-
-
-function (op::NonLinearOettliPrager)(A, b, X::IntervalBox)
+function (op::IntervalLinearAlgebra.NonLinearOettliPrager)(A, b, X::IntervalBox)
     vars = ntuple(i -> Symbol(:x, i), length(b))
     separators = [oettli_eq(A[i,:], b[i], vars) for i in 1:length(b)]
     S = reduce(∩, separators)
     return Base.invokelatest(pave, S, X, op.tol)
 end
 
-(op::NonLinearOettliPrager)(A, b, X=enclose(A, b)) = op(A, b, IntervalBox(X))
+(op::IntervalLinearAlgebra.NonLinearOettliPrager)(A, b, X=enclose(A, b)) = op(A, b, IntervalBox(X))
 
-_default_precondition(_, ::NonLinearOettliPrager) = NoPrecondition()
+IntervalLinearAlgebra._default_precondition(_, ::NonLinearOettliPrager) = NoPrecondition()
+
+end
