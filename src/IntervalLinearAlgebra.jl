@@ -1,7 +1,11 @@
 module IntervalLinearAlgebra
 
-using StaticArrays, Requires, Reexport
+using StaticArrays, Reexport
 using LinearAlgebra: checksquare
+
+if !isdefined(Base, :get_extension)
+    using Requires
+end
 
 import Base: +, -, *, /, \, ==,
             show, convert, promote_rule, zero, one,
@@ -54,20 +58,23 @@ else
 end
 
 function  __init__()
-    @require IntervalConstraintProgramming = "138f1668-1576-5ad7-91b9-7425abbf3153" include("linear_systems/oettli_nonlinear.jl")
-    @require LazySets = "b4f0291d-fe17-52bc-9479-3d1a343d9043" include("linear_systems/oettli_linear.jl")
+    @static if !isdefined(Base, :get_extension)
+        @require IntervalConstraintProgramming = "138f1668-1576-5ad7-91b9-7425abbf3153" include("../ext/IntervalConstraintProgrammingExt.jl")
+        @require LazySets = "b4f0291d-fe17-52bc-9479-3d1a343d9043" include("../ext/LazySetsExt.jl")
+    end
+
     if Sys.ARCH == :x86_64
         @info "Switching to OpenBLAS with ConsistentFPCSR = 1 flag enabled, guarantees
         correct floating point rounding mode over all threads."
         BLAS.lbt_forward(OpenBLASConsistentFPCSR_jll.libopenblas_path; verbose =  true)
-        
+
         N = BLAS.get_num_threads()
         K = 1024
         if NumericalTest.rounding_test(N, K)
             @info "OpenBLAS is giving correct rounding on a ($K,$K) test matrix on $N threads"
         else
             @warn "OpenBLAS is not rounding correctly on the test matrix"
-            @warn "The number of BLAS threads was set to 1 to ensure rounding mode is consistent"    
+            @warn "The number of BLAS threads was set to 1 to ensure rounding mode is consistent"
             if !NumericalTest.rounding_test(1, K)
                 @warn "The rounding test failed on 1 thread"
             end

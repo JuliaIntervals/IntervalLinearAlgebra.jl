@@ -1,6 +1,14 @@
-using .LazySets
+module LazySetsExt
 
-function (opl::LinearOettliPrager)(A, b)
+if !isdefined(Base, :get_extension)
+    using ..IntervalLinearAlgebra
+    using ..LazySets
+else
+    using IntervalLinearAlgebra
+    using LazySets
+end
+
+function (opl::IntervalLinearAlgebra.LinearOettliPrager)(A, b)
     n = length(b)
     Ac = mid.(A)
     bc = mid.(b)
@@ -22,4 +30,6 @@ function (opl::LinearOettliPrager)(A, b)
     return identity.(filter!(!isempty, polytopes))
 end
 
-_default_precondition(_, ::LinearOettliPrager) = NoPrecondition()
+IntervalLinearAlgebra._default_precondition(_, ::LinearOettliPrager) = NoPrecondition()
+
+end
