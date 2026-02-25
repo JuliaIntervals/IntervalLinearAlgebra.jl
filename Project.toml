@@ -27,11 +27,12 @@ CommonSolve = "0.2"
 IntervalArithmetic = "0.20.5"
 IntervalConstraintProgramming = "0.13"
 LazySets = "2"
-OpenBLASConsistentFPCSR_jll = "0.3.30+0"
+OpenBLASConsistentFPCSR_jll = "0.3.30"
 Reexport = "1"
 Requires = "1"
 StaticArrays = "0.12, 1"
 julia = "1.6"
+
 [extras]
 IntervalConstraintProgramming = "138f1668-1576-5ad7-91b9-7425abbf3153"
 LazySets = "b4f0291d-fe17-52bc-9479-3d1a343d9043"
