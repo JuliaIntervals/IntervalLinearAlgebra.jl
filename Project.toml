@@ -25,7 +25,7 @@ LazySets = "b4f0291d-fe17-52bc-9479-3d1a343d9043"
 [compat]
 CommonSolve = "0.2"
 IntervalArithmetic = "0.20.5"
-IntervalConstraintProgramming = "0.13"
+IntervalConstraintProgramming = "0.13, 0.14"
 LazySets = "2"
 Reexport = "1"
 Requires = "1"
