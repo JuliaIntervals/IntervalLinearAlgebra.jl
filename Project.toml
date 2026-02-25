@@ -24,9 +24,9 @@ LazySets = "b4f0291d-fe17-52bc-9479-3d1a343d9043"
 
 [compat]
 CommonSolve = "0.2"
-IntervalArithmetic = "0.20.5"
+IntervalArithmetic = "0.20.5, 1.0"
 IntervalConstraintProgramming = "0.13"
-LazySets = "2"
+LazySets = "2 - 5"
 OpenBLASConsistentFPCSR_jll = "0.3.30"
 Reexport = "1"
 Requires = "1"
