@@ -3,10 +3,6 @@ module IntervalLinearAlgebra
 using StaticArrays, Reexport
 using LinearAlgebra: checksquare
 
-if !isdefined(Base, :get_extension)
-    using Requires
-end
-
 import Base: +, -, *, /, \, ==,
             show, convert, promote_rule, zero, one,
             getindex, IndexStyle, setindex!, size
@@ -58,11 +54,6 @@ else
 end
 
 function  __init__()
-    @static if !isdefined(Base, :get_extension)
-        @require IntervalConstraintProgramming = "138f1668-1576-5ad7-91b9-7425abbf3153" include("../ext/IntervalConstraintProgrammingExt.jl")
-        @require LazySets = "b4f0291d-fe17-52bc-9479-3d1a343d9043" include("../ext/LazySetsExt.jl")
-    end
-
     if Sys.ARCH == :x86_64
         @info "Switching to OpenBLAS with ConsistentFPCSR = 1 flag enabled, guarantees
         correct floating point rounding mode over all threads."
