@@ -90,7 +90,7 @@ function _verify_eigen(A, λ::Number, X0::AbstractVector;
     Z = -R * (C * X0)
     C[:, v] .= -X0
     C = I - R * C
-    Zinfl = w * IA.Interval.(-mag.(Z), mag.(Z)) .+ IA.Interval(-ϵ, ϵ)
+    Zinfl = w * IA.interval.(-mag.(Z), mag.(Z)) .+ IA.interval(-ϵ, ϵ)
 
     X = Complex.(Z)
     cert = false
