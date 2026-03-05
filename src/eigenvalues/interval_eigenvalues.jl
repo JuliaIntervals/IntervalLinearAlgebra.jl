@@ -54,7 +54,7 @@ function eigenbox(A::Symmetric{Interval{T}, Matrix{Interval{T}}}, ::Rohn) where 
     ρ = eigmax(AΔ)
     λmax = eigmax(Ac)
     λmin = eigmin(Ac)
-    return Interval(λmin - ρ, λmax + ρ)
+    return IA.interval(λmin - ρ, λmax + ρ)
 
 end
 
@@ -86,7 +86,7 @@ function eigenbox(A::Symmetric{Interval{T}, Matrix{Interval{T}}}, ::Hertz) where
         λmin = min(λmin, candmin)
         λmax = max(λmax, candmax)
     end
-    return IA.Interval(λmin, λmax)
+    return IA.interval(λmin, λmax)
 end
 
 function eigenbox(A::AbstractMatrix{Interval{T}},

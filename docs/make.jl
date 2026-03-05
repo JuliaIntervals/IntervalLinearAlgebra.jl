@@ -15,7 +15,7 @@ for (root, _, files) in walkdir(litdir)
         end
     end
 end
-DocMeta.setdocmeta!(IntervalLinearAlgebra, :DocTestSetup, :(using IntervalLinearAlgebra); recursive=true)
+DocMeta.setdocmeta!(IntervalLinearAlgebra, :DocTestSetup, :(using IntervalLinearAlgebra, IntervalArithmetic); recursive=true)
 
 makedocs(;
     modules=[IntervalLinearAlgebra],
