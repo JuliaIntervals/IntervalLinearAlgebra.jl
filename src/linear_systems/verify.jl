@@ -78,12 +78,12 @@ true
 function epsilon_inflation(A::AbstractMatrix{T}, b::AbstractArray{S, N};
                            r=0.1, ϵ=1e-20, iter_max=20) where {T<:Real, S<:Real, N}
 
-    r1 = Interval(1 - r, 1 + r)
-    ϵ1 = Interval(-ϵ, ϵ)
+    r1 = IA.interval(1 - r, 1 + r)
+    ϵ1 = IA.interval(-ϵ, ϵ)
     R = inv(mid.(A))
     C = I - R * A
     xs = R * mid.(b)
-    z = R * (b - (A * Interval.(xs)))
+    z = R * (b - (A * IA.interval.(xs)))
     x = z
 
     for _ in 1:iter_max

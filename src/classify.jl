@@ -107,7 +107,7 @@ function is_strictly_diagonally_dominant(A::AbstractMatrix{T}) where {T<:Interva
     m == n || return false
 
     @inbounds for i=1:m
-        sum_mag = sum(Interval(mag(A[i, k])) for k=1:n if k ≠ i)
+        sum_mag = sum(IA.interval(mag(A[i, k])) for k=1:n if k ≠ i)
         mig(A[i, i]) ≤ inf(sum_mag) && return false
 
     end
