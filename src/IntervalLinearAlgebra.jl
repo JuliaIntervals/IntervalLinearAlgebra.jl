@@ -1,6 +1,6 @@
 module IntervalLinearAlgebra
 
-using StaticArrays, Reexport
+using StaticArrays, Reexport, SetRounding
 using LinearAlgebra: checksquare
 
 import Base: +, -, *, /, \, ==,
