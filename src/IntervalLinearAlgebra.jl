@@ -79,6 +79,4 @@ function  __init__()
     end
 end
 
-set_multiplication_mode(config[:multiplication])
-
 end

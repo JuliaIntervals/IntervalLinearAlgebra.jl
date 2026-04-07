@@ -25,18 +25,21 @@ Sets the algorithm used to perform matrix multiplication with interval matrices.
     (50% overestimate at most) [[RUM99]](@ref).
 """
 function set_multiplication_mode(multype)
-    type = MultiplicationType{multype}()
-    @eval *(A::AbstractMatrix{Interval{T}}, B::AbstractMatrix{Interval{T}}) where T =
-        *($type, A, B)
-
-    @eval *(A::AbstractMatrix{T}, B::AbstractMatrix{Interval{T}}) where T = *($type, A, B)
-
-    @eval *(A::AbstractMatrix{Interval{T}}, B::AbstractMatrix{T}) where T = *($type, A, B)
-
-    @eval *(A::Diagonal, B::AbstractMatrix{Interval{T}}) where T = *($type, A, B)
-    @eval *(A::AbstractMatrix{Interval{T}}, B::Diagonal) where T = *($type, A, B)
+    multype in (:slow, :rank1, :fast) || throw(ArgumentError("unsupported multiplication mode: $multype"))
     config[:multiplication] = multype
 end
+
+_mul_type() = MultiplicationType{config[:multiplication]}()
+
+*(A::AbstractMatrix{Interval{T}}, B::AbstractMatrix{Interval{T}}) where T =
+    *(_mul_type(), A, B)
+
+*(A::AbstractMatrix{T}, B::AbstractMatrix{Interval{T}}) where T = *(_mul_type(), A, B)
+
+*(A::AbstractMatrix{Interval{T}}, B::AbstractMatrix{T}) where T = *(_mul_type(), A, B)
+
+*(A::Diagonal, B::AbstractMatrix{Interval{T}}) where T = *(_mul_type(), A, B)
+*(A::AbstractMatrix{Interval{T}}, B::Diagonal) where T = *(_mul_type(), A, B)
 
 function *(A::AbstractMatrix{Complex{Interval{T}}}, B::AbstractMatrix) where T
     return real(A)*B+im*imag(A)*B
