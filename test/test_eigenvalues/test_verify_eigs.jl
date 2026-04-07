@@ -15,7 +15,7 @@ end
 
     evals, evecs, cert = verify_eigen(A)
     @test all(cert)
-    @test all(ev .∈ evals)
+    @test all(in_interval.(ev, evals))
 
 
     # real eigenvalues case
@@ -25,7 +25,7 @@ end
 
     evals, evecs, cert = verify_eigen(A)
     @test all(cert)
-    @test all(ev .∈ evals)
+    @test all(in_interval.(ev, evals))
 
     # test complex eigenvalues
     ev = sort(rand(Complex{Float64}, n), by = x -> (real(x), imag(x)))
@@ -33,5 +33,5 @@ end
 
     evals, evecs, cert = verify_eigen(A)
     @test all(cert)
-    @test all(ev .∈ evals)
+    @test all(in_interval.(ev, evals))
 end

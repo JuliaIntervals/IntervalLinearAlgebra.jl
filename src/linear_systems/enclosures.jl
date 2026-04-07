@@ -74,10 +74,10 @@ function (hbr::HansenBliekRohn)(A::AbstractMatrix{T},
     d = diag(compA_inv)
 
     _α = sup.(diag(compA) .- 1 ./ d)
-    α = Interval.(-_α, _α)
+    α = IA.interval.(-_α, _α)
 
     _β = @. sup(u/d - mag(b))
-    β = Interval.(-_β, _β)
+    β = IA.interval.(-_β, _β)
 
     return (b .+ β) ./ (diag(A) .+ α)
 
@@ -208,7 +208,7 @@ function (jac::Jacobi)(A::AbstractMatrix{T},
             for j in 1:n
                 (i == j) || (x[i] -= A[i, j] * xold[j])
             end
-            x[i] = (x[i]/A[i, i]) ∩ xold[i]
+            x[i] = intersect_interval(x[i]/A[i, i], xold[i])
         end
         all(interval_isapprox.(x, xold; atol=atol)) && break
     end
@@ -287,7 +287,7 @@ function (gs::GaussSeidel)(A::AbstractMatrix{T},
             @inbounds for j in 1:n
                 (i == j) || (x[i] -= A[i, j] * x[j])
             end
-            x[i] = (x[i]/A[i, i]) .∩ xold[i]
+            x[i] = intersect_interval(x[i]/A[i, i], xold[i])
         end
         all(interval_isapprox.(x, xold; atol=atol)) && break
     end
@@ -361,7 +361,7 @@ function (kra::LinearKrawczyk)(A::AbstractMatrix{T},
 
     C = inv(mid.(A))
     for i = 1:kra.max_iterations
-        xnew  = (C*b  - C*(A*x) + x) .∩ x
+        xnew  = intersect_interval.(C*b  - C*(A*x) + x, x)
         all(interval_isapprox.(x, xnew; atol=atol)) && return xnew
         x = xnew
     end

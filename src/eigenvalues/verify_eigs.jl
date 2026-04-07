@@ -1,3 +1,8 @@
+_to_interval(x::IA.Interval) = x
+_to_interval(x::Complex{<:IA.Interval}) = x
+_to_interval(x::Real) = IA.interval(x)
+_to_interval(x::Complex) = complex(IA.interval(real(x)), IA.interval(imag(x)))
+
 """
     verify_eigen(A[, λ, X0]; w=0.1, ϵ=1e-16, maxiter=10)
 
@@ -86,7 +91,7 @@ function _verify_eigen(A, λ::Number, X0::AbstractVector;
     R = mid.(A) - λ * I
     R[:, v] .= -X0
     R = inv(R)
-    C = IA.Interval.(A) - λ * I
+    C = _to_interval.(A) - λ * I
     Z = -R * (C * X0)
     C[:, v] .= -X0
     C = I - R * C

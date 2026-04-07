@@ -9,7 +9,7 @@ import Base: +, -, *, /, \, ==,
 import CommonSolve: solve
 
 @reexport using LinearAlgebra, IntervalArithmetic
-using IntervalArithmetic.Symbols: ±
+using IntervalArithmetic.Symbols: var"..", ±
 
 const IA = IntervalArithmetic
 
