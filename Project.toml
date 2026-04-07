@@ -1,7 +1,7 @@
 name = "IntervalLinearAlgebra"
 uuid = "92cbe1ac-9c24-436b-b0c9-5f7317aedcd5"
-authors = ["Luca Ferranti"]
 version = "0.2.0"
+authors = ["Luca Ferranti"]
 
 [deps]
 CommonSolve = "38540f10-b2f7-11e9-35d8-d573e4eb0ff2"
@@ -14,17 +14,19 @@ Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
 SetRounding = "3cc68bcd-71a2-5612-b932-767ffbe40ab0"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 
-[extensions]
-IntervalConstraintProgrammingExt = "IntervalConstraintProgramming"
-LazySetsExt = "LazySets"
-
 [weakdeps]
+IntervalBoxes = "43d83c95-ebbb-40ec-8188-24586a1458ed"
 IntervalConstraintProgramming = "138f1668-1576-5ad7-91b9-7425abbf3153"
 LazySets = "b4f0291d-fe17-52bc-9479-3d1a343d9043"
+
+[extensions]
+IntervalConstraintProgrammingExt = ["IntervalBoxes", "IntervalConstraintProgramming"]
+LazySetsExt = "LazySets"
 
 [compat]
 CommonSolve = "0.2"
 IntervalArithmetic = "1"
+IntervalBoxes = "0.3"
 IntervalConstraintProgramming = "0.13, 0.14, 0.15"
 LazySets = "2 - 6"
 OpenBLASConsistentFPCSR_jll = "0.3.29 - 0.3.30"

@@ -7,6 +7,7 @@ else
     using IntervalLinearAlgebra
     using IntervalConstraintProgramming
 end
+using IntervalBoxes: IntervalBox
 
 """
 returns the unrolled expression for \$|a ⋅x - b|\$
