@@ -64,9 +64,14 @@ function *(A::AbstractMatrix{Interval{T}}, B::AbstractMatrix{Complex{T}}) where 
 end
 
 
+# We call `generic_matmatmul!` directly instead of `mul!` because
+# IntervalArithmetic's LinearAlgebra extension overloads `mul!` to
+# dispatch through its own `default_matmul()` mode (`:fast` by default),
+# which would ignore the multiplication mode set here.
 function *(::MultiplicationType{:slow}, A, B)
     TS = promote_type(eltype(A), eltype(B))
-    return mul!(similar(B, TS, (size(A,1), size(B,2))), A, B)
+    C = similar(B, TS, (size(A, 1), size(B, 2)))
+    return LinearAlgebra.generic_matmatmul!(C, 'N', 'N', A, B)
 end
 
 function *(::MultiplicationType{:fast},
