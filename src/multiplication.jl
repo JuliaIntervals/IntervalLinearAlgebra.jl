@@ -92,7 +92,7 @@ function *(::MultiplicationType{:fast},
         mA * mB - R
     end
 
-    return Interval.(Cinf, Csup)
+    return interval.(Cinf, Csup)
 end
 
 
@@ -118,7 +118,7 @@ function *(::MultiplicationType{:fast},
         A * mB - R
     end
 
-    return Interval.(Cinf, Csup)
+    return interval.(Cinf, Csup)
 end
 
 function *(::MultiplicationType{:fast},
@@ -143,7 +143,7 @@ function *(::MultiplicationType{:fast},
         mA * B - R
     end
 
-    return Interval.(Cinf, Csup)
+    return interval.(Cinf, Csup)
 end
 
 
@@ -181,7 +181,7 @@ function *(::MultiplicationType{:rank1},
         return Csup
     end
 
-    return Interval.(Cinf, Csup)
+    return interval.(Cinf, Csup)
 
 
 end

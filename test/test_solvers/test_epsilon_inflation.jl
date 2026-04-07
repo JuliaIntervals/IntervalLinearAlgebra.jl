@@ -11,8 +11,8 @@
     @test all(ones(n) .∈ x)
     @test cert
 
-    Ain = convert.(IA.Interval{Float64}, IA.Interval.(Arat, Arat))
-    bin = convert.(IA.Interval{Float64}, IA.Interval.(brat, brat))
+    Ain = convert.(IA.Interval{Float64}, IA.interval.(Arat, Arat))
+    bin = convert.(IA.Interval{Float64}, IA.interval.(brat, brat))
 
     x, cert = epsilon_inflation(Ain, bin)
 

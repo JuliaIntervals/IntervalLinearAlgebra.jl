@@ -1,4 +1,5 @@
-using IntervalLinearAlgebra, StaticArrays, LazySets, IntervalConstraintProgramming
+using IntervalLinearAlgebra, StaticArrays, LazySets, IntervalBoxes, IntervalConstraintProgramming
+using IntervalArithmetic.Symbols
 using Test
 
 const IA = IntervalArithmetic

@@ -24,7 +24,7 @@ julia> interval_isapprox(a, b; atol=1e-15)
 false
 ```
 """
-interval_isapprox(a::Interval, b::Interval; kwargs...) = isapprox(a.lo, b.lo; kwargs...) && isapprox(a.hi, b.hi; kwargs...)
+interval_isapprox(a::Interval, b::Interval; kwargs...) = isapprox(inf(a), inf(b); kwargs...) && isapprox(sup(a), sup(b); kwargs...)
 
 """
     interval_norm(A::AbstractMatrix{T}) where {T<:Interval}
@@ -172,5 +172,5 @@ Base.firstindex(O::Orthants) = 1
 Base.lastindex(O::Orthants) = length(O)
 
 
-_unchecked_interval(x::Real) = Interval(x)
-_unchecked_interval(x::Complex) = Interval(real(x)) + Interval(imag(x)) * im
+_unchecked_interval(x::Real) = interval(x)
+_unchecked_interval(x::Complex) = interval(real(x)) + interval(imag(x)) * im

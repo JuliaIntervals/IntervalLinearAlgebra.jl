@@ -149,7 +149,7 @@ function _bound_perron_frobenius_eigenvalue(M, max_iter=10)
     @inbounds for (i, xi) in enumerate(xpf)
         iszero(xi) && continue
         tmp = Mxpf[i] / xi
-        ρ = max(ρ, tmp.hi)
+        ρ = max(ρ, sup(tmp))
     end
     return ρ
 end
