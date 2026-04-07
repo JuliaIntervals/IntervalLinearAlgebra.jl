@@ -1,4 +1,4 @@
-using IntervalLinearAlgebra, StaticArrays, LazySets, IntervalBoxes, IntervalConstraintProgramming
+using IntervalLinearAlgebra, StaticArrays, LazySets
 using IntervalArithmetic.Symbols
 using Test
 
