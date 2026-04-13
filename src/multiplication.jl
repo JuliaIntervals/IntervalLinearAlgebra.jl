@@ -71,7 +71,11 @@ end
 function *(::MultiplicationType{:slow}, A, B)
     TS = promote_type(eltype(A), eltype(B))
     C = similar(B, TS, (size(A, 1), size(B, 2)))
-    return LinearAlgebra.generic_matmatmul!(C, 'N', 'N', A, B)
+    # The `MulAddMul` argument is required on Julia 1.10 where the 5-arg form
+    # doesn't exist for non-BLAS types. When dropping Julia 1.10 support,
+    # simplify to: `LinearAlgebra.generic_matmatmul!(C, 'N', 'N', A, B)`
+    _add = LinearAlgebra.MulAddMul{true, false, TS, TS}(one(TS), zero(TS))
+    return LinearAlgebra.generic_matmatmul!(C, 'N', 'N', A, B, _add)
 end
 
 function *(::MultiplicationType{:fast},
