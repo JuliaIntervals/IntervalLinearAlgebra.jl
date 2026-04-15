@@ -304,7 +304,7 @@ The function uses the *something sometimes somewhere* algorithm proposed by Some
 
 ### Example
 
-```jldoctest
+```julia
 julia> A = [1..2 3..4;5..6 7..8]
 2×2 Matrix{Interval{Float64}}:
 [1, 2]  [3, 4]

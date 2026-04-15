@@ -23,23 +23,23 @@ and initial enclosure
 ```jldoctest
 julia> A = [2..4 -1..1;-1..1 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-1, 1]
- [-1, 1]   [2, 4]
+  [2.0, 4.0]_com  [-1.0, 1.0]_com
+ [-1.0, 1.0]_com   [2.0, 4.0]_com
 
 julia> b = [-2..2, -1..1]
 2-element Vector{Interval{Float64}}:
- [-2, 2]
- [-1, 1]
+ [-2.0, 2.0]_com
+ [-1.0, 1.0]_com
 
 julia> solve(A, b, GaussSeidel(), NoPrecondition(), [-10..10, -10..10])
 2-element Vector{Interval{Float64}}:
- [-1.66668, 1.66668]
- [-1.33334, 1.33334]
+ [-1.66667, 1.66667]_trv
+ [-1.33334, 1.33334]_trv
 
 julia> solve(A, b, GaussSeidel())
 2-element Vector{Interval{Float64}}:
- [-1.66667, 1.66667]
- [-1.33334, 1.33334]
+ [-1.66667, 1.66667]_trv_NG
+ [-1.33333, 1.33333]_trv_NG
 ```
 """
 function solve(A::AbstractMatrix{T},
@@ -77,23 +77,23 @@ and initial enclosure
 ```jldoctest
 julia> A = [2..4 -1..1;-1..1 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-1, 1]
- [-1, 1]   [2, 4]
+  [2.0, 4.0]_com  [-1.0, 1.0]_com
+ [-1.0, 1.0]_com   [2.0, 4.0]_com
 
 julia> b = [-2..2, -1..1]
 2-element Vector{Interval{Float64}}:
- [-2, 2]
- [-1, 1]
+ [-2.0, 2.0]_com
+ [-1.0, 1.0]_com
 
 julia> solve(A, b, HansenBliekRohn(), InverseMidpoint())
 2-element Vector{Interval{Float64}}:
- [-1.66667, 1.66667]
- [-1.33334, 1.33334]
+ [-1.66667, 1.66667]_com_NG
+ [-1.33333, 1.33333]_com_NG
 
 julia> solve(A, b, HansenBliekRohn())
 2-element Vector{Interval{Float64}}:
- [-1.66667, 1.66667]
- [-1.33334, 1.33334]
+ [-1.66667, 1.66667]_com
+ [-1.33333, 1.33333]_com
 ```
 """
 function solve(A::AbstractMatrix{T},
@@ -135,18 +135,18 @@ and initial enclosure
 ```jldoctest
 julia> A = [2..4 -1..1;-1..1 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-1, 1]
- [-1, 1]   [2, 4]
+  [2.0, 4.0]_com  [-1.0, 1.0]_com
+ [-1.0, 1.0]_com   [2.0, 4.0]_com
 
 julia> b = [-2..2, -1..1]
 2-element Vector{Interval{Float64}}:
- [-2, 2]
- [-1, 1]
+ [-2.0, 2.0]_com
+ [-1.0, 1.0]_com
 
 julia> solve(A, b)
 2-element Vector{Interval{Float64}}:
- [-1.66667, 1.66667]
- [-1.33334, 1.33334]
+ [-1.66667, 1.66667]_com
+ [-1.33333, 1.33333]_com
 ```
 """
 function solve(A::AbstractMatrix{T},

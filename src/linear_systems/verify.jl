@@ -64,12 +64,10 @@ julia> b = A * ones(2)
  7.0
 
 julia> x, cert = epsilon_inflation(A, b)
-(Interval{Float64}[[0.999999, 1.00001], [0.999999, 1.00001]], true)
+(Interval{Float64}[[1.0, 1.0]_com_NG, [1.0, 1.0]_com_NG], true)
 
-julia> ones(2) .∈ x
-2-element BitVector:
- 1
- 1
+julia> all(in_interval.(ones(2), x))
+true
 
 julia> cert
 true

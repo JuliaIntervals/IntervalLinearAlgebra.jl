@@ -42,21 +42,21 @@ For more details see section 5.6.2 of [[HOR19]](@ref)
 ```jldoctest
 julia> A = [2..4 -1..1;-1..1 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-1, 1]
- [-1, 1]   [2, 4]
+  [2.0, 4.0]_com  [-1.0, 1.0]_com
+ [-1.0, 1.0]_com   [2.0, 4.0]_com
 
 julia> b = [-2..2, -1..1]
 2-element Vector{Interval{Float64}}:
- [-2, 2]
- [-1, 1]
+ [-2.0, 2.0]_com
+ [-1.0, 1.0]_com
 
 julia> hbr = HansenBliekRohn()
 HansenBliekRohn linear solver
 
 julia> hbr(A, b)
 2-element Vector{Interval{Float64}}:
- [-1.66667, 1.66667]
- [-1.33334, 1.33334]
+ [-1.66667, 1.66667]_com
+ [-1.33333, 1.33333]_com
 ```
 """
 struct HansenBliekRohn <: AbstractDirectSolver end
@@ -101,21 +101,21 @@ For more details see section 5.6.1 of [[HOR19]](@ref)
 ```jldoctest
 julia> A = [2..4 -1..1;-1..1 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-1, 1]
- [-1, 1]   [2, 4]
+  [2.0, 4.0]_com  [-1.0, 1.0]_com
+ [-1.0, 1.0]_com   [2.0, 4.0]_com
 
 julia> b = [-2..2, -1..1]
 2-element Vector{Interval{Float64}}:
- [-2, 2]
- [-1, 1]
+ [-2.0, 2.0]_com
+ [-1.0, 1.0]_com
 
 julia> ge = GaussianElimination()
 GaussianElimination linear solver
 
 julia> ge(A, b)
 2-element Vector{Interval{Float64}}:
- [-1.66667, 1.66667]
- [-1.33334, 1.33334]
+ [-1.66667, 1.66667]_com
+ [-1.33333, 1.33333]_com
 ```
 """
 struct GaussianElimination <: AbstractDirectSolver end
@@ -168,13 +168,13 @@ For details see Section 5.7.4 of [[HOR19]](@ref)
 ```jldoctest
 julia> A = [2..4 -1..1;-1..1 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-1, 1]
- [-1, 1]   [2, 4]
+  [2.0, 4.0]_com  [-1.0, 1.0]_com
+ [-1.0, 1.0]_com   [2.0, 4.0]_com
 
 julia> b = [-2..2, -1..1]
 2-element Vector{Interval{Float64}}:
- [-2, 2]
- [-1, 1]
+ [-2.0, 2.0]_com
+ [-1.0, 1.0]_com
 
 julia> jac = Jacobi()
 Jacobi linear solver
@@ -183,8 +183,8 @@ atol = 0.0
 
 julia> jac(A, b)
 2-element Vector{Interval{Float64}}:
- [-1.66668, 1.66668]
- [-1.33335, 1.33335]
+ [-1.66667, 1.66667]_trv
+ [-1.33334, 1.33334]_trv
 ```
 """
 struct Jacobi <: AbstractIterativeSolver
@@ -248,13 +248,13 @@ For details see Section 5.7.4 of [[HOR19]](@ref)
 ```jldoctest
 julia> A = [2..4 -1..1;-1..1 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-1, 1]
- [-1, 1]   [2, 4]
+  [2.0, 4.0]_com  [-1.0, 1.0]_com
+ [-1.0, 1.0]_com   [2.0, 4.0]_com
 
 julia> b = [-2..2, -1..1]
 2-element Vector{Interval{Float64}}:
- [-2, 2]
- [-1, 1]
+ [-2.0, 2.0]_com
+ [-1.0, 1.0]_com
 
 julia> gs = GaussSeidel()
 GaussSeidel linear solver
@@ -263,8 +263,8 @@ atol = 0.0
 
 julia> gs(A, b)
 2-element Vector{Interval{Float64}}:
- [-1.66668, 1.66668]
- [-1.33334, 1.33334]
+ [-1.66667, 1.66667]_trv
+ [-1.33334, 1.33334]_trv
 ```
 """
 struct GaussSeidel <: AbstractIterativeSolver
@@ -327,13 +327,13 @@ For details see Section 5.7.3 of [[HOR19]](@ref)
 ```jldoctest
 julia> A = [2..4 -1..1;-1..1 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-1, 1]
- [-1, 1]   [2, 4]
+  [2.0, 4.0]_com  [-1.0, 1.0]_com
+ [-1.0, 1.0]_com   [2.0, 4.0]_com
 
 julia> b = [-2..2, -1..1]
 2-element Vector{Interval{Float64}}:
- [-2, 2]
- [-1, 1]
+ [-2.0, 2.0]_com
+ [-1.0, 1.0]_com
 
 julia> kra = LinearKrawczyk()
 LinearKrawczyk linear solver
@@ -342,8 +342,8 @@ atol = 0.0
 
 julia> kra(A, b)
 2-element Vector{Interval{Float64}}:
- [-2, 2]
- [-2, 2]
+ [-2.0, 2.0]_trv_NG
+ [-2.0, 2.0]_trv_NG
 ```
 """
 struct LinearKrawczyk <: AbstractIterativeSolver

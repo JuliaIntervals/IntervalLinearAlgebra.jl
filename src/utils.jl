@@ -12,10 +12,10 @@ Same of `Base.isapprox`
 
 ```jldoctest
 julia> a = 1..2
-[1, 2]
+[1.0, 2.0]_com
 
 julia> b = a + 1e-10
-[1, 2.00001]
+[1.0, 2.0]_com_NG
 
 julia> interval_isapprox(a, b)
 true
@@ -36,8 +36,8 @@ computes the infinity norm of interval matrix ``A``.
 ```jldoctest
 julia> A = [2..4 -1..1; -1..1 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-1, 1]
- [-1, 1]   [2, 4]
+  [2.0, 4.0]_com  [-1.0, 1.0]_com
+ [-1.0, 1.0]_com   [2.0, 4.0]_com
 
 julia> interval_norm(A)
 5.0
@@ -55,8 +55,8 @@ computes the infinity norm of interval vector ``v``.
 ```jldoctest
 julia> b = [-2..2, -3..2]
 2-element Vector{Interval{Float64}}:
- [-2, 2]
- [-3, 2]
+ [-2.0, 2.0]_com
+ [-3.0, 2.0]_com
 
 julia> interval_norm(b)
 3.0
@@ -99,8 +99,8 @@ definition ``⟨A⟩ᵢᵢ = mig(Aᵢᵢ)`` and ``⟨A⟩ᵢⱼ = -mag(Aᵢⱼ)`
 ```jldoctest
 julia> A = [2..4 -1..1; -1..1 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-1, 1]
- [-1, 1]   [2, 4]
+  [2.0, 4.0]_com  [-1.0, 1.0]_com
+ [-1.0, 1.0]_com   [2.0, 4.0]_com
 
 julia> comparison_matrix(A)
 2×2 Matrix{Float64}:

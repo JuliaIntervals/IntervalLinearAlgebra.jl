@@ -9,13 +9,13 @@ mignitude as pivoting strategy.
 ```jldoctest
 julia> A = [2..4 -1..1; -1..1 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-1, 1]
- [-1, 1]   [2, 4]
+  [2.0, 4.0]_com  [-1.0, 1.0]_com
+ [-1.0, 1.0]_com   [2.0, 4.0]_com
 
 julia> rref(A)
 2×2 Matrix{Interval{Float64}}:
- [2, 4]  [-1, 1]
- [0, 0]       [1.5, 4.5]
+ [2.0, 4.0]_com  [-1.0, 1.0]_com
+ [0.0, 0.0]_com   [1.5, 4.5]_com
 ```
 """
 function rref(A::AbstractMatrix{T}) where {T<:Interval}
