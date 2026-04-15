@@ -64,12 +64,10 @@ julia> b = A * ones(2)
  7.0
 
 julia> x, cert = epsilon_inflation(A, b)
-(Interval{Float64}[[0.999999, 1.00001], [0.999999, 1.00001]], true)
+(Interval{Float64}[[1.0, 1.0]_com_NG, [1.0, 1.0]_com_NG], true)
 
-julia> ones(2) .∈ x
-2-element BitVector:
- 1
- 1
+julia> all(in_interval.(ones(2), x))
+true
 
 julia> cert
 true
@@ -78,12 +76,12 @@ true
 function epsilon_inflation(A::AbstractMatrix{T}, b::AbstractArray{S, N};
                            r=0.1, ϵ=1e-20, iter_max=20) where {T<:Real, S<:Real, N}
 
-    r1 = Interval(1 - r, 1 + r)
-    ϵ1 = Interval(-ϵ, ϵ)
+    r1 = IA.interval(1 - r, 1 + r)
+    ϵ1 = IA.interval(-ϵ, ϵ)
     R = inv(mid.(A))
     C = I - R * A
     xs = R * mid.(b)
-    z = R * (b - (A * Interval.(xs)))
+    z = R * (b - (A * IA.interval.(xs)))
     x = z
 
     for _ in 1:iter_max

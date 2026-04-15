@@ -42,21 +42,21 @@ For more details see section 5.6.2 of [[HOR19]](@ref)
 ```jldoctest
 julia> A = [2..4 -1..1;-1..1 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-1, 1]
- [-1, 1]   [2, 4]
+  [2.0, 4.0]_com  [-1.0, 1.0]_com
+ [-1.0, 1.0]_com   [2.0, 4.0]_com
 
 julia> b = [-2..2, -1..1]
 2-element Vector{Interval{Float64}}:
- [-2, 2]
- [-1, 1]
+ [-2.0, 2.0]_com
+ [-1.0, 1.0]_com
 
 julia> hbr = HansenBliekRohn()
 HansenBliekRohn linear solver
 
 julia> hbr(A, b)
 2-element Vector{Interval{Float64}}:
- [-1.66667, 1.66667]
- [-1.33334, 1.33334]
+ [-1.66667, 1.66667]_com
+ [-1.33333, 1.33333]_com
 ```
 """
 struct HansenBliekRohn <: AbstractDirectSolver end
@@ -74,10 +74,10 @@ function (hbr::HansenBliekRohn)(A::AbstractMatrix{T},
     d = diag(compA_inv)
 
     _α = sup.(diag(compA) .- 1 ./ d)
-    α = Interval.(-_α, _α)
+    α = IA.interval.(-_α, _α)
 
     _β = @. sup(u/d - mag(b))
-    β = Interval.(-_β, _β)
+    β = IA.interval.(-_β, _β)
 
     return (b .+ β) ./ (diag(A) .+ α)
 
@@ -101,21 +101,21 @@ For more details see section 5.6.1 of [[HOR19]](@ref)
 ```jldoctest
 julia> A = [2..4 -1..1;-1..1 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-1, 1]
- [-1, 1]   [2, 4]
+  [2.0, 4.0]_com  [-1.0, 1.0]_com
+ [-1.0, 1.0]_com   [2.0, 4.0]_com
 
 julia> b = [-2..2, -1..1]
 2-element Vector{Interval{Float64}}:
- [-2, 2]
- [-1, 1]
+ [-2.0, 2.0]_com
+ [-1.0, 1.0]_com
 
 julia> ge = GaussianElimination()
 GaussianElimination linear solver
 
 julia> ge(A, b)
 2-element Vector{Interval{Float64}}:
- [-1.66667, 1.66667]
- [-1.33334, 1.33334]
+ [-1.66667, 1.66667]_com
+ [-1.33333, 1.33333]_com
 ```
 """
 struct GaussianElimination <: AbstractDirectSolver end
@@ -168,13 +168,13 @@ For details see Section 5.7.4 of [[HOR19]](@ref)
 ```jldoctest
 julia> A = [2..4 -1..1;-1..1 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-1, 1]
- [-1, 1]   [2, 4]
+  [2.0, 4.0]_com  [-1.0, 1.0]_com
+ [-1.0, 1.0]_com   [2.0, 4.0]_com
 
 julia> b = [-2..2, -1..1]
 2-element Vector{Interval{Float64}}:
- [-2, 2]
- [-1, 1]
+ [-2.0, 2.0]_com
+ [-1.0, 1.0]_com
 
 julia> jac = Jacobi()
 Jacobi linear solver
@@ -183,8 +183,8 @@ atol = 0.0
 
 julia> jac(A, b)
 2-element Vector{Interval{Float64}}:
- [-1.66668, 1.66668]
- [-1.33335, 1.33335]
+ [-1.66667, 1.66667]_trv
+ [-1.33334, 1.33334]_trv
 ```
 """
 struct Jacobi <: AbstractIterativeSolver
@@ -208,7 +208,7 @@ function (jac::Jacobi)(A::AbstractMatrix{T},
             for j in 1:n
                 (i == j) || (x[i] -= A[i, j] * xold[j])
             end
-            x[i] = (x[i]/A[i, i]) ∩ xold[i]
+            x[i] = intersect_interval(x[i]/A[i, i], xold[i])
         end
         all(interval_isapprox.(x, xold; atol=atol)) && break
     end
@@ -248,13 +248,13 @@ For details see Section 5.7.4 of [[HOR19]](@ref)
 ```jldoctest
 julia> A = [2..4 -1..1;-1..1 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-1, 1]
- [-1, 1]   [2, 4]
+  [2.0, 4.0]_com  [-1.0, 1.0]_com
+ [-1.0, 1.0]_com   [2.0, 4.0]_com
 
 julia> b = [-2..2, -1..1]
 2-element Vector{Interval{Float64}}:
- [-2, 2]
- [-1, 1]
+ [-2.0, 2.0]_com
+ [-1.0, 1.0]_com
 
 julia> gs = GaussSeidel()
 GaussSeidel linear solver
@@ -263,8 +263,8 @@ atol = 0.0
 
 julia> gs(A, b)
 2-element Vector{Interval{Float64}}:
- [-1.66668, 1.66668]
- [-1.33334, 1.33334]
+ [-1.66667, 1.66667]_trv
+ [-1.33334, 1.33334]_trv
 ```
 """
 struct GaussSeidel <: AbstractIterativeSolver
@@ -287,7 +287,7 @@ function (gs::GaussSeidel)(A::AbstractMatrix{T},
             @inbounds for j in 1:n
                 (i == j) || (x[i] -= A[i, j] * x[j])
             end
-            x[i] = (x[i]/A[i, i]) .∩ xold[i]
+            x[i] = intersect_interval(x[i]/A[i, i], xold[i])
         end
         all(interval_isapprox.(x, xold; atol=atol)) && break
     end
@@ -327,13 +327,13 @@ For details see Section 5.7.3 of [[HOR19]](@ref)
 ```jldoctest
 julia> A = [2..4 -1..1;-1..1 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-1, 1]
- [-1, 1]   [2, 4]
+  [2.0, 4.0]_com  [-1.0, 1.0]_com
+ [-1.0, 1.0]_com   [2.0, 4.0]_com
 
 julia> b = [-2..2, -1..1]
 2-element Vector{Interval{Float64}}:
- [-2, 2]
- [-1, 1]
+ [-2.0, 2.0]_com
+ [-1.0, 1.0]_com
 
 julia> kra = LinearKrawczyk()
 LinearKrawczyk linear solver
@@ -342,8 +342,8 @@ atol = 0.0
 
 julia> kra(A, b)
 2-element Vector{Interval{Float64}}:
- [-2, 2]
- [-2, 2]
+ [-2.0, 2.0]_trv_NG
+ [-2.0, 2.0]_trv_NG
 ```
 """
 struct LinearKrawczyk <: AbstractIterativeSolver
@@ -361,7 +361,7 @@ function (kra::LinearKrawczyk)(A::AbstractMatrix{T},
 
     C = inv(mid.(A))
     for i = 1:kra.max_iterations
-        xnew  = (C*b  - C*(A*x) + x) .∩ x
+        xnew  = intersect_interval.(C*b  - C*(A*x) + x, x)
         all(interval_isapprox.(x, xnew; atol=atol)) && return xnew
         x = xnew
     end

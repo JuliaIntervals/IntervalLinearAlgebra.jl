@@ -46,7 +46,7 @@ end
 
 @testset "Reduced Row Echelon Form" begin
     A1 = [1..2 1..2;2..2 3..3]
-    @test rref(A1) == [2..2 3..3; 0..0 -2..0.5]
+    @test all(isequal_interval.(rref(A1), [2..2 3..3; 0..0 -2..0.5]))
 
     A2 = fill(0..0, 2, 2)
     @test_throws ArgumentError rref(A2)

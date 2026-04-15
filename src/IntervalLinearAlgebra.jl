@@ -1,6 +1,6 @@
 module IntervalLinearAlgebra
 
-using StaticArrays, Reexport
+using StaticArrays, Reexport, SetRounding
 using LinearAlgebra: checksquare
 
 import Base: +, -, *, /, \, ==,
@@ -9,6 +9,7 @@ import Base: +, -, *, /, \, ==,
 import CommonSolve: solve
 
 @reexport using LinearAlgebra, IntervalArithmetic
+using IntervalArithmetic.Symbols: var"..", ±
 
 const IA = IntervalArithmetic
 
@@ -78,7 +79,5 @@ function  __init__()
         end
     end
 end
-
-set_multiplication_mode(config[:multiplication])
 
 end

@@ -18,7 +18,7 @@
     A1[:, 1] = [x+1, z-1]
     @test A1 == AffineParametricArray([x+1 x;z-1 4])
 
-    @test A([1..2, 2..3, 3..4]) == [2..3 4..5; 7..10 -3.. -1]
+    @test all(isequal_interval.(A([1..2, 2..3, 3..4]), [2..3 4..5; 7..10 -3.. -1]))
 end
 
 @testset "Affine parametric array operations" begin

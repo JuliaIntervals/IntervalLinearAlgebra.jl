@@ -12,16 +12,16 @@ For more details see section 4.6 of [[HOR19]](@ref).
 ```jldoctest
 julia> A = [2..4 -2..1; -1..2 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-2, 1]
- [-1, 2]   [2, 4]
+  [2.0, 4.0]_com  [-2.0, 1.0]_com
+ [-1.0, 2.0]_com   [2.0, 4.0]_com
 
 julia> is_strongly_regular(A)
 true
 
 julia> A = [0..2 1..1;-1.. -1 0..2]
 2×2 Matrix{Interval{Float64}}:
-   [0, 2]  [1, 1]
- [-1, -1]  [0, 2]
+  [0.0, 2.0]_com   [1.0, 1.0]_com
+ [-1.0, -1.0]_com  [0.0, 2.0]_com
 
 julia> is_strongly_regular(A)
 false
@@ -49,16 +49,16 @@ For more details see section 4.4 of [[HOR19]](@ref).
 ```jldoctest
 julia> A = [2..4 -1..1; -1..1 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-1, 1]
- [-1, 1]   [2, 4]
+  [2.0, 4.0]_com  [-1.0, 1.0]_com
+ [-1.0, 1.0]_com   [2.0, 4.0]_com
 
 julia> is_H_matrix(A)
 true
 
 julia> A = [2..4 -2..1; -1..2 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-2, 1]
- [-1, 2]   [2, 4]
+  [2.0, 4.0]_com  [-2.0, 1.0]_com
+ [-1.0, 2.0]_com   [2.0, 4.0]_com
 
 julia> is_H_matrix(A)
 false
@@ -87,16 +87,16 @@ For more details see section 4.5 of [[HOR19]](@ref).
 ```jldoctest
 julia> A = [2..4 -1..1; -1..1 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-1, 1]
- [-1, 1]   [2, 4]
+  [2.0, 4.0]_com  [-1.0, 1.0]_com
+ [-1.0, 1.0]_com   [2.0, 4.0]_com
 
 julia> is_strictly_diagonally_dominant(A)
 true
 
 julia> A = [2..4 -2..1; -1..2 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-2, 1]
- [-1, 2]   [2, 4]
+  [2.0, 4.0]_com  [-2.0, 1.0]_com
+ [-1.0, 2.0]_com   [2.0, 4.0]_com
 
 julia> is_strictly_diagonally_dominant(A)
 false
@@ -107,7 +107,7 @@ function is_strictly_diagonally_dominant(A::AbstractMatrix{T}) where {T<:Interva
     m == n || return false
 
     @inbounds for i=1:m
-        sum_mag = sum(Interval(mag(A[i, k])) for k=1:n if k ≠ i)
+        sum_mag = sum(IA.interval(mag(A[i, k])) for k=1:n if k ≠ i)
         mig(A[i, i]) ≤ inf(sum_mag) && return false
 
     end
@@ -125,16 +125,16 @@ for all ``i≠j``. For more details see section 4.2 of [[HOR19]](@ref).
 ```jldoctest
 julia> A = [2..4 -2.. -1; -2.. -1 2..4]
 2×2 Matrix{Interval{Float64}}:
-   [2, 4]  [-2, -1]
- [-2, -1]    [2, 4]
+  [2.0, 4.0]_com   [-2.0, -1.0]_com
+ [-2.0, -1.0]_com   [2.0, 4.0]_com
 
 julia> is_Z_matrix(A)
 true
 
 julia> A = [2..4 -2..1; -1..2 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-2, 1]
- [-1, 2]   [2, 4]
+  [2.0, 4.0]_com  [-2.0, 1.0]_com
+ [-1.0, 2.0]_com   [2.0, 4.0]_com
 
 julia> is_Z_matrix(A)
 false
@@ -166,16 +166,16 @@ non-negative inverse. For more details see section 4.2 of [[HOR19]](@ref).
 ```jldoctest
 julia> A = [2..2 -1..0; -1..0 2..2]
 2×2 Matrix{Interval{Float64}}:
-  [2, 2]  [-1, 0]
- [-1, 0]   [2, 2]
+  [2.0, 2.0]_com  [-1.0, 0.0]_com
+ [-1.0, 0.0]_com   [2.0, 2.0]_com
 
 julia> is_M_matrix(A)
 true
 
 julia> A = [2..4 -2..1; -1..2 2..4]
 2×2 Matrix{Interval{Float64}}:
-  [2, 4]  [-2, 1]
- [-1, 2]   [2, 4]
+  [2.0, 4.0]_com  [-2.0, 1.0]_com
+ [-1.0, 2.0]_com   [2.0, 4.0]_com
 
 julia> is_M_matrix(A)
 false

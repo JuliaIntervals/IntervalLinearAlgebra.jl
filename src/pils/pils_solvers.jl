@@ -24,7 +24,7 @@ function (sk::Skalna06)(A::AffineParametricMatrix,
     z = (R * (b - A * x0))(p)
     Δ = comparison_matrix(D) \ mag.(z)
 
-    return x0 + IntervalArithmetic.Interval.(-Δ, Δ)
+    return x0 + IA.interval.(-Δ, Δ)
 end
 
 function solve(A::AffineParametricMatrix,

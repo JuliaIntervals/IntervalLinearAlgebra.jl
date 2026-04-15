@@ -35,15 +35,15 @@ utilize normal floating point computations.
 ```jldoctest
 julia> A = [0 -1 -1; 2 -1.399.. -0.001 0; 1 0.5 -1]
 3×3 Matrix{Interval{Float64}}:
- [0, 0]  [-1, -1]                       [-1, -1]
- [2, 2]       [-1.39901, -0.000999999]    [0, 0]
- [1, 1]        [0.5, 0.5]               [-1, -1]
+ [0.0, 0.0]_com_NG  [-1.0, -1.0]_com_NG   [-1.0, -1.0]_com_NG
+ [2.0, 2.0]_com_NG  [-1.399, -0.001]_com   [0.0, 0.0]_com_NG
+ [1.0, 1.0]_com_NG   [0.5, 0.5]_com_NG    [-1.0, -1.0]_com_NG
 
 julia> eigenbox(A)
-[-1.90679, 0.970154] + [-2.51903, 2.51903]im
+[-1.90678, 0.970154]_com_NG + im*[-2.51903, 2.51903]_com_NG
 
 julia> eigenbox(A, Hertz())
-[-1.64732, 0.520456] + [-2.1112, 2.1112]im
+[-1.64731, 0.520455]_com_NG + im*[-2.11119, 2.11119]_com_NG
 ```
 """
 function eigenbox(A::Symmetric{Interval{T}, Matrix{Interval{T}}}, ::Rohn) where {T}
@@ -54,7 +54,7 @@ function eigenbox(A::Symmetric{Interval{T}, Matrix{Interval{T}}}, ::Rohn) where 
     ρ = eigmax(AΔ)
     λmax = eigmax(Ac)
     λmin = eigmin(Ac)
-    return Interval(λmin - ρ, λmax + ρ)
+    return IA.interval(λmin - ρ, λmax + ρ)
 
 end
 
@@ -86,7 +86,7 @@ function eigenbox(A::Symmetric{Interval{T}, Matrix{Interval{T}}}, ::Hertz) where
         λmin = min(λmin, candmin)
         λmax = max(λmax, candmax)
     end
-    return IA.Interval(λmin, λmax)
+    return IA.interval(λmin, λmax)
 end
 
 function eigenbox(A::AbstractMatrix{Interval{T}},

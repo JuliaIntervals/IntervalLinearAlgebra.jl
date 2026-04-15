@@ -31,7 +31,7 @@ This is something that needs to be done only once, the first time you start cont
 
 **1.** From the Julia REPL in package mode (you can enter package mode by typing `]`) do
 
-```julia
+```jldoctest
 pkg> dev IntervalLinearAlgebra
 ```
 
@@ -149,7 +149,7 @@ If the dependency is quite heavy and used only by some functionalities, you may 
 2. In the `[deps]` section of `Project.toml` locate the package you want to make an optional dependency and move the corresponding line to `[extras]`, keep alphabetical ordering.
 3. Add the dependency name to the `test` entry in the `[targets]` section
 4. In the `IntervalLinearAlgebra.jl` file, locate the `__init__` function and add the line
-```julia
+```jldoctest
 @require """Example = "7876af07-990d-54b4-ab0e-23690620f79a" include("file.jl")"""
 ```
 where `file.jl` is the file containing the functions needing `Example.jl`. The line `Example = "7876af07-990d-54b4-ab0e-23690620f79a"` is the same in the Project.toml
@@ -158,10 +158,10 @@ where `file.jl` is the file containing the functions needing `Example.jl`. The l
 ## Documentation guideline
 
 * Documentation is written with [Documenter.jl](https://github.com/JuliaDocs/Documenter.jl). Documentation files are in `docs/src`, generally as markdown file.
-* If you want to include a Julia code example that is **not** executed in the markdown file, use ````` ```julia ````` blocks, e.g.
+* If you want to include a Julia code example that is **not** executed in the markdown file, use ````` ```jldoctest ````` blocks, e.g.
 
 ````
-```julia
+```jldoctest
 a = 1
 b = 2
 ```
@@ -241,7 +241,7 @@ INSERT BIBTEX HERE
 ### Docstrings
 
 * Each exported function should have a docstring. The docstring should roughly follow the following structure
-```julia
+```jldoctest
 """
     funname(param1, param2[, optional_param])
 
@@ -276,7 +276,7 @@ Preferably, as a doctest.
 
 Here is an example
 
-````julia
+````jldoctest
 """
     something(A::Matrix{T}, b::Vector{T}[, tol=1e-10]) where {T<:Interval}
 

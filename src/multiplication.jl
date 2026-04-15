@@ -25,18 +25,21 @@ Sets the algorithm used to perform matrix multiplication with interval matrices.
     (50% overestimate at most) [[RUM99]](@ref).
 """
 function set_multiplication_mode(multype)
-    type = MultiplicationType{multype}()
-    @eval *(A::AbstractMatrix{Interval{T}}, B::AbstractMatrix{Interval{T}}) where T =
-        *($type, A, B)
-
-    @eval *(A::AbstractMatrix{T}, B::AbstractMatrix{Interval{T}}) where T = *($type, A, B)
-
-    @eval *(A::AbstractMatrix{Interval{T}}, B::AbstractMatrix{T}) where T = *($type, A, B)
-
-    @eval *(A::Diagonal, B::AbstractMatrix{Interval{T}}) where T = *($type, A, B)
-    @eval *(A::AbstractMatrix{Interval{T}}, B::Diagonal) where T = *($type, A, B)
+    multype in (:slow, :rank1, :fast) || throw(ArgumentError("unsupported multiplication mode: $multype"))
     config[:multiplication] = multype
 end
+
+_mul_type() = MultiplicationType{config[:multiplication]}()
+
+*(A::AbstractMatrix{Interval{T}}, B::AbstractMatrix{Interval{T}}) where T =
+    *(_mul_type(), A, B)
+
+*(A::AbstractMatrix{T}, B::AbstractMatrix{Interval{T}}) where T = *(_mul_type(), A, B)
+
+*(A::AbstractMatrix{Interval{T}}, B::AbstractMatrix{T}) where T = *(_mul_type(), A, B)
+
+*(A::Diagonal, B::AbstractMatrix{Interval{T}}) where T = *(_mul_type(), A, B)
+*(A::AbstractMatrix{Interval{T}}, B::Diagonal) where T = *(_mul_type(), A, B)
 
 function *(A::AbstractMatrix{Complex{Interval{T}}}, B::AbstractMatrix) where T
     return real(A)*B+im*imag(A)*B
@@ -61,9 +64,18 @@ function *(A::AbstractMatrix{Interval{T}}, B::AbstractMatrix{Complex{T}}) where 
 end
 
 
+# We call `generic_matmatmul!` directly instead of `mul!` because
+# IntervalArithmetic's LinearAlgebra extension overloads `mul!` to
+# dispatch through its own `default_matmul()` mode (`:fast` by default),
+# which would ignore the multiplication mode set here.
 function *(::MultiplicationType{:slow}, A, B)
     TS = promote_type(eltype(A), eltype(B))
-    return mul!(similar(B, TS, (size(A,1), size(B,2))), A, B)
+    C = similar(B, TS, (size(A, 1), size(B, 2)))
+    # The `MulAddMul` argument is required on Julia 1.10 where the 5-arg form
+    # doesn't exist for non-BLAS types. When dropping Julia 1.10 support,
+    # simplify to: `LinearAlgebra.generic_matmatmul!(C, 'N', 'N', A, B)`
+    _add = LinearAlgebra.MulAddMul{true, false, TS, TS}(one(TS), zero(TS))
+    return LinearAlgebra.generic_matmatmul!(C, 'N', 'N', A, B, _add)
 end
 
 function *(::MultiplicationType{:fast},
@@ -92,7 +104,7 @@ function *(::MultiplicationType{:fast},
         mA * mB - R
     end
 
-    return Interval.(Cinf, Csup)
+    return interval.(Cinf, Csup)
 end
 
 
@@ -118,7 +130,7 @@ function *(::MultiplicationType{:fast},
         A * mB - R
     end
 
-    return Interval.(Cinf, Csup)
+    return interval.(Cinf, Csup)
 end
 
 function *(::MultiplicationType{:fast},
@@ -143,7 +155,7 @@ function *(::MultiplicationType{:fast},
         mA * B - R
     end
 
-    return Interval.(Cinf, Csup)
+    return interval.(Cinf, Csup)
 end
 
 
@@ -181,7 +193,7 @@ function *(::MultiplicationType{:rank1},
         return Csup
     end
 
-    return Interval.(Cinf, Csup)
+    return interval.(Cinf, Csup)
 
 
 end

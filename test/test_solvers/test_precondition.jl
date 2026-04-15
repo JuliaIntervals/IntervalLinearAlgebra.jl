@@ -7,7 +7,7 @@
     imp = InverseMidpoint()
 
     A1, b1 = np(A, b)
-    @test A1 == A && b1 == b
+    @test all(isequal_interval.(A1, A)) && all(isequal_interval.(b1, b))
 
     A2, b2 = idp(A, b)
     Acorrect = [2/3..4/3 -2/3..1/3; -1/3..2/3 2/3..4/3]
